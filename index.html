@@ -2,193 +2,246 @@
 <html lang="fa" dir="rtl" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leitner Cloud Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Leitner Cloud Premium</title>
     
-    <!-- تنظیمات PWA (تبدیل به اپلیکیشن نصبی) -->
+    <!-- فونت زیبای وزیرمتن -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- PWA Settings -->
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3043/3043888.png">
-    <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Leitner%20Cloud%22%2C%22short_name%22%3A%22Leitner%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8f9fe%22%2C%22theme_color%22%3A%22%236366f1%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F3043%2F3043888.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D'>
-
-    <!-- کتابخانه‌های فایربیس -->
+    
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <style>
         :root {
-            --bg-color: #f8f9fe;
-            --surface-color: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --bg-color: #f4f7fe;
+            --surface-color: rgba(255, 255, 255, 0.9);
+            --surface-solid: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             --primary-color: #6366f1;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
-            --border-radius: 20px;
-            --border-color: #e5e7eb;
+            --border-radius: 24px;
+            --border-color: rgba(226, 232, 240, 0.8);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.3);
         }
 
         [data-theme="dark"] {
-            --bg-color: #111827;
-            --surface-color: #1f2937;
-            --text-main: #f9fafb;
-            --text-muted: #9ca3af;
-            --border-color: #374151;
+            --bg-color: #0f172a;
+            --surface-color: rgba(30, 41, 59, 0.85);
+            --surface-solid: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(51, 65, 85, 0.6);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.15);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; padding-bottom: 100px; overflow-x: hidden; }
+        .container { max-width: 800px; margin: 0 auto; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 20px;
-            padding-bottom: 90px;
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        .container { max-width: 900px; margin: 0 auto; }
-
+        /* استایل شیشه‌ای هدر */
         header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; margin-top: 10px;
-            background: var(--surface-color); padding: 15px 20px; border-radius: var(--border-radius);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); border: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
+            background: var(--surface-color); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            padding: 16px 24px; border-radius: var(--border-radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            position: sticky; top: 15px; z-index: 50;
         }
-        header h1 { font-size: 22px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header h1 { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .profile-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .streak-badge { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); padding: 5px 12px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 5px; font-size: 15px; }
-        .profile-avatar { width: 42px; height: 42px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3); }
+        .profile-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .streak-badge { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); padding: 6px 14px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 6px; font-size: 15px; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .profile-avatar { width: 44px; height: 44px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; box-shadow: var(--shadow-glow); font-size: 16px; border: 2px solid white; }
 
-        .view-section { display: none; }
+        .view-section { display: none; animation: fadeUp 0.4s ease-out; }
         .view-section.active { display: block; }
 
-        /* صفحات ورود و ثبت‌نام */
-        #view-login, #view-signup { max-width: 400px; margin: 40px auto; background: var(--surface-color); padding: 35px; border-radius: var(--border-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid var(--border-color); text-align: center; }
-        #view-login h2, #view-signup h2 { margin-bottom: 10px; font-weight: 800; }
+        /* فرم‌ها و کارت‌های لاگین */
+        .auth-card { max-width: 420px; margin: 40px auto; background: var(--surface-solid); padding: 40px; border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); text-align: center; }
+        .auth-card h2 { margin-bottom: 15px; font-weight: 900; font-size: 28px; }
 
-        .hero-card { background: var(--primary-gradient); color: white; border-radius: var(--border-radius); padding: 35px 20px; text-align: center; box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3); margin-bottom: 25px; }
-        .hero-card h2 { font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; }
-        .hero-card .review-count { font-size: 52px; font-weight: 900; margin-bottom: 20px; }
+        .hero-card { background: var(--primary-gradient); color: white; border-radius: 30px; padding: 40px 20px; text-align: center; box-shadow: var(--shadow-glow); margin-bottom: 30px; position: relative; overflow: hidden; }
+        .hero-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); pointer-events: none; }
+        .hero-card h2 { font-size: 15px; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px; opacity: 0.9; }
+        .hero-card .review-count { font-size: 64px; font-weight: 900; margin-bottom: 25px; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 14px 28px; font-size: 16px; font-weight: bold; border-radius: 30px; cursor: pointer; width: 100%; max-width: 260px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 12px; }
-        .btn-primary:hover { transform: translateY(-2px); }
+        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 16px 32px; font-size: 17px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; z-index: 2; }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
+        .btn-primary:active { transform: translateY(0) scale(0.98); }
+        
+        .btn-add-dashboard { background-color: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); padding: 14px 28px; font-size: 15px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: 0.3s; backdrop-filter: blur(5px); position: relative; z-index: 2; }
+        .btn-add-dashboard:hover { background-color: rgba(255, 255, 255, 0.25); }
 
-        .btn-add-dashboard { background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid rgba(255, 255, 255, 0.4); padding: 12px 28px; font-size: 15px; font-weight: bold; border-radius: 30px; cursor: pointer; width: 100%; max-width: 260px; }
+        .section-title { font-size: 20px; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        .section-title { font-size: 18px; margin-bottom: 15px; font-weight: 700; }
+        /* آمار */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
+        .stat-card { background-color: var(--surface-solid); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); align-items: center; text-align: center; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .stat-card .title { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
+        .stat-card .value { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background-color: var(--surface-color); border-radius: var(--border-radius); padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); }
-        .stat-card .title { color: var(--text-muted); font-size: 12px; margin-bottom: 6px; font-weight: 600; }
-        .stat-card .value { font-size: 20px; font-weight: 800; }
+        /* جعبه‌ها (گرافیک پیشرفته) */
+        .boxes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .box-card { border-radius: 24px; padding: 25px 10px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
+        .box-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%); pointer-events: none; }
+        .box-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 30px rgba(0,0,0,0.15); filter: brightness(1.1); }
+        
+        .box-1 { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); }
+        .box-2 { background: linear-gradient(135deg, #F2994A 0%, #F2C94C 100%); }
+        .box-3 { background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); }
+        .box-4 { background: linear-gradient(135deg, #B24592 0%, #F15F79 100%); }
+        .box-5 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        
+        .box-card .box-name { font-size: 13px; margin-bottom: 10px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
+        .box-card .box-count { font-size: 32px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
 
-        .boxes-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-        .box-card { border-radius: 16px; padding: 20px 5px; text-align: center; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .box-card:hover { transform: translateY(-5px); filter: brightness(1.05); }
+        /* ------------------ انقلاب در بخش مرور (کارت چرخشی سه‌بعدی) ------------------ */
+        .review-wrapper { perspective: 1500px; width: 100%; max-width: 500px; margin: 0 auto; height: 380px; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; }
+        .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
+        
+        .review-box-label { position: absolute; top: 20px; right: 20px; font-size: 14px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 5px 12px; border-radius: 12px; }
+        .review-word { font-size: 42px; font-weight: 900; margin-bottom: 20px; color: var(--text-main); }
+        .review-meaning { font-size: 36px; color: var(--success-color); font-weight: 900; margin-bottom: 15px; }
+        .review-example { font-size: 18px; color: var(--text-muted); font-weight: 600; line-height: 1.5; padding: 15px; border-radius: 12px; background: var(--bg-color); width: 100%; }
 
-        .box-1 { background: linear-gradient(135deg, #ff6b6b 100%, #ee5253 0%); }
-        .box-2 { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
-        .box-3 { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
-        .box-4 { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
-        .box-5 { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
-        .box-card .box-name { font-size: 12px; margin-bottom: 8px; font-weight: 600; opacity: 0.9; }
-        .box-card .box-count { font-size: 20px; font-weight: 900; }
+        .btn-audio { width: 54px; height: 54px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.3s; margin-top: 10px; }
+        .btn-audio:hover { transform: scale(1.1); }
+        .btn-audio:active { transform: scale(0.9); }
 
-        /* مرور متمرکز */
-        .review-container { background: var(--surface-color); border-radius: var(--border-radius); padding: 40px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: 600px; margin: 0 auto; }
-        .review-card-box { font-size: 32px; font-weight: 900; color: var(--primary-color); margin-bottom: 20px; }
-        .review-word { font-size: 36px; font-weight: 800; margin-bottom: 15px; }
-        .review-back-content { margin-top: 20px; padding-top: 20px; border-top: 2px dashed var(--border-color); display: none; }
-        .review-meaning { font-size: 24px; color: var(--success-color); font-weight: 700; margin-bottom: 10px; }
-        .review-example { font-size: 16px; color: var(--text-muted); margin-bottom: 25px; }
-        .action-buttons { display: flex; gap: 15px; justify-content: space-between; width: 100%; margin-top: 20px; }
-        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 16px 10px; border-radius: 16px; cursor: pointer; font-weight: 800; font-size: 16px; flex: 1; box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4); }
-        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 16px 10px; border-radius: 16px; cursor: pointer; font-weight: 800; font-size: 16px; flex: 1; box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4); }
+        .review-actions { max-width: 500px; margin: 30px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.5s; transform: translateY(20px); }
+        .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
+        
+        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 18px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.3s; }
+        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 18px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.3s; }
+        .btn-know:active, .btn-dont-know:active { transform: scale(0.95); }
+
+        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 18px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 500px; display: block; margin: 30px auto 0; box-shadow: var(--shadow-md); transition: 0.3s; }
 
         /* مدیریت کارت‌ها */
-        .csv-actions { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .btn-csv { flex: 1; min-width: 140px; padding: 10px; border-radius: 10px; border: 1px solid var(--primary-color); background: rgba(99,102,241,0.1); color: var(--primary-color); font-weight: bold; cursor: pointer; }
-        .manager-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-        .search-input, .filter-select { flex: 1; min-width: 140px; padding: 12px 15px; border-radius: 12px; border: 2px solid var(--border-color); background: var(--surface-color); color: var(--text-main); font-size: 14px; outline: none; }
+        .csv-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .btn-csv { flex: 1; min-width: 140px; padding: 14px; border-radius: 16px; border: 2px solid var(--primary-color); background: rgba(99,102,241,0.05); color: var(--primary-color); font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        .btn-csv:hover { background: var(--primary-gradient); color: white; box-shadow: var(--shadow-glow); border-color: transparent; }
         
-        .card-list-item { background: var(--surface-color); padding: 15px 20px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); transition: 0.2s; }
-        .card-list-item:hover { border-color: var(--primary-color); }
-        .card-actions button { background: none; border: none; cursor: pointer; font-size: 18px; margin-left: 10px; padding: 5px; }
+        .manager-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+        .search-input, .filter-select { flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 16px; border: 2px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 15px; outline: none; font-weight: 600; transition: 0.3s; }
+        .search-input:focus, .filter-select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        
+        .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); transition: 0.3s; box-shadow: var(--shadow-sm); }
+        .card-list-item:hover { border-color: var(--primary-color); transform: translateX(-5px); box-shadow: var(--shadow-md); }
+        
+        /* دکمه‌های آیکون‌دار */
+        .icon-btn { background: var(--bg-color); border: none; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; margin-right: 8px; }
+        .icon-btn:hover { background: var(--border-color); transform: scale(1.1); }
+        .btn-del:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
 
         /* مدال‌ها و تنظیمات */
-        .settings-card { background: var(--surface-color); padding: 20px; border-radius: var(--border-radius); border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); justify-content: center; align-items: center; padding: 20px; z-index: 100; overflow-y: auto; }
-        .modal-content { background-color: var(--surface-color); padding: 30px; border-radius: var(--border-radius); width: 100%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color); }
-        .form-group { margin-bottom: 15px; text-align: right; }
+        .settings-card { background: var(--surface-solid); padding: 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); transition: 0.3s; }
+        .settings-card:hover { border-color: var(--primary-color); }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; z-index: 100; overflow-y: auto; opacity: 0; transition: opacity 0.3s; }
+        .modal.show { opacity: 1; }
+        .modal-content { background-color: var(--surface-solid); padding: 35px; border-radius: 30px; width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal.show .modal-content { transform: scale(1); }
+
+        .form-group { margin-bottom: 20px; text-align: right; }
         [data-theme] .form-group { text-align: inherit; }
-        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
-        .form-control { width: 100%; padding: 14px; border: 2px solid var(--border-color); border-radius: 14px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none; }
-        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 14px; border-radius: 14px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 10px; }
-        .btn-close { background-color: transparent; color: var(--primary-color); border: none; padding: 12px 20px; border-radius: 14px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--surface-color); display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); border-top: 1px solid var(--border-color); z-index: 99; display: none; }
+        .form-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 800; }
+        .form-control { width: 100%; padding: 16px; border: 2px solid var(--border-color); border-radius: 16px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; transition: 0.3s; }
+        .form-control:focus { border-color: var(--primary-color); background: var(--surface-solid); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        
+        /* طراحی شیشه‌ای منوی پایین (Glassmorphism) */
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 600px; background: var(--surface-color); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 30px; z-index: 99; display: none; }
         .bottom-nav.logged-in { display: flex; }
-        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; font-weight: 600; }
-        .nav-item.active { color: var(--primary-color); }
+        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; padding: 8px 15px; border-radius: 20px; transition: 0.3s; }
+        .nav-item .icon { font-size: 20px; transition: 0.3s; }
+        .nav-item.active { color: var(--primary-color); background: rgba(99,102,241,0.1); }
+        .nav-item.active .icon { transform: translateY(-3px) scale(1.1); }
 
-        @media (min-width: 700px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } .bottom-nav.logged-in { display: none; } body { padding-bottom: 20px; } }
+        /* سیستم پاپ‌آپ‌های اطلاع‌رسانی (Custom Toasts) */
+        #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; pointer-events: none; }
+        .custom-toast { background: var(--surface-solid); color: var(--text-main); padding: 16px 24px; border-radius: 100px; font-weight: 800; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 2px solid var(--border-color); }
+        .custom-toast.error { border-color: var(--danger-color); color: var(--danger-color); }
+        .custom-toast.success { border-color: var(--success-color); color: var(--success-color); }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes toastOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
+
+        /* Checkbox Custom */
+        .custom-checkbox { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 6px; outline: none; cursor: pointer; position: relative; background: var(--surface-solid); transition: 0.2s; }
+        .custom-checkbox:checked { background: var(--primary-gradient); border-color: transparent; }
+        .custom-checkbox:checked::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; }
+
+        /* Toggle Switch Custom */
+        .toggle-switch { position: relative; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input:checked + .slider { background: var(--primary-gradient); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        @media (min-width: 800px) { 
+            .bottom-nav.logged-in { display: none; } 
+            body { padding-bottom: 20px; } 
+            .container { padding: 20px; }
+        }
     </style>
 </head>
 <body>
+    
+    <div id="toast-container"></div>
+
     <div class="container">
         
         <header>
-            <h1 id="appTitle">Leitner Cloud</h1>
+            <h1 id="appTitle">Leitner Pro</h1>
             <div class="profile-area" id="headerProfileArea" style="display: none;" onclick="switchView('settings')">
-                <div class="streak-badge" title="زنجیره یادگیری روزانه">🔥 <span id="headerStreakVal">0</span></div>
+                <div class="streak-badge" title="زنجیره روزانه">🔥 <span id="headerStreakVal">0</span></div>
+                <span id="headerUserName" style="font-weight: 800; font-size: 15px; margin-left: 8px;">کاربر</span>
                 <div class="profile-avatar" id="headerAvatar">MR</div>
             </div>
         </header>
 
-        <!-- صفحه 1: ورود به حساب -->
-        <section id="view-login" class="view-section active">
-            <h2 id="lblLoginTitle">ورود به لایتنر ابری</h2>
-            <p id="lblLoginDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">خوش برگشتید! لطفاً وارد حساب خود شوید.</p>
-            <div class="form-group">
-                <label id="lblLoginEmail">ایمیل:</label>
-                <input type="email" id="loginEmail" class="form-control" placeholder="example@gmail.com" dir="ltr">
-            </div>
-            <div class="form-group">
-                <label id="lblLoginPass">رمز عبور:</label>
-                <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" dir="ltr">
-            </div>
-            <button class="btn-submit" onclick="handleLogin()" id="btnLoginSubmit">ورود به حساب</button>
-            <button class="btn-close" onclick="showSignup()" id="btnGoSignup">حساب کاربری ندارید؟ ثبت‌نام کنید</button>
+        <!-- بخش ورود -->
+        <section id="view-login" class="view-section active auth-card">
+            <h2 id="lblLoginTitle">ورود به دنیای لایتنر</h2>
+            <p id="lblLoginDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">یادگیری هوشمند زبان را ادامه دهید.</p>
+            <div class="form-group"><input type="email" id="loginEmail" class="form-control" placeholder="ایمیل (Email)" dir="ltr"></div>
+            <div class="form-group"><input type="password" id="loginPassword" class="form-control" placeholder="رمز عبور (Password)" dir="ltr"></div>
+            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit" style="max-width: 100%;">ورود به حساب</button>
+            <button class="btn-close" onclick="showSignup()" id="btnGoSignup" style="color:var(--text-muted);">حساب کاربری ندارید؟ ثبت‌نام کنید</button>
         </section>
 
-        <!-- صفحه 2: ثبت‌نام -->
-        <section id="view-signup" class="view-section">
-            <h2 id="lblSignupTitle">ثبت‌نام در لایتنر</h2>
-            <p id="lblSignupDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">برای همگام‌سازی کارت‌ها، یک حساب جدید بسازید.</p>
-            <div class="form-group">
-                <label id="lblSignupName">نام و نام خانوادگی:</label>
-                <input type="text" id="signupName" class="form-control" placeholder="مثلاً: علی احمدی">
-            </div>
-            <div class="form-group">
-                <label id="lblSignupEmail">ایمیل معتبر:</label>
-                <input type="email" id="signupEmail" class="form-control" placeholder="example@gmail.com" dir="ltr">
-            </div>
-            <div class="form-group">
-                <label id="lblSignupPass">رمز عبور (حداقل ۶ حرف):</label>
-                <input type="password" id="signupPassword" class="form-control" placeholder="••••••••" dir="ltr">
-            </div>
-            <button class="btn-submit" onclick="handleSignup()" id="btnSignupSubmit">ساخت حساب کاربری</button>
-            <button class="btn-close" onclick="showLogin()" id="btnGoLogin">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</button>
+        <!-- بخش ثبت نام -->
+        <section id="view-signup" class="view-section auth-card">
+            <h2 id="lblSignupTitle">ثبت‌نام سریع</h2>
+            <p id="lblSignupDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">کارت‌های شما برای همیشه در ابر ذخیره می‌شوند.</p>
+            <div class="form-group"><input type="text" id="signupName" class="form-control" placeholder="نام شما (Name)"></div>
+            <div class="form-group"><input type="email" id="signupEmail" class="form-control" placeholder="ایمیل (Email)" dir="ltr"></div>
+            <div class="form-group"><input type="password" id="signupPassword" class="form-control" placeholder="رمز عبور (6 کاراکتر)" dir="ltr"></div>
+            <button class="btn-primary" onclick="handleSignup()" id="btnSignupSubmit" style="max-width: 100%;">ایجاد حساب جدید</button>
+            <button class="btn-close" onclick="showLogin()" id="btnGoLogin" style="color:var(--text-muted);">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</button>
         </section>
 
         <!-- داشبورد -->
@@ -201,17 +254,17 @@
                 <button class="btn-add-dashboard" onclick="openAddModal()" id="btnAddDash">➕ افزودن کارت جدید</button>
             </section>
 
-            <h3 class="section-title" id="lblStatsTitle">آمار و تحلیل پیشرفته</h3>
+            <h3 class="section-title" id="lblStatsTitle">📊 آمار یادگیری</h3>
             <section class="stats-grid">
-                <div class="stat-card"><span class="title" id="lblRevToday">مرورشده امروز</span><span class="value" id="statReviewedToday">0</span></div>
-                <div class="stat-card"><span class="title" id="lblCorrect">پاسخ‌های صحیح</span><span class="value" id="statCorrect">0</span></div>
-                <div class="stat-card"><span class="title" id="lblIncorrect">پاسخ‌های اشتباه</span><span class="value" id="statIncorrect">0</span></div>
-                <div class="stat-card"><span class="title" id="lblAccuracy">درصد موفقیت</span><span class="value" id="statAccuracy">0%</span></div>
-                <div class="stat-card"><span class="title" id="lblWeek">یادگیری هفته</span><span class="value" id="statWeekLearned">0</span></div>
-                <div class="stat-card"><span class="title" id="lblMonth">یادگیری ماه</span><span class="value" id="statMonthLearned">0</span></div>
+                <div class="stat-card"><span class="title" id="lblRevToday">مرور امروز</span><span class="value" id="statReviewedToday">0</span></div>
+                <div class="stat-card"><span class="title" id="lblCorrect">جواب درست</span><span class="value" id="statCorrect">0</span></div>
+                <div class="stat-card"><span class="title" id="lblIncorrect">جواب اشتباه</span><span class="value" id="statIncorrect">0</span></div>
+                <div class="stat-card"><span class="title" id="lblAccuracy">دقت پاسخ</span><span class="value" id="statAccuracy">0%</span></div>
+                <div class="stat-card"><span class="title" id="lblWeek">این هفته</span><span class="value" id="statWeekLearned">0</span></div>
+                <div class="stat-card"><span class="title" id="lblMonth">این ماه</span><span class="value" id="statMonthLearned">0</span></div>
             </section>
 
-            <h3 class="section-title" id="lblBoxesTitle">وضعیت جعبه‌ها (۱ تا ۵)</h3>
+            <h3 class="section-title" id="lblBoxesTitle">📦 وضعیت جعبه‌ها</h3>
             <section class="boxes-grid">
                 <div class="box-card box-1" onclick="openBoxModal(1)"><div class="box-name">Box 1</div><div class="box-count" id="count-1">0</div></div>
                 <div class="box-card box-2" onclick="openBoxModal(2)"><div class="box-name">Box 2</div><div class="box-count" id="count-2">0</div></div>
@@ -221,79 +274,95 @@
             </section>
         </section>
 
-        <!-- مرور متمرکز -->
+        <!-- مرور متمرکز (کارت چرخشی سه‌بعدی) -->
         <section id="view-review" class="view-section">
-            <div class="review-container">
-                <div class="review-card-box" id="reviewBoxLabel">Box 1</div>
-                <div class="review-word" id="reviewWordDisplay">Apple</div>
-                <button class="btn-audio" onclick="speakCurrentWord()" style="margin: 0 auto 15px auto; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; font-size: 18px;">🔊</button>
-                <button class="btn-primary" onclick="revealReviewCard()" id="btnReveal" style="max-width: 200px; margin: 0 auto;">مشاهده معنی</button>
-                
-                <div class="review-back-content" id="reviewBackContent">
-                    <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
-                    <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
-                    <div class="action-buttons">
-                        <button class="btn-dont-know" onclick="submitReviewAnswer(1)" id="btnNo">❌ بلد نبودم</button>
-                        <button class="btn-know" onclick="submitReviewAnswer('next')" id="btnYes">✅ بلدم</button>
+            <div class="review-wrapper">
+                <div class="flip-card" id="flipCardInner">
+                    <div class="flip-card-inner">
+                        <!-- روی کارت -->
+                        <div class="flip-front">
+                            <div class="review-box-label" id="reviewBoxLabel">Box 1</div>
+                            <div class="review-word" id="reviewWordDisplay">Apple</div>
+                            <button class="btn-audio" onclick="speakCurrentWord()">🔊</button>
+                        </div>
+                        <!-- پشت کارت -->
+                        <div class="flip-back">
+                            <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
+                            <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
+                        </div>
                     </div>
                 </div>
-                <br>
-                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: #f3f4f6; color: var(--text-muted); margin-top: 25px;">خروج به داشبورد</button>
+            </div>
+            
+            <button class="btn-reveal-main" onclick="revealReviewCard()" id="btnReveal">مشاهده پاسخ (Flip)</button>
+            
+            <div class="review-actions" id="reviewActions">
+                <button class="btn-dont-know" onclick="submitReviewAnswer(1)" id="btnNo">❌ فراموش کردم</button>
+                <button class="btn-know" onclick="submitReviewAnswer('next')" id="btnYes">✅ به یاد داشتم</button>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: var(--surface-solid); box-shadow: var(--shadow-sm); width: auto; padding: 12px 30px; margin-top: 30px;">خروج موقت</button>
             </div>
         </section>
 
         <!-- مدیریت کارت‌ها -->
         <section id="view-cards" class="view-section">
-            <h3 class="section-title" id="lblCardsTitle">مدیریت فلش‌کارت‌ها</h3>
+            <h3 class="section-title" id="lblCardsTitle">🗂 مدیریت بانک لغات</h3>
             
             <div class="csv-actions">
-                <button class="btn-csv" onclick="document.getElementById('csvFileInput').click()" id="btnImportCSV">📥 آپلود فایل CSV</button>
+                <button class="btn-csv" onclick="document.getElementById('csvFileInput').click()" id="btnImportCSV">📥 آپلود اکسل (CSV)</button>
                 <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="importCSV(event)">
-                <button class="btn-csv" onclick="exportCSV()" id="btnExportCSV">📤 دانلود کارت‌ها (CSV)</button>
+                <button class="btn-csv" onclick="exportCSV()" id="btnExportCSV">📤 دانلود بکاپ (CSV)</button>
             </div>
 
-            <!-- نوار اکشن گروهی -->
-            <div id="bulkActionsBar" style="display: none; justify-content: space-between; align-items: center; background: rgba(239, 68, 68, 0.1); padding: 12px 20px; border-radius: 14px; margin-bottom: 15px; border: 1px solid var(--danger-color);">
-                <span id="lblSelectedCount" style="color: var(--danger-color); font-weight: bold; font-size: 15px;">0 مورد انتخاب شده</span>
-                <button id="btnBulkDelete" onclick="deleteSelectedCards()" style="background: var(--danger-color); color: white; border: none; padding: 8px 16px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 14px;">حذف گروهی 🗑️</button>
+            <div id="bulkActionsBar" style="display: none; justify-content: space-between; align-items: center; background: rgba(239, 68, 68, 0.1); padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                <span id="lblSelectedCount" style="color: var(--danger-color); font-weight: 800; font-size: 15px;">0 مورد انتخاب شده</span>
+                <button id="btnBulkDelete" onclick="deleteSelectedCards()" style="background: var(--danger-color); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 14px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);">حذف گروهی 🗑️</button>
             </div>
 
             <div class="manager-controls">
-                <button id="btnSelectAll" onclick="toggleSelectAll()" style="padding: 12px 15px; border-radius: 12px; border: 1px solid var(--primary-color); background: rgba(99,102,241,0.1); color: var(--primary-color); cursor: pointer; font-weight: bold; flex: 1; min-width: 120px;">انتخاب همه ✔️</button>
-                <input type="text" id="searchInput" class="search-input" placeholder="جستجوی کلمه..." oninput="renderCardsManager()">
+                <button id="btnSelectAll" onclick="toggleSelectAll()" style="padding: 14px 15px; border-radius: 16px; border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color); cursor: pointer; font-weight: 800; flex: 1; min-width: 120px; transition: 0.3s;">انتخاب همه ✔️</button>
+                <input type="text" id="searchInput" class="search-input" placeholder="جستجو..." oninput="renderCardsManager()">
                 <select id="filterBox" class="filter-select" onchange="renderCardsManager()">
                     <option value="all" id="optAllBoxes">همه جعبه‌ها</option>
                     <option value="1">Box 1</option><option value="2">Box 2</option><option value="3">Box 3</option><option value="4">Box 4</option><option value="5">Box 5</option>
                 </select>
+                <select id="filterCategory" class="filter-select" onchange="renderCardsManager()">
+                    <option value="all" id="optAllCats">همه دسته‌ها</option>
+                    <option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option>
+                </select>
             </div>
             
-            <div id="cardsManagerList" style="max-height: 500px; overflow-y: auto;"></div>
+            <div id="cardsManagerList" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;"></div>
         </section>
 
         <!-- تنظیمات -->
         <section id="view-settings" class="view-section">
-            <h3 class="section-title" id="lblSettingsTitle">تنظیمات و حساب کاربری</h3>
+            <h3 class="section-title" id="lblSettingsTitle">⚙️ تنظیمات برنامه</h3>
             
             <div class="settings-card">
-                <div><h4 id="lblCloudAccount">حساب ابری</h4><p style="color: var(--text-muted); font-size: 13px;" id="currentUserEmail">وارد نشده‌اید</p></div>
-                <button id="btnLogout" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 10px; border:none; background: var(--danger-color); color:white; font-weight:bold; cursor:pointer; font-size: 13px;">خروج از حساب</button>
-            </div>
-
-            <!-- حالت مرور معکوس -->
-            <div class="settings-card">
-                <div>
-                    <h4 style="margin-bottom: 5px;" id="lblReverseReview">حالت مرور معکوس</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblReverseDesc">نمایش فارسی و حدس کلمه انگلیسی</p>
-                </div>
-                <input type="checkbox" id="reverseToggle" onchange="toggleReverseMode()" style="width: 22px; height: 22px; cursor: pointer;">
+                <div><h4 id="lblCloudAccount" style="margin-bottom: 5px;">حساب متصل</h4><p style="color: var(--text-muted); font-size: 13px; font-family: monospace;" id="currentUserEmail">---</p></div>
+                <button id="btnLogout" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 12px; border:none; background: rgba(239, 68, 68, 0.1); color:var(--danger-color); font-weight:900; cursor:pointer; font-size: 14px; transition: 0.3s;">خروج 🚪</button>
             </div>
 
             <div class="settings-card">
                 <div>
-                    <h4 style="margin-bottom: 5px;" id="lblLang">زبان برنامه (Language)</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblLangDesc">فارسی / English</p>
+                    <h4 style="margin-bottom: 5px;" id="lblReverseReview">آموزش معکوس</h4>
+                    <p style="color: var(--text-muted); font-size: 13px;" id="lblReverseDesc">نمایش فارسی، حدس انگلیسی</p>
                 </div>
-                <select id="langSelect" class="filter-select" style="max-width: 150px; background: var(--bg-color);" onchange="changeLanguage(this.value)">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="reverseToggle" onchange="toggleReverseMode()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="settings-card">
+                <div>
+                    <h4 style="margin-bottom: 5px;" id="lblLang">زبان (Language)</h4>
+                    <p style="color: var(--text-muted); font-size: 13px;" id="lblLangDesc">تغییر زبان رابط کاربری</p>
+                </div>
+                <select id="langSelect" class="filter-select" style="max-width: 140px; padding: 10px;" onchange="changeLanguage(this.value)">
                     <option value="fa">فارسی</option>
                     <option value="en">English</option>
                 </select>
@@ -301,10 +370,13 @@
 
             <div class="settings-card">
                 <div>
-                    <h4 style="margin-bottom: 5px;" id="lblDarkMode">حالت تاریک (Dark Mode)</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblDarkDesc">تغییر تم رنگی برنامه</p>
+                    <h4 style="margin-bottom: 5px;" id="lblDarkMode">تم تاریک (Dark Mode)</h4>
+                    <p style="color: var(--text-muted); font-size: 13px;" id="lblDarkDesc">جلوگیری از خستگی چشم</p>
                 </div>
-                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" style="width: 22px; height: 22px; cursor: pointer;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="slider"></span>
+                </label>
             </div>
         </section>
 
@@ -313,41 +385,45 @@
     <!-- مدال افزودن/ویرایش -->
     <div id="addModal" class="modal">
         <div class="modal-content">
-            <h2 id="lblAddTitle">افزودن فلش‌کارت جدید</h2>
+            <h2 id="lblAddTitle" style="margin-bottom: 25px; font-weight: 900;">افزودن فلش‌کارت</h2>
             <input type="hidden" id="editCardId">
-            <div class="form-group"><label id="lblAddEng">کلمه انگلیسی:</label><input type="text" id="inputEnglish" class="form-control" placeholder="e.g., Apple" dir="ltr"><button id="btnAutoTranslate" onclick="autoTranslateWord()" style="background:#8b5cf6; color:white; border:none; padding:10px; border-radius:10px; width:100%; margin-top:6px; cursor:pointer; font-weight:bold;">✨ ترجمه و تکمیل خودکار</button></div>
-            <div class="form-group"><label id="lblAddPer">معنی فارسی:</label><input type="text" id="inputPersian" class="form-control"></div>
-            <div class="form-group"><label id="lblAddEx">مثال:</label><input type="text" id="inputExample" class="form-control" dir="ltr"></div>
+            <div class="form-group"><label id="lblAddEng">کلمه / اصطلاح:</label><input type="text" id="inputEnglish" class="form-control" placeholder="Word..." dir="ltr"><button id="btnAutoTranslate" onclick="autoTranslateWord()" style="background:var(--primary-gradient); color:white; border:none; padding:12px; border-radius:12px; width:100%; margin-top:8px; cursor:pointer; font-weight:800; box-shadow: var(--shadow-glow);">✨ ترجمه هوشمند</button></div>
+            <div class="form-group"><label id="lblAddPer">معنی:</label><input type="text" id="inputPersian" class="form-control" placeholder="معنی..."></div>
+            <div class="form-group"><label id="lblAddEx">مثال (Example):</label><input type="text" id="inputExample" class="form-control" placeholder="Sentence..." dir="ltr"></div>
             <div class="form-group"><label id="lblAddCat">دسته‌بندی:</label><select id="inputCategory" class="form-control"><option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option></select></div>
-            <button class="btn-submit" onclick="saveCard()" id="btnSaveCard">ذخیره کارت در ابر</button>
-            <button class="btn-close" onclick="closeAddModal()" id="btnCancelAdd" style="background-color: #fee2e2; color: #ef4444;">انصراف</button>
+            <div style="display: flex; gap: 10px; margin-top: 30px;">
+                <button class="btn-close" onclick="closeAddModal()" id="btnCancelAdd" style="margin: 0; background: var(--bg-color);">انصراف</button>
+                <button class="btn-submit" onclick="saveCard()" id="btnSaveCard" style="margin: 0;">ذخیره کارت ✔️</button>
+            </div>
         </div>
     </div>
 
+    <!-- مدال مشاهده محتویات باکس -->
     <div id="boxModal" class="modal">
-        <div class="modal-content">
-            <h2 id="boxModalTitle">محتویات جعبه</h2>
-            <div id="boxModalCardList" style="text-align: left; padding-right: 5px;"></div>
-            <button class="btn-close" onclick="closeBoxModal()" id="btnCloseBox" style="background-color: #f3f4f6; color: var(--text-muted);">بستن</button>
+        <div class="modal-content" style="max-width: 600px;">
+            <h2 id="boxModalTitle" style="margin-bottom: 20px;">محتویات جعبه</h2>
+            <div id="boxModalCardList" style="text-align: left; padding-right: 5px; max-height: 400px; overflow-y: auto;"></div>
+            <button class="btn-primary" onclick="closeBoxModal()" id="btnCloseBox" style="margin-top: 20px;">بستن صفحه</button>
         </div>
     </div>
 
+    <!-- منوی ناوبری شیشه‌ای پایین -->
     <nav class="bottom-nav" id="bottomNav">
-        <div class="nav-item active" onclick="switchView('dashboard')">📊 <span id="navDash">داشبورد</span></div>
-        <div class="nav-item" onclick="switchView('review')">📖 <span id="navReview">مرور</span></div>
-        <div class="nav-item" onclick="switchView('cards')">🗂 <span id="navCards">کارت‌ها</span></div>
-        <div class="nav-item" onclick="switchView('settings')">⚙️ <span id="navSettings">تنظیمات</span></div>
+        <div class="nav-item active" onclick="switchView('dashboard')"><span class="icon">📊</span><span id="navDash">داشبورد</span></div>
+        <div class="nav-item" onclick="switchView('review')"><span class="icon">📖</span><span id="navReview">مرور</span></div>
+        <div class="nav-item" onclick="switchView('cards')"><span class="icon">🗂</span><span id="navCards">لغات</span></div>
+        <div class="nav-item" onclick="switchView('settings')"><span class="icon">⚙️</span><span id="navSettings">تنظیمات</span></div>
     </nav>
 
     <script>
+        // کانفیگ فایربیس
         const firebaseConfig = {
             apiKey: "AIzaSyCDQLnCscTx88RqMMpwIAzTATSYR08uUQ8",
             authDomain: "barname-4c40e.firebaseapp.com",
             projectId: "barname-4c40e",
             storageBucket: "barname-4c40e.firebasestorage.app",
             messagingSenderId: "1019107372200",
-            appId: "1:1019107372200:web:9986296b30f4ada3c8669d",
-            measurementId: "G-3MPGV6EMT4"
+            appId: "1:1019107372200:web:9986296b30f4ada3c8669d"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -359,6 +435,21 @@
         let reviewsLog = [];
         let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '' };
         let isAllSelected = false; 
+
+        // سیستم Toast جایگزین Alert
+        function showToast(msg, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast ${type}`;
+            const icon = type === 'error' ? '❌' : (type === 'success' ? '✅' : 'ℹ️');
+            toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.4s ease forwards';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
 
         function getTodayString() { return new Date().toISOString().split('T')[0]; }
         function addDays(dateStr, days) { const d = new Date(dateStr); d.setDate(d.getDate() + days); return d.toISOString().split('T')[0]; }
@@ -375,11 +466,7 @@
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                // چک کردن تایید ایمیل به درخواست شما برگردانده شد
-                if (!user.emailVerified) { 
-                    auth.signOut(); 
-                    return; 
-                }
+                if (!user.emailVerified) { auth.signOut(); return; }
                 
                 currentUser = user;
                 document.getElementById('currentUserEmail').innerText = user.email;
@@ -402,20 +489,20 @@
         function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
             const pass = document.getElementById('loginPassword').value.trim();
-            if (!email || !pass) { alert(userProfile.lang === 'fa' ? 'لطفاً ایمیل و رمز عبور را وارد کنید!' : 'Please enter email and password!'); return; }
+            if (!email || !pass) { showToast(userProfile.lang === 'fa' ? 'ایمیل و رمز عبور الزامی است!' : 'Email and password required!', 'error'); return; }
+
+            const btn = document.getElementById('btnLoginSubmit');
+            btn.innerText = 'در حال ورود...'; btn.disabled = true;
 
             auth.signInWithEmailAndPassword(email, pass).then((userCredential) => {
-                // چک کردن اینکه آیا کاربر ایمیل را تایید کرده است یا خیر
                 if (!userCredential.user.emailVerified) {
-                    alert(userProfile.lang === 'fa' ? '⚠️ شما هنوز ایمیل خود را تأیید نکرده‌اید! لطفاً صندوق ورودی یا اسپم ایمیل خود را چک کنید.' : 'Verify your email first!');
+                    showToast(userProfile.lang === 'fa' ? 'ایمیل شما هنوز تأیید نشده است!' : 'Verify your email first!', 'error');
                     auth.signOut();
                 }
+                btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
             }).catch(err => {
-                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-                    alert(userProfile.lang === 'fa' ? '❌ ایمیل یا رمز عبور اشتباه است، یا هنوز حسابی نساخته‌اید!' : 'Invalid email or password!');
-                } else {
-                    alert('Error: ' + err.message);
-                }
+                btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
+                showToast(userProfile.lang === 'fa' ? 'اطلاعات ورود اشتباه است.' : 'Invalid credentials.', 'error');
             });
         }
 
@@ -425,25 +512,24 @@
             const pass = document.getElementById('signupPassword').value.trim();
             
             if (!fullName || !email || pass.length < 6) {
-                alert(userProfile.lang === 'fa' ? '⚠️ لطفاً تمام فیلدها را پر کنید. رمز عبور حداقل ۶ حرف.' : 'Please fill all fields. Password min 6 chars.');
+                showToast(userProfile.lang === 'fa' ? 'لطفاً فیلدها را پر کنید (رمز بالای ۶ حرف).' : 'Fill all fields. Pass > 6 chars.', 'error');
                 return; 
             }
 
+            const btn = document.getElementById('btnSignupSubmit');
+            btn.innerText = 'در حال ساخت...'; btn.disabled = true;
+
             auth.createUserWithEmailAndPassword(email, pass).then((userCredential) => {
                 userCredential.user.updateProfile({ displayName: fullName }).then(() => {
-                    // ارسال ایمیل تایید
                     userCredential.user.sendEmailVerification().then(() => {
-                        alert(userProfile.lang === 'fa' ? '✅ حساب ساخته شد! یک ایمیل تأیید برای شما ارسال کردیم. لطفاً صندوق ایمیل خود را چک کنید.' : 'Account created! Please check your email to verify.');
+                        showToast(userProfile.lang === 'fa' ? 'حساب ساخته شد! صندوق ایمیل را چک کنید.' : 'Created! Check email to verify.', 'success');
                         auth.signOut(); 
                         showLogin(); 
                     });
                 });
             }).catch(err => {
-                if (err.code === 'auth/email-already-in-use') {
-                    alert(userProfile.lang === 'fa' ? '⚠️ این ایمیل قبلاً ثبت شده است! لطفاً وارد حساب خود شوید.' : 'Email already in use!');
-                } else {
-                    alert('Error: ' + err.message);
-                }
+                btn.innerText = userProfile.lang === 'fa' ? 'ساخت حساب کاربری' : 'Create Account'; btn.disabled = false;
+                showToast(err.code === 'auth/email-already-in-use' ? 'این ایمیل قبلاً ثبت شده!' : err.message, 'error');
             });
         }
 
@@ -451,28 +537,31 @@
 
         async function loadDataFromCloud() {
             if (!currentUser) return;
-            const userRef = db.collection('users').doc(currentUser.uid);
-            
-            const doc = await userRef.get();
-            if (doc.exists) {
-                const data = doc.data();
-                sampleCards = data.cards || [];
-                reviewsLog = data.reviewsLog || [];
-                userProfile = { ...userProfile, ...(data.profile || {}) };
-            } else {
-                sampleCards = [ { id: 1, box: 1, front: "Welcome", back: "خوش آمدید", example: "Welcome to Leitner Cloud.", category: "Daily English", nextReviewDate: getTodayString() } ];
-                reviewsLog = [];
-                saveDataToCloud();
+            try {
+                const userRef = db.collection('users').doc(currentUser.uid);
+                const doc = await userRef.get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    sampleCards = data.cards || [];
+                    reviewsLog = data.reviewsLog || [];
+                    userProfile = { ...userProfile, ...(data.profile || {}) };
+                } else {
+                    sampleCards = [ { id: 1, box: 1, front: "Welcome", back: "خوش آمدید", example: "Welcome to Leitner Premium.", category: "Daily English", nextReviewDate: getTodayString() } ];
+                    reviewsLog = [];
+                    saveDataToCloud();
+                }
+                
+                document.getElementById('darkModeToggle').checked = userProfile.darkMode;
+                document.getElementById('reverseToggle').checked = userProfile.reverseReview;
+                document.getElementById('langSelect').value = userProfile.lang;
+                document.getElementById('headerStreakVal').innerText = userProfile.streak || 0;
+                
+                applyTheme();
+                applyLanguage(); 
+                switchView('dashboard');
+            } catch (err) {
+                showToast("خطا در دریافت اطلاعات. اتصال اینترنت را بررسی کنید.", "error");
             }
-            
-            document.getElementById('darkModeToggle').checked = userProfile.darkMode;
-            document.getElementById('reverseToggle').checked = userProfile.reverseReview;
-            document.getElementById('langSelect').value = userProfile.lang;
-            document.getElementById('headerStreakVal').innerText = userProfile.streak || 0;
-            
-            applyTheme();
-            applyLanguage(); 
-            switchView('dashboard');
         }
 
         function saveDataToCloud() {
@@ -484,23 +573,18 @@
             }, { merge: true });
         }
 
-        /* ---------------- توابع زنجیره (Streak) ---------------- */
         function checkAndUpdateStreak() {
             const today = getTodayString();
             if (userProfile.lastReviewDate === today) return;
 
             const yesterday = addDays(today, -1);
-            if (userProfile.lastReviewDate === yesterday) {
-                userProfile.streak = (userProfile.streak || 0) + 1;
-            } else {
-                userProfile.streak = 1; 
-            }
+            if (userProfile.lastReviewDate === yesterday) { userProfile.streak = (userProfile.streak || 0) + 1; } 
+            else { userProfile.streak = 1; }
             userProfile.lastReviewDate = today;
             document.getElementById('headerStreakVal').innerText = userProfile.streak;
             saveDataToCloud();
         }
 
-        /* ---------------- تنظیمات (زبان، تم، مرور معکوس) ---------------- */
         function toggleDarkMode() { userProfile.darkMode = document.getElementById('darkModeToggle').checked; applyTheme(); saveDataToCloud(); }
         function toggleReverseMode() { userProfile.reverseReview = document.getElementById('reverseToggle').checked; saveDataToCloud(); }
         function applyTheme() { document.documentElement.toggleAttribute('data-theme', userProfile.darkMode ? 'dark' : null); }
@@ -513,79 +597,84 @@
             root.setAttribute('dir', userProfile.lang === 'fa' ? 'rtl' : 'ltr');
             
             const isFa = userProfile.lang === 'fa';
+            const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
+            const setPlc = (id, txt) => { const el = document.getElementById(id); if(el) el.placeholder = txt; };
             
-            document.getElementById('appTitle').innerText = isFa ? 'لایتنر ابری' : 'Leitner Cloud';
-            document.getElementById('lblLoginTitle').innerText = isFa ? 'ورود به لایتنر ابری' : 'Log in to Leitner';
-            document.getElementById('lblLoginDesc').innerText = isFa ? 'خوش برگشتید! لطفاً وارد حساب خود شوید.' : 'Welcome back! Please log in.';
-            document.getElementById('lblLoginEmail').innerText = isFa ? 'ایمیل:' : 'Email:';
-            document.getElementById('lblLoginPass').innerText = isFa ? 'رمز عبور:' : 'Password:';
-            document.getElementById('btnLoginSubmit').innerText = isFa ? 'ورود به حساب' : 'Log in';
-            document.getElementById('btnGoSignup').innerText = isFa ? 'حساب کاربری ندارید؟ ثبت‌نام کنید' : 'Don\'t have an account? Sign up';
+            setTxt('appTitle', isFa ? 'لایتنر ابری' : 'Leitner Cloud');
+            setTxt('lblLoginTitle', isFa ? 'ورود به لایتنر' : 'Welcome Back');
+            setTxt('lblLoginDesc', isFa ? 'یادگیری هوشمند را ادامه دهید.' : 'Log in to continue learning.');
+            setPlc('loginEmail', isFa ? 'ایمیل (Email)' : 'Email address');
+            setPlc('loginPassword', isFa ? 'رمز عبور (Password)' : 'Password');
+            setTxt('btnLoginSubmit', isFa ? 'ورود به حساب' : 'Log in');
+            setTxt('btnGoSignup', isFa ? 'حساب کاربری ندارید؟ ثبت‌نام کنید' : 'Don\'t have an account? Sign up');
             
-            document.getElementById('lblSignupTitle').innerText = isFa ? 'ثبت‌نام در لایتنر' : 'Sign up for Leitner';
-            document.getElementById('lblSignupDesc').innerText = isFa ? 'برای همگام‌سازی کارت‌ها، یک حساب جدید بسازید.' : 'Create an account to sync your cards.';
-            document.getElementById('lblSignupName').innerText = isFa ? 'نام و نام خانوادگی:' : 'Full Name:';
-            document.getElementById('lblSignupEmail').innerText = isFa ? 'ایمیل معتبر:' : 'Email Address:';
-            document.getElementById('lblSignupPass').innerText = isFa ? 'رمز عبور (حداقل ۶ حرف):' : 'Password (min 6 chars):';
-            document.getElementById('btnSignupSubmit').innerText = isFa ? 'ساخت حساب کاربری' : 'Create Account';
-            document.getElementById('btnGoLogin').innerText = isFa ? 'قبلاً ثبت‌نام کرده‌اید؟ وارد شوید' : 'Already registered? Log in';
+            setTxt('lblSignupTitle', isFa ? 'ثبت‌نام در لایتنر' : 'Create Account');
+            setTxt('lblSignupDesc', isFa ? 'کارت‌های شما در ابر ذخیره می‌شوند.' : 'Sync your cards across all devices.');
+            setPlc('signupName', isFa ? 'نام شما (Name)' : 'Full Name');
+            setPlc('signupEmail', isFa ? 'ایمیل (Email)' : 'Email address');
+            setPlc('signupPassword', isFa ? 'رمز عبور (6 کاراکتر)' : 'Password (min 6 chars)');
+            setTxt('btnSignupSubmit', isFa ? 'ایجاد حساب جدید' : 'Create Account');
+            setTxt('btnGoLogin', isFa ? 'قبلاً ثبت‌نام کرده‌اید؟ وارد شوید' : 'Already registered? Log in');
 
-            document.getElementById('lblReadyReview').innerText = isFa ? 'مستعد مرور امروز' : 'Ready to Review Today';
-            document.getElementById('btnStartReview').innerText = isFa ? 'شروع مرور متمرکز' : 'Start Focus Review';
-            document.getElementById('btnAddDash').innerText = isFa ? '➕ افزودن کارت جدید' : '➕ Add New Card';
+            setTxt('lblReadyReview', isFa ? 'مستعد مرور امروز' : 'Ready to Review Today');
+            setTxt('btnStartReview', isFa ? 'شروع مرور متمرکز' : 'Start Focus Review');
+            setTxt('btnAddDash', isFa ? '➕ افزودن کارت جدید' : '➕ Add New Card');
             
-            document.getElementById('lblStatsTitle').innerText = isFa ? 'آمار و تحلیل پیشرفته' : 'Statistics & Analytics';
-            document.getElementById('lblRevToday').innerText = isFa ? 'مرورشده امروز' : 'Reviewed Today';
-            document.getElementById('lblCorrect').innerText = isFa ? 'پاسخ‌های صحیح' : 'Correct Answers';
-            document.getElementById('lblIncorrect').innerText = isFa ? 'پاسخ‌های اشتباه' : 'Incorrect Answers';
-            document.getElementById('lblAccuracy').innerText = isFa ? 'درصد موفقیت' : 'Accuracy';
-            document.getElementById('lblWeek').innerText = isFa ? 'یادگیری هفته' : 'Learned This Week';
-            document.getElementById('lblMonth').innerText = isFa ? 'یادگیری ماه' : 'Learned This Month';
-            document.getElementById('lblBoxesTitle').innerText = isFa ? 'وضعیت جعبه‌ها (۱ تا ۵)' : 'Boxes Status (1 to 5)';
+            setTxt('lblStatsTitle', isFa ? '📊 آمار یادگیری' : '📊 Learning Stats');
+            setTxt('lblRevToday', isFa ? 'مرور امروز' : 'Reviewed Today');
+            setTxt('lblCorrect', isFa ? 'جواب درست' : 'Correct Answers');
+            setTxt('lblIncorrect', isFa ? 'جواب اشتباه' : 'Incorrect Answers');
+            setTxt('lblAccuracy', isFa ? 'دقت پاسخ' : 'Accuracy');
+            setTxt('lblWeek', isFa ? 'این هفته' : 'Learned This Week');
+            setTxt('lblMonth', isFa ? 'این ماه' : 'Learned This Month');
+            setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها' : '📦 Boxes Status');
             
-            document.getElementById('btnReveal').innerText = isFa ? 'مشاهده معنی' : 'Show Meaning';
-            document.getElementById('btnNo').innerText = isFa ? '❌ بلد نبودم' : '❌ Failed';
-            document.getElementById('btnYes').innerText = isFa ? '✅ بلدم' : '✅ Passed';
-            document.getElementById('btnExitReview').innerText = isFa ? 'خروج به داشبورد' : 'Exit to Dashboard';
+            setTxt('btnReveal', isFa ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)');
+            setTxt('btnNo', isFa ? '❌ فراموش کردم' : '❌ Forgot');
+            setTxt('btnYes', isFa ? '✅ به یاد داشتم' : '✅ Remembered');
+            setTxt('btnExitReview', isFa ? 'خروج موقت' : 'Exit to Dashboard');
             
-            document.getElementById('lblCardsTitle').innerText = isFa ? 'مدیریت فلش‌کارت‌ها' : 'Cards Manager';
-            document.getElementById('btnImportCSV').innerText = isFa ? '📥 آپلود فایل CSV' : '📥 Import CSV';
-            document.getElementById('btnExportCSV').innerText = isFa ? '📤 دانلود کارت‌ها (CSV)' : '📤 Export CSV';
-            document.getElementById('optAllBoxes').innerText = isFa ? 'همه جعبه‌ها' : 'All Boxes';
-            document.getElementById('optAllCats').innerText = isFa ? 'همه دسته‌بندی‌ها' : 'All Categories';
+            setTxt('lblCardsTitle', isFa ? '🗂 مدیریت بانک لغات' : '🗂 Cards Manager');
+            setTxt('btnImportCSV', isFa ? '📥 آپلود اکسل (CSV)' : '📥 Import CSV');
+            setTxt('btnExportCSV', isFa ? '📤 دانلود بکاپ (CSV)' : '📤 Export CSV');
+            setTxt('optAllBoxes', isFa ? 'همه جعبه‌ها' : 'All Boxes');
+            setTxt('optAllCats', isFa ? 'همه دسته‌ها' : 'All Categories');
+            setPlc('searchInput', isFa ? 'جستجو...' : 'Search...');
             
             const btnSelectAll = document.getElementById('btnSelectAll');
             if(btnSelectAll) {
                 if(isAllSelected) btnSelectAll.innerText = isFa ? 'لغو انتخاب ✖️' : 'Deselect All ✖️';
                 else btnSelectAll.innerText = isFa ? 'انتخاب همه ✔️' : 'Select All ✔️';
             }
-            document.getElementById('btnBulkDelete').innerText = isFa ? 'حذف گروهی 🗑️' : 'Delete Selected 🗑️';
+            setTxt('btnBulkDelete', isFa ? 'حذف گروهی 🗑️' : 'Delete Selected 🗑️');
             
-            document.getElementById('lblSettingsTitle').innerText = isFa ? 'تنظیمات و حساب کاربری' : 'Settings & Account';
-            document.getElementById('lblCloudAccount').innerText = isFa ? 'حساب ابری' : 'Cloud Account';
-            document.getElementById('btnLogout').innerText = isFa ? 'خروج از حساب' : 'Log out';
-            document.getElementById('lblReverseReview').innerText = isFa ? 'حالت مرور معکوس' : 'Reverse Review Mode';
-            document.getElementById('lblReverseDesc').innerText = isFa ? 'نمایش فارسی و حدس کلمه انگلیسی' : 'Show Persian, Guess English';
-            document.getElementById('lblLang').innerText = isFa ? 'زبان برنامه (Language)' : 'Language (زبان)';
-            document.getElementById('lblLangDesc').innerText = isFa ? 'فارسی / English' : 'English / فارسی';
-            document.getElementById('lblDarkMode').innerText = isFa ? 'حالت تاریک (Dark Mode)' : 'Dark Mode';
-            document.getElementById('lblDarkDesc').innerText = isFa ? 'تغییر تم رنگی برنامه' : 'Change app theme color';
+            setTxt('lblSettingsTitle', isFa ? '⚙️ تنظیمات برنامه' : '⚙️ App Settings');
+            setTxt('lblCloudAccount', isFa ? 'حساب متصل' : 'Cloud Account');
+            setTxt('btnLogout', isFa ? 'خروج 🚪' : 'Log out 🚪');
+            setTxt('lblReverseReview', isFa ? 'آموزش معکوس' : 'Reverse Review');
+            setTxt('lblReverseDesc', isFa ? 'نمایش فارسی، حدس انگلیسی' : 'Show Persian, guess English');
+            setTxt('lblLang', isFa ? 'زبان (Language)' : 'Language (زبان)');
+            setTxt('lblLangDesc', isFa ? 'تغییر زبان رابط کاربری' : 'Change app interface language');
+            setTxt('lblDarkMode', isFa ? 'تم تاریک (Dark Mode)' : 'Dark Theme');
+            setTxt('lblDarkDesc', isFa ? 'جلوگیری از خستگی چشم' : 'Protect your eyes at night');
             
-            document.getElementById('lblAddTitle').innerText = isFa ? 'افزودن فلش‌کارت جدید' : 'Add Flashcard';
-            document.getElementById('lblAddEng').innerText = isFa ? 'کلمه انگلیسی:' : 'English Word:';
-            document.getElementById('btnAutoTranslate').innerText = isFa ? '✨ ترجمه و تکمیل خودکار' : '✨ Auto Translate';
-            document.getElementById('lblAddPer').innerText = isFa ? 'معنی فارسی:' : 'Persian Meaning:';
-            document.getElementById('lblAddEx').innerText = isFa ? 'مثال:' : 'Example:';
-            document.getElementById('lblAddCat').innerText = isFa ? 'دسته‌بندی:' : 'Category:';
-            document.getElementById('btnSaveCard').innerText = isFa ? 'ذخیره کارت در ابر' : 'Save to Cloud';
-            document.getElementById('btnCancelAdd').innerText = isFa ? 'انصراف' : 'Cancel';
+            setTxt('lblAddTitle', isFa ? 'افزودن فلش‌کارت' : 'Add Flashcard');
+            setTxt('lblAddEng', isFa ? 'کلمه / اصطلاح:' : 'Word / Phrase:');
+            setTxt('btnAutoTranslate', isFa ? '✨ ترجمه هوشمند' : '✨ Smart Translate');
+            setTxt('lblAddPer', isFa ? 'معنی:' : 'Meaning:');
+            setPlc('inputPersian', isFa ? 'معنی...' : 'Meaning...');
+            setTxt('lblAddEx', isFa ? 'مثال (Example):' : 'Example Sentence:');
+            setTxt('lblAddCat', isFa ? 'دسته‌بندی:' : 'Category:');
+            setTxt('btnSaveCard', isFa ? 'ذخیره کارت ✔️' : 'Save Card ✔️');
+            setTxt('btnCancelAdd', isFa ? 'انصراف' : 'Cancel');
             
-            document.getElementById('btnCloseBox').innerText = isFa ? 'بستن' : 'Close';
+            setTxt('boxModalTitle', isFa ? 'محتویات جعبه' : 'Box Content');
+            setTxt('btnCloseBox', isFa ? 'بستن صفحه' : 'Close');
 
-            document.getElementById('navDash').innerText = isFa ? 'داشبورد' : 'Dashboard';
-            document.getElementById('navReview').innerText = isFa ? 'مرور' : 'Review';
-            document.getElementById('navCards').innerText = isFa ? 'کارت‌ها' : 'Cards';
-            document.getElementById('navSettings').innerText = isFa ? 'تنظیمات' : 'Settings';
+            setTxt('navDash', isFa ? 'داشبورد' : 'Dashboard');
+            setTxt('navReview', isFa ? 'مرور' : 'Review');
+            setTxt('navCards', isFa ? 'لغات' : 'Cards');
+            setTxt('navSettings', isFa ? 'تنظیمات' : 'Settings');
             
             updateBulkSelection(); 
         }
@@ -622,12 +711,12 @@
             document.getElementById('statMonthLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
         }
 
-        /* ---------------- مرور ---------------- */
+        /* ---------------- مرور سه‌بعدی ---------------- */
         function startFocusReview() {
             const today = getTodayString();
             currentReviewQueue = sampleCards.filter(c => c.nextReviewDate <= today);
             currentReviewIndex = 0;
-            if (currentReviewQueue.length === 0) { alert(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز وجود ندارد!' : 'No cards for review today!'); switchView('dashboard'); return; }
+            if (currentReviewQueue.length === 0) { showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز وجود ندارد!' : 'No cards for review today!', 'info'); switchView('dashboard'); return; }
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('view-review').classList.add('active');
             renderCurrentFocusCard();
@@ -635,9 +724,15 @@
 
         function renderCurrentFocusCard() {
             if (currentReviewIndex >= currentReviewQueue.length) {
-                alert(userProfile.lang === 'fa' ? 'تبریک! مرور کارت‌های امروز به اتمام رسید 🎉' : 'Review completed! 🎉');
+                showToast(userProfile.lang === 'fa' ? 'تبریک! مرور کارت‌های امروز به اتمام رسید 🎉' : 'Review completed! 🎉', 'success');
                 switchView('dashboard'); return;
             }
+            
+            // ریست کردن کارت (برگرداندن به رو)
+            document.getElementById('flipCardInner').classList.remove('flipped');
+            document.getElementById('btnReveal').style.display = 'block';
+            document.getElementById('reviewActions').classList.remove('show');
+            
             const card = currentReviewQueue[currentReviewIndex];
             const isRev = userProfile.reverseReview;
             
@@ -645,15 +740,13 @@
             
             document.getElementById('reviewWordDisplay').innerText = isRev ? card.back : card.front;
             document.getElementById('reviewMeaningDisplay').innerText = isRev ? card.front : card.back;
-            
             document.getElementById('reviewExampleDisplay').innerText = card.example ? `💡 ${card.example}` : '';
-            document.getElementById('reviewBackContent').style.display = 'none';
-            document.getElementById('btnReveal').style.display = 'inline-block';
         }
 
         function revealReviewCard() {
-            document.getElementById('reviewBackContent').style.display = 'block';
+            document.getElementById('flipCardInner').classList.add('flipped');
             document.getElementById('btnReveal').style.display = 'none';
+            document.getElementById('reviewActions').classList.add('show');
             speakCurrentWord();
         }
 
@@ -682,10 +775,11 @@
             reviewsLog.push({ date: today, isCorrect: isCorrect, cardId: card.id });
             saveDataToCloud();
             currentReviewIndex++;
-            renderCurrentFocusCard();
+            
+            // یک تاخیر خیلی کوتاه برای حس بهتر انیمیشن
+            setTimeout(() => renderCurrentFocusCard(), 150);
         }
 
-        /* ---------------- سیستم انتخاب و حذف گروهی ---------------- */
         function updateBulkSelection() {
             const checkboxes = document.querySelectorAll('.card-checkbox:checked');
             const bulkBar = document.getElementById('bulkActionsBar');
@@ -722,15 +816,17 @@
                 saveDataToCloud();
                 renderCardsManager();
                 updateDashboard();
+                showToast(userProfile.lang === 'fa' ? 'کارت‌ها با موفقیت حذف شدند.' : 'Cards deleted successfully.', 'success');
             }
         }
 
-        /* ---------------- مدیریت کارت‌ها (با ویرایش) ---------------- */
         function renderCardsManager() {
             const container = document.getElementById('cardsManagerList');
             const searchVal = document.getElementById('searchInput').value.toLowerCase();
-            const filterBox = document.getElementById('filterBox').value;
-            const filterCat = document.getElementById('filterCategory').value;
+            const filterBoxElem = document.getElementById('filterBox');
+            const filterBox = filterBoxElem ? filterBoxElem.value : 'all';
+            const filterCatElem = document.getElementById('filterCategory');
+            const filterCat = filterCatElem ? filterCatElem.value : 'all';
 
             let filtered = sampleCards.filter(c => {
                 let matchSearch = c.front.toLowerCase().includes(searchVal) || c.back.toLowerCase().includes(searchVal);
@@ -739,28 +835,29 @@
                 return matchSearch && matchBox && matchCat;
             });
 
-            if (filtered.length === 0) { container.innerHTML = `<p style="text-align:center;">${userProfile.lang === 'fa'?'کارت یافت نشد.':'No cards found.'}</p>`; return; }
+            if (filtered.length === 0) { container.innerHTML = `<p style="text-align:center; padding: 20px; color: var(--text-muted);">${userProfile.lang === 'fa'?'کارت یافت نشد.':'No cards found.'}</p>`; return; }
             let html = '';
             filtered.forEach(card => {
                 html += `
                     <div class="card-list-item">
                         <div style="display: flex; align-items: center; gap: 15px;">
-                            <input type="checkbox" class="card-checkbox" value="${card.id}" onchange="updateBulkSelection()" style="width: 18px; height: 18px; cursor: pointer;">
+                            <input type="checkbox" class="custom-checkbox card-checkbox" value="${card.id}" onchange="updateBulkSelection()">
                             <div dir="ltr" style="text-align:left;">
-                                <strong>${card.front}</strong> - <span style="color:var(--success-color);">${card.back}</span>
-                                <div style="font-size:11px; color:var(--text-muted);">Box ${card.box}</div>
+                                <strong style="font-size: 17px;">${card.front}</strong> - <span style="color:var(--success-color); font-weight: 800;">${card.back}</span>
+                                <div style="font-size:12px; color:var(--text-muted); margin-top: 4px;">Box ${card.box} • Due: ${card.nextReviewDate}</div>
                             </div>
                         </div>
                         <div class="card-actions">
-                            <button onclick="openEditModal(${card.id})" title="ویرایش">✏️</button>
-                            <button onclick="deleteCard(${card.id})" title="حذف">🗑️</button>
+                            <button class="icon-btn" onclick="openEditModal(${card.id})" title="ویرایش">✏️</button>
+                            <button class="icon-btn btn-del" onclick="deleteCard(${card.id})" title="حذف">🗑️</button>
                         </div>
                     </div>`;
             });
             container.innerHTML = html;
             
             isAllSelected = false;
-            document.getElementById('btnSelectAll').innerText = userProfile.lang === 'fa' ? 'انتخاب همه ✔️' : 'Select All ✔️';
+            const btnAll = document.getElementById('btnSelectAll');
+            if(btnAll) btnAll.innerText = userProfile.lang === 'fa' ? 'انتخاب همه ✔️' : 'Select All ✔️';
             updateBulkSelection();
         }
 
@@ -768,17 +865,20 @@
             if (confirm(userProfile.lang === 'fa' ? 'آیا از حذف این کارت مطمئنید؟' : 'Are you sure to delete this card?')) {
                 sampleCards = sampleCards.filter(c => c.id !== id);
                 saveDataToCloud(); renderCardsManager(); updateDashboard();
+                showToast(userProfile.lang === 'fa' ? 'کارت حذف شد.' : 'Card deleted.', 'success');
             }
         }
 
-        /* ---------------- افزودن و ویرایش کارت ---------------- */
         function openAddModal() { 
             document.getElementById('editCardId').value = ''; 
             document.getElementById('inputEnglish').value = '';
             document.getElementById('inputPersian').value = '';
             document.getElementById('inputExample').value = '';
-            document.getElementById('lblAddTitle').innerText = userProfile.lang === 'fa' ? 'افزودن فلش‌کارت جدید' : 'Add Flashcard';
-            document.getElementById('addModal').style.display = 'flex'; 
+            document.getElementById('lblAddTitle').innerText = userProfile.lang === 'fa' ? 'افزودن فلش‌کارت' : 'Add Flashcard';
+            
+            const modal = document.getElementById('addModal');
+            modal.style.display = 'flex'; 
+            setTimeout(() => modal.classList.add('show'), 10);
         }
         
         function openEditModal(id) {
@@ -789,20 +889,36 @@
             document.getElementById('inputPersian').value = card.back;
             document.getElementById('inputExample').value = card.example || '';
             document.getElementById('lblAddTitle').innerText = userProfile.lang === 'fa' ? 'ویرایش فلش‌کارت' : 'Edit Flashcard';
-            document.getElementById('addModal').style.display = 'flex';
+            
+            const modal = document.getElementById('addModal');
+            modal.style.display = 'flex'; 
+            setTimeout(() => modal.classList.add('show'), 10);
         }
 
-        function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
+        function closeAddModal() { 
+            const modal = document.getElementById('addModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
 
         async function autoTranslateWord() {
             const word = document.getElementById('inputEnglish').value.trim();
-            if (!word) return;
-            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
-            const data = await res.json();
-            if (data && data[0] && data[0][0]) {
-                document.getElementById('inputPersian').value = data[0][0][0];
-                document.getElementById('inputExample').value = `I learned ${word} today.`;
+            if (!word) { showToast(userProfile.lang === 'fa' ? 'کلمه انگلیسی را وارد کنید.' : 'Enter an English word first.', 'error'); return; }
+            
+            const btn = document.getElementById('btnAutoTranslate');
+            btn.innerText = 'در حال ترجمه...';
+            
+            try {
+                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
+                const data = await res.json();
+                if (data && data[0] && data[0][0]) {
+                    document.getElementById('inputPersian').value = data[0][0][0];
+                    document.getElementById('inputExample').value = `I learned ${word} today.`;
+                }
+            } catch (e) {
+                showToast("خطا در ترجمه هوشمند.", "error");
             }
+            btn.innerText = userProfile.lang === 'fa' ? '✨ ترجمه هوشمند' : '✨ Smart Translate';
         }
 
         function saveCard() {
@@ -812,13 +928,15 @@
             const example = document.getElementById('inputExample').value.trim();
             const category = document.getElementById('inputCategory').value;
 
-            if (!english || !persian) return;
+            if (!english || !persian) { showToast(userProfile.lang === 'fa' ? 'کلمه و معنی الزامی است!' : 'Word and meaning required!', 'error'); return; }
 
             if(id) {
                 const card = sampleCards.find(c => c.id == id);
                 if(card) { card.front = english; card.back = persian; card.example = example; card.category = category; }
+                showToast(userProfile.lang === 'fa' ? 'کارت ویرایش شد.' : 'Card updated.', 'success');
             } else {
                 sampleCards.push({ id: Date.now(), box: 1, front: english, back: persian, example: example, category: category, nextReviewDate: getTodayString() });
+                showToast(userProfile.lang === 'fa' ? 'کارت جدید اضافه شد.' : 'Card added.', 'success');
             }
             
             saveDataToCloud();
@@ -827,13 +945,13 @@
             if(document.getElementById('view-cards').classList.contains('active')) renderCardsManager();
         }
 
-        /* ---------------- اکسل (CSV) ورود و خروج ---------------- */
         function exportCSV() {
             let csv = "front,back,example,category,box,nextReviewDate\n";
             sampleCards.forEach(c => { csv += `"${c.front}","${c.back}","${c.example||''}","${c.category||''}",${c.box},${c.nextReviewDate}\n`; });
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a'); a.href = url; a.download = 'leitner_backup.csv'; a.click();
+            showToast(userProfile.lang === 'fa' ? 'فایل دانلود شد.' : 'File exported.', 'success');
         }
 
         function importCSV(event) {
@@ -861,7 +979,7 @@
                     }
                 }
                 saveDataToCloud(); updateDashboard(); renderCardsManager();
-                alert(userProfile.lang === 'fa' ? `✅ تعداد ${newCards} کارت با موفقیت اضافه شد!` : `✅ ${newCards} cards imported successfully!`);
+                showToast(userProfile.lang === 'fa' ? `✅ ${newCards} کارت اضافه شد!` : `✅ ${newCards} cards imported!`, 'success');
                 document.getElementById('csvFileInput').value = ''; 
             };
             reader.readAsText(file);
@@ -874,24 +992,31 @@
             
             const container = document.getElementById('boxModalCardList');
             if (cards.length === 0) {
-                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">${userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز در این جعبه نیست!' : 'No cards due today in this box!'}</p>`;
+                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px; font-weight:bold;">${userProfile.lang === 'fa' ? '🎉 هیچ کارتی برای مرور امروز در این جعبه نیست!' : '🎉 No cards due today in this box!'}</p>`;
             } else {
                 let html = '';
                 cards.forEach(c => {
                     html += `
-                        <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <strong style="font-size: 18px; color: var(--primary-color);">${c.front}</strong>
-                                <span style="background: rgba(16, 185, 129, 0.1); color: var(--success-color); padding: 4px 10px; border-radius: 8px; font-size: 14px; font-weight: bold;">${c.back}</span>
+                        <div style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 12px; box-shadow: var(--shadow-sm);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong style="font-size: 20px; color: var(--primary-color);">${c.front}</strong>
+                                <span style="background: rgba(16, 185, 129, 0.1); color: var(--success-color); padding: 6px 12px; border-radius: 12px; font-size: 15px; font-weight: 900;">${c.back}</span>
                             </div>
-                            ${c.example ? `<div style="font-size: 13px; color: var(--text-muted); border-left: 3px solid var(--primary-color); padding-left: 10px; margin-top: 10px; text-align: left;" dir="ltr">${c.example}</div>` : ''}
+                            ${c.example ? `<div style="font-size: 14px; color: var(--text-muted); border-left: 4px solid var(--primary-color); padding-left: 12px; margin-top: 15px; text-align: left; font-weight: 600;" dir="ltr">${c.example}</div>` : ''}
                         </div>`;
                 });
                 container.innerHTML = html;
             }
-            document.getElementById('boxModal').style.display = 'flex';
+            const modal = document.getElementById('boxModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
         }
-        function closeBoxModal() { document.getElementById('boxModal').style.display = 'none'; }
+        
+        function closeBoxModal() { 
+            const modal = document.getElementById('boxModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
     </script>
 </body>
 </html>
