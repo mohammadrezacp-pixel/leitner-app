@@ -167,55 +167,14 @@
 
         /* مرور متمرکز */
         .review-container {
-            background: var(--surface-color); border-radius: var(--border-radius); padding: 30px 20px; text-align: center;
+            background: var(--surface-color); border-radius: var(--border-radius); padding: 40px; text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: 600px; margin: 0 auto;
         }
-        .review-card-box { font-size: 28px; font-weight: 900; color: var(--primary-color); margin-bottom: 20px; }
-        .review-word { font-size: 32px; font-weight: 800; margin-bottom: 15px; }
+        .review-card-box { font-size: 32px; font-weight: 900; color: var(--primary-color); margin-bottom: 20px; }
+        .review-word { font-size: 36px; font-weight: 800; margin-bottom: 15px; }
         .review-back-content { margin-top: 20px; padding-top: 20px; border-top: 2px dashed var(--border-color); display: none; }
         .review-meaning { font-size: 24px; color: var(--success-color); font-weight: 700; margin-bottom: 10px; }
         .review-example { font-size: 16px; color: var(--text-muted); margin-bottom: 25px; }
-
-        /* دکمه‌های پاسخ با طراحی جدید مخصوص موبایل */
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .btn-know {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            border: none;
-            padding: 16px 10px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-weight: 800;
-            font-size: 16px;
-            transition: 0.2s;
-            flex: 1; /* تقسیم ۵۰-۵۰ عرض صفحه */
-            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-        .btn-know:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5); }
-
-        .btn-dont-know {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            border: none;
-            padding: 16px 10px;
-            border-radius: 16px;
-            cursor: pointer;
-            font-weight: 800;
-            font-size: 16px;
-            transition: 0.2s;
-            flex: 1; /* تقسیم ۵۰-۵۰ عرض صفحه */
-            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-        .btn-dont-know:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5); }
 
         /* مدیریت کارت‌ها */
         .manager-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -261,17 +220,25 @@
             border-radius: 14px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px;
         }
 
+        /* ---------------- اصلاح کدهای مربوط به منوی پایین (موبایل) ---------------- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--surface-color);
-            display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-            border-top: 1px solid var(--border-color); z-index: 99; display: none;
+            justify-content: space-around; padding: 15px 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            border-top: 1px solid var(--border-color); z-index: 99; 
+            display: none; /* پیش‌فرض مخفی تا زمانی که کاربر لاگین کند */
         }
+        
+        .bottom-nav.logged-in {
+            display: flex; /* وقتی لاگین کرد در موبایل نمایش داده شود */
+        }
+
         .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; font-weight: 600; }
         .nav-item.active { color: var(--primary-color); }
 
         @media (min-width: 700px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
-            .bottom-nav.logged-in { display: flex; }
+            /* در صفحه دسکتاپ منوی پایین کلاً مخفی شود */
+            .bottom-nav.logged-in { display: none; }
             body { padding-bottom: 20px; }
         }
     </style>
@@ -362,9 +329,9 @@
                 <div class="review-back-content" id="reviewBackContent">
                     <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
                     <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
-                    <div class="action-buttons">
-                        <button class="btn-dont-know" onclick="submitReviewAnswer(1)">❌ بلد نبودم</button>
-                        <button class="btn-know" onclick="submitReviewAnswer('next')">✅ بلدم</button>
+                    <div class="action-buttons" style="display: flex; gap: 15px; margin-top: 20px;">
+                        <button onclick="submitReviewAnswer(1)" style="padding: 16px 10px; border-radius: 16px; border:none; color:white; font-weight:bold; cursor:pointer; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); flex: 1; font-size: 16px;">❌ بلد نبودم</button>
+                        <button onclick="submitReviewAnswer('next')" style="padding: 16px 10px; border-radius: 16px; border:none; color:white; font-weight:bold; cursor:pointer; background: linear-gradient(135deg, #10b981 0%, #059669 100%); flex: 1; font-size: 16px;">✅ بلدم</button>
                     </div>
                 </div>
                 <br>
@@ -394,7 +361,7 @@
             <h3 class="section-title">تنظیمات و حساب کاربری</h3>
             <div class="settings-card">
                 <div><h4>حساب ابری</h4><p style="color: var(--text-muted); font-size: 13px;" id="currentUserEmail">وارد نشده‌اید</p></div>
-                <button class="btn-dont-know" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 10px; flex: none; width: auto; font-size: 13px; box-shadow:none;">خروج از حساب</button>
+                <button class="btn-dont-know" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 10px; border:none; background: var(--danger-color); color:white; font-weight:bold; cursor:pointer; font-size: 13px;">خروج از حساب</button>
             </div>
             <div class="settings-card">
                 <div><h4>حالت تاریک (Dark Mode)</h4></div>
@@ -462,7 +429,7 @@
                 document.getElementById('headerUserName').innerText = user.email.split('@')[0];
                 document.getElementById('headerAvatar').innerText = user.email.substring(0, 2).toUpperCase();
                 document.getElementById('headerProfileArea').style.display = 'flex';
-                document.getElementById('bottomNav').classList.add('logged-in');
+                document.getElementById('bottomNav').classList.add('logged-in'); // نمایش منوی پایین
                 
                 loadDataFromCloud();
             } else {
@@ -470,20 +437,49 @@
                 document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
                 document.getElementById('view-auth').classList.add('active');
                 document.getElementById('headerProfileArea').style.display = 'none';
-                document.getElementById('bottomNav').classList.remove('logged-in');
+                document.getElementById('bottomNav').classList.remove('logged-in'); // مخفی کردن منوی پایین
             }
         });
 
+        // اضافه شدن پیام‌های خطای فارسی
         function handleLogin() {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPassword').value;
-            auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPassword').value.trim();
+            
+            if (!email || !pass) {
+                alert('لطفاً ایمیل و رمز عبور را وارد کنید!');
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, pass).catch(err => {
+                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+                    alert('❌ ایمیل یا رمز عبور اشتباه است، یا هنوز حسابی نساخته‌اید!');
+                } else {
+                    alert('❌ خطا در ورود: ' + err.message);
+                }
+            });
         }
 
         function handleSignup() {
-            const email = document.getElementById('authEmail').value;
-            const pass = document.getElementById('authPassword').value;
-            auth.createUserWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPassword').value.trim();
+            
+            if (!email || pass.length < 6) {
+                alert('⚠️ ایمیل را به درستی وارد کنید و رمز عبور باید حداقل ۶ حرف باشد!');
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, pass).then(() => {
+                alert('✅ حساب کاربری شما با موفقیت ساخته شد!');
+            }).catch(err => {
+                if (err.code === 'auth/email-already-in-use') {
+                    alert('⚠️ این ایمیل قبلاً ثبت شده است! لطفاً دکمه "ورود" را بزنید.');
+                } else if (err.code === 'auth/operation-not-allowed') {
+                    alert('❌ ورود با ایمیل در فایربیس فعال نیست! لطفاً به کنسول فایربیس بروید و Email/Password را Enable کنید.');
+                } else {
+                    alert('❌ خطا در ثبت‌نام: ' + err.message);
+                }
+            });
         }
 
         function handleLogout() { auth.signOut(); }
@@ -517,10 +513,26 @@
 
         function switchView(viewName) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            if(viewName === 'dashboard') { document.getElementById('view-dashboard').classList.add('active'); updateDashboard(); }
-            else if(viewName === 'review') { startFocusReview(); }
-            else if(viewName === 'cards') { document.getElementById('view-cards').classList.add('active'); renderCardsManager(); }
-            else if(viewName === 'settings') { document.getElementById('view-settings').classList.add('active'); }
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            if(viewName === 'dashboard') { 
+                document.getElementById('view-dashboard').classList.add('active'); 
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                updateDashboard(); 
+            }
+            else if(viewName === 'review') { 
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                startFocusReview(); 
+            }
+            else if(viewName === 'cards') { 
+                document.getElementById('view-cards').classList.add('active'); 
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
+                renderCardsManager(); 
+            }
+            else if(viewName === 'settings') { 
+                document.getElementById('view-settings').classList.add('active'); 
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
+            }
         }
 
         function updateDashboard() {
