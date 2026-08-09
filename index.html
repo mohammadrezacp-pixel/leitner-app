@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leitner Cloud Pro</title>
+    <!-- کتابخانه‌های فایربیس -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f8f9fe;
+            --surface-color: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --primary-color: #6366f1;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --border-radius: 20px;
+            --border-color: #e5e7eb;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #111827;
+            --surface-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            padding-bottom: 90px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            margin-top: 10px;
+            background: var(--surface-color);
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* صفحه ورود و ثبت‌نام */
+        #view-auth {
+            max-width: 400px;
+            margin: 40px auto;
+            background: var(--surface-color);
+            padding: 35px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+        #view-auth h2 { margin-bottom: 20px; font-weight: 800; }
+
+        .hero-card {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: var(--border-radius);
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .hero-card h2 { font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; }
+        .hero-card .review-count { font-size: 52px; font-weight: 900; margin-bottom: 20px; }
+
+        .btn-primary {
+            background-color: white; color: var(--primary-color); border: none;
+            padding: 14px 28px; font-size: 16px; font-weight: bold; border-radius: 30px;
+            cursor: pointer; width: 100%; max-width: 260px; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 12px;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+
+        .btn-add-dashboard {
+            background-color: rgba(255, 255, 255, 0.2); color: white; border: 2px solid rgba(255, 255, 255, 0.4);
+            padding: 12px 28px; font-size: 15px; font-weight: bold; border-radius: 30px; cursor: pointer; width: 100%; max-width: 260px;
+        }
+
+        .section-title { font-size: 18px; margin-bottom: 15px; font-weight: 700; }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background-color: var(--surface-color); border-radius: var(--border-radius);
+            padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; flex-direction: column;
+            position: relative; overflow: hidden; border: 1px solid var(--border-color);
+        }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); }
+        .stat-card .title { color: var(--text-muted); font-size: 12px; margin-bottom: 6px; font-weight: 600; }
+        .stat-card .value { font-size: 20px; font-weight: 800; }
+
+        .boxes-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .box-card {
+            border-radius: 16px; padding: 20px 5px; text-align: center; cursor: pointer; transition: 0.3s; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .box-card:hover { transform: translateY(-5px); filter: brightness(1.05); }
+
+        .box-1 { background: linear-gradient(135deg, #ff6b6b 100%, #ee5253 0%); }
+        .box-2 { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); }
+        .box-3 { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .box-4 { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+        .box-5 { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+
+        .box-card .box-name { font-size: 12px; margin-bottom: 8px; font-weight: 600; opacity: 0.9; }
+        .box-card .box-count { font-size: 20px; font-weight: 900; }
+
+        /* مرور متمرکز */
+        .review-container {
+            background: var(--surface-color); border-radius: var(--border-radius); padding: 30px 20px; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); max-width: 600px; margin: 0 auto;
+        }
+        .review-card-box { font-size: 28px; font-weight: 900; color: var(--primary-color); margin-bottom: 20px; }
+        .review-word { font-size: 32px; font-weight: 800; margin-bottom: 15px; }
+        .review-back-content { margin-top: 20px; padding-top: 20px; border-top: 2px dashed var(--border-color); display: none; }
+        .review-meaning { font-size: 24px; color: var(--success-color); font-weight: 700; margin-bottom: 10px; }
+        .review-example { font-size: 16px; color: var(--text-muted); margin-bottom: 25px; }
+
+        /* دکمه‌های پاسخ با طراحی جدید مخصوص موبایل */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-know {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 16px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 16px;
+            transition: 0.2s;
+            flex: 1; /* تقسیم ۵۰-۵۰ عرض صفحه */
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .btn-know:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.5); }
+
+        .btn-dont-know {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 16px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 16px;
+            transition: 0.2s;
+            flex: 1; /* تقسیم ۵۰-۵۰ عرض صفحه */
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .btn-dont-know:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.5); }
+
+        /* مدیریت کارت‌ها */
+        .manager-controls { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .search-input, .filter-select {
+            flex: 1; min-width: 200px; padding: 12px 15px; border-radius: 12px;
+            border: 2px solid var(--border-color); background: var(--surface-color); color: var(--text-main); font-size: 15px; outline: none;
+        }
+        .card-list-item {
+            background: var(--surface-color); padding: 15px 20px; border-radius: 14px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color);
+        }
+        .card-actions button { background: none; border: none; cursor: pointer; font-size: 16px; margin-left: 10px; padding: 5px; }
+
+        /* تنظیمات */
+        .settings-card {
+            background: var(--surface-color); padding: 25px; border-radius: var(--border-radius);
+            border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* مدال‌ها */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            justify-content: center; align-items: center; padding: 20px; z-index: 100;
+        }
+        .modal-content {
+            background-color: var(--surface-color); padding: 30px; border-radius: var(--border-radius);
+            width: 100%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; border: 1px solid var(--border-color);
+        }
+        .form-group { margin-bottom: 15px; text-align: right; }
+        [data-theme] .form-group { text-align: inherit; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+        .form-control {
+            width: 100%; padding: 14px; border: 2px solid var(--border-color);
+            border-radius: 14px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none;
+        }
+        .btn-submit {
+            background: var(--primary-gradient); color: white; border: none; padding: 14px;
+            border-radius: 14px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 10px;
+        }
+        .btn-close {
+            background-color: #f3f4f6; color: var(--text-muted); border: none; padding: 12px 20px;
+            border-radius: 14px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 15px;
+        }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background-color: var(--surface-color);
+            display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            border-top: 1px solid var(--border-color); z-index: 99; display: none;
+        }
+        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; font-weight: 600; }
+        .nav-item.active { color: var(--primary-color); }
+
+        @media (min-width: 700px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+            .bottom-nav.logged-in { display: flex; }
+            body { padding-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <header>
+            <h1 id="appTitle">Leitner Cloud</h1>
+            <div class="profile-area" id="headerProfileArea" style="display: none;" onclick="switchView('settings')">
+                <span id="headerUserName" style="font-weight: bold; font-size: 14px;">کاربر</span>
+                <div class="profile-avatar" id="headerAvatar">MR</div>
+            </div>
+        </header>
+
+        <!-- صفحه ورود و ثبت نام -->
+        <section id="view-auth" class="view-section active">
+            <h2>ورود یا ثبت‌نام در لایتنر ابری</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">برای همگام‌سازی کارت‌ها در همه دستگاه‌ها وارد شوید</p>
+            <div class="form-group">
+                <label>ایمیل:</label>
+                <input type="email" id="authEmail" class="form-control" placeholder="example@gmail.com">
+            </div>
+            <div class="form-group">
+                <label>رمز عبور:</label>
+                <input type="password" id="authPassword" class="form-control" placeholder="••••••••">
+            </div>
+            <button class="btn-submit" onclick="handleLogin()">ورود به حساب</button>
+            <button class="btn-close" onclick="handleSignup()" style="background: transparent; color: var(--primary-color);">ساخت حساب جدید</button>
+        </section>
+
+        <!-- داشبورد -->
+        <section id="view-dashboard" class="view-section">
+            <section class="hero-card">
+                <h2>مستعد مرور امروز</h2>
+                <div class="review-count" id="totalReviewCount">0</div>
+                <button class="btn-primary" onclick="startFocusReview()">شروع مرور متمرکز</button>
+                <br>
+                <button class="btn-add-dashboard" onclick="openAddModal()">➕ افزودن کارت جدید</button>
+            </section>
+
+            <h3 class="section-title">آمار و تحلیل پیشرفته</h3>
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <span class="title">مرورشده امروز</span>
+                    <span class="value" id="statReviewedToday">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="title">پاسخ‌های صحیح</span>
+                    <span class="value" id="statCorrect">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="title">پاسخ‌های اشتباه</span>
+                    <span class="value" id="statIncorrect">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="title">درصد موفقیت</span>
+                    <span class="value" id="statAccuracy">0%</span>
+                </div>
+                <div class="stat-card">
+                    <span class="title">یادگیری هفته</span>
+                    <span class="value" id="statWeekLearned">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="title">یادگیری ماه</span>
+                    <span class="value" id="statMonthLearned">0</span>
+                </div>
+            </section>
+
+            <h3 class="section-title">وضعیت جعبه‌ها (۱ تا ۵)</h3>
+            <section class="boxes-grid">
+                <div class="box-card box-1" onclick="openBoxModal(1)"><div class="box-name">Box 1</div><div class="box-count" id="count-1">0</div></div>
+                <div class="box-card box-2" onclick="openBoxModal(2)"><div class="box-name">Box 2</div><div class="box-count" id="count-2">0</div></div>
+                <div class="box-card box-3" onclick="openBoxModal(3)"><div class="box-name">Box 3</div><div class="box-count" id="count-3">0</div></div>
+                <div class="box-card box-4" onclick="openBoxModal(4)"><div class="box-name">Box 4</div><div class="box-count" id="count-4">0</div></div>
+                <div class="box-card box-5" onclick="openBoxModal(5)"><div class="box-name">Box 5</div><div class="box-count" id="count-5">0</div></div>
+            </section>
+        </section>
+
+        <!-- مرور متمرکز -->
+        <section id="view-review" class="view-section">
+            <div class="review-container">
+                <div class="review-card-box" id="reviewBoxLabel">Box 1</div>
+                <div class="review-word" id="reviewWordDisplay">Apple</div>
+                <button class="btn-audio" onclick="speakCurrentWord()" style="margin: 0 auto 15px auto; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; font-size: 18px;">🔊</button>
+                <button class="btn-primary" onclick="revealReviewCard()" id="btnReveal" style="max-width: 200px; margin: 0 auto;">مشاهده معنی</button>
+                
+                <div class="review-back-content" id="reviewBackContent">
+                    <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
+                    <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
+                    <div class="action-buttons">
+                        <button class="btn-dont-know" onclick="submitReviewAnswer(1)">❌ بلد نبودم</button>
+                        <button class="btn-know" onclick="submitReviewAnswer('next')">✅ بلدم</button>
+                    </div>
+                </div>
+                <br>
+                <button class="btn-close" onclick="switchView('dashboard')" style="margin-top: 25px;">خروج به داشبورد</button>
+            </div>
+        </section>
+
+        <!-- مدیریت کارت‌ها -->
+        <section id="view-cards" class="view-section">
+            <h3 class="section-title">مدیریت فلش‌کارت‌ها</h3>
+            <div class="manager-controls">
+                <input type="text" id="searchInput" class="search-input" placeholder="جستجوی کلمه..." oninput="renderCardsManager()">
+                <select id="filterBox" class="filter-select" onchange="renderCardsManager()">
+                    <option value="all">همه جعبه‌ها</option>
+                    <option value="1">Box 1</option><option value="2">Box 2</option><option value="3">Box 3</option><option value="4">Box 4</option><option value="5">Box 5</option>
+                </select>
+                <select id="filterCategory" class="filter-select" onchange="renderCardsManager()">
+                    <option value="all">همه دسته‌بندی‌ها</option>
+                    <option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option>
+                </select>
+            </div>
+            <div id="cardsManagerList" style="max-height: 500px; overflow-y: auto;"></div>
+        </section>
+
+        <!-- تنظیمات -->
+        <section id="view-settings" class="view-section">
+            <h3 class="section-title">تنظیمات و حساب کاربری</h3>
+            <div class="settings-card">
+                <div><h4>حساب ابری</h4><p style="color: var(--text-muted); font-size: 13px;" id="currentUserEmail">وارد نشده‌اید</p></div>
+                <button class="btn-dont-know" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 10px; flex: none; width: auto; font-size: 13px; box-shadow:none;">خروج از حساب</button>
+            </div>
+            <div class="settings-card">
+                <div><h4>حالت تاریک (Dark Mode)</h4></div>
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" style="width: 22px; height: 22px; cursor: pointer;">
+            </div>
+        </section>
+
+    </div>
+
+    <!-- مدال‌ها -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <h2>افزودن فلش‌کارت جدید</h2>
+            <div class="form-group"><label>کلمه انگلیسی:</label><input type="text" id="inputEnglish" class="form-control" placeholder="e.g., Apple"><button onclick="autoTranslateWord()" style="background:#8b5cf6; color:white; border:none; padding:10px; border-radius:10px; width:100%; margin-top:6px; cursor:pointer; font-weight:bold;">✨ ترجمه و تکمیل خودکار</button></div>
+            <div class="form-group"><label>معنی فارسی:</label><input type="text" id="inputPersian" class="form-control"></div>
+            <div class="form-group"><label>مثال:</label><input type="text" id="inputExample" class="form-control"></div>
+            <div class="form-group"><label>دسته‌بندی:</label><select id="inputCategory" class="form-control"><option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option></select></div>
+            <button class="btn-submit" onclick="addNewCard()">ذخیره کارت در ابر</button>
+            <button class="btn-close" onclick="closeAddModal()" style="background-color: #fee2e2; color: #ef4444;">انصراف</button>
+        </div>
+    </div>
+
+    <div id="boxModal" class="modal">
+        <div class="modal-content">
+            <h2 id="boxModalTitle">محتویات جعبه</h2>
+            <div id="boxModalCardList" style="max-height: 280px; overflow-y: auto; text-align: left; padding-right: 5px;"></div>
+            <button class="btn-close" onclick="closeBoxModal()">بستن</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav" id="bottomNav">
+        <div class="nav-item active" onclick="switchView('dashboard')">📊 داشبورد</div>
+        <div class="nav-item" onclick="switchView('review')">📖 مرور</div>
+        <div class="nav-item" onclick="switchView('cards')">🗂 کارت‌ها</div>
+        <div class="nav-item" onclick="switchView('settings')">⚙️ تنظیمات</div>
+    </nav>
+
+    <!-- کدهای موتور برنامه و فایربیس اختصاصی شما -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDQLnCscTx88RqMMpwIAzTATSYR08uUQ8",
+            authDomain: "barname-4c40e.firebaseapp.com",
+            projectId: "barname-4c40e",
+            storageBucket: "barname-4c40e.firebasestorage.app",
+            messagingSenderId: "1019107372200",
+            appId: "1:1019107372200:web:9986296b30f4ada3c8669d",
+            measurementId: "G-3MPGV6EMT4"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let sampleCards = [];
+        let reviewsLog = [];
+
+        function getTodayString() { return new Date().toISOString().split('T')[0]; }
+        function addDays(dateStr, days) { const d = new Date(dateStr); d.setDate(d.getDate() + days); return d.toISOString().split('T')[0]; }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('currentUserEmail').innerText = user.email;
+                document.getElementById('headerUserName').innerText = user.email.split('@')[0];
+                document.getElementById('headerAvatar').innerText = user.email.substring(0, 2).toUpperCase();
+                document.getElementById('headerProfileArea').style.display = 'flex';
+                document.getElementById('bottomNav').classList.add('logged-in');
+                
+                loadDataFromCloud();
+            } else {
+                currentUser = null;
+                document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+                document.getElementById('view-auth').classList.add('active');
+                document.getElementById('headerProfileArea').style.display = 'none';
+                document.getElementById('bottomNav').classList.remove('logged-in');
+            }
+        });
+
+        function handleLogin() {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+        }
+
+        function handleSignup() {
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+            auth.createUserWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+        }
+
+        function handleLogout() { auth.signOut(); }
+
+        async function loadDataFromCloud() {
+            if (!currentUser) return;
+            const userRef = db.collection('users').doc(currentUser.uid);
+            
+            const doc = await userRef.get();
+            if (doc.exists) {
+                const data = doc.data();
+                sampleCards = data.cards || [];
+                reviewsLog = data.reviewsLog || [];
+            } else {
+                sampleCards = [
+                    { id: 1, box: 1, front: "Apple", back: "سیب", example: "I eat an apple.", category: "Food", nextReviewDate: getTodayString() }
+                ];
+                reviewsLog = [];
+                saveDataToCloud();
+            }
+            switchView('dashboard');
+        }
+
+        function saveDataToCloud() {
+            if (!currentUser) return;
+            db.collection('users').doc(currentUser.uid).set({
+                cards: sampleCards,
+                reviewsLog: reviewsLog
+            }, { merge: true });
+        }
+
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            if(viewName === 'dashboard') { document.getElementById('view-dashboard').classList.add('active'); updateDashboard(); }
+            else if(viewName === 'review') { startFocusReview(); }
+            else if(viewName === 'cards') { document.getElementById('view-cards').classList.add('active'); renderCardsManager(); }
+            else if(viewName === 'settings') { document.getElementById('view-settings').classList.add('active'); }
+        }
+
+        function updateDashboard() {
+            let counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            let dueTodayCount = 0;
+            const today = getTodayString();
+
+            sampleCards.forEach(card => {
+                if (counts[card.box] !== undefined) counts[card.box]++;
+                if (card.nextReviewDate <= today) dueTodayCount++;
+            });
+
+            for (let i = 1; i <= 5; i++) { document.getElementById(`count-${i}`).innerText = counts[i]; }
+            document.getElementById('totalReviewCount').innerText = dueTodayCount;
+
+            let todayReviews = reviewsLog.filter(r => r.date === today);
+            let correctCount = reviewsLog.filter(r => r.isCorrect).length;
+            let incorrectCount = reviewsLog.filter(r => !r.isCorrect).length;
+            let accuracy = (correctCount + incorrectCount) > 0 ? Math.round((correctCount / (correctCount + incorrectCount)) * 100) : 0;
+
+            const oneWeekAgo = new Date(); oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const oneMonthAgo = new Date(); oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
+
+            document.getElementById('statReviewedToday').innerText = todayReviews.length;
+            document.getElementById('statCorrect').innerText = correctCount;
+            document.getElementById('statIncorrect').innerText = incorrectCount;
+            document.getElementById('statAccuracy').innerText = accuracy + '%';
+            document.getElementById('statWeekLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneWeekAgo && r.isCorrect).length;
+            document.getElementById('statMonthLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
+        }
+
+        let currentReviewQueue = [];
+        let currentReviewIndex = 0;
+
+        function startFocusReview() {
+            const today = getTodayString();
+            currentReviewQueue = sampleCards.filter(c => c.nextReviewDate <= today);
+            currentReviewIndex = 0;
+
+            if (currentReviewQueue.length === 0) {
+                alert('هیچ کارتی برای مرور امروز وجود ندارد!');
+                switchView('dashboard');
+                return;
+            }
+
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-review').classList.add('active');
+            renderCurrentFocusCard();
+        }
+
+        function renderCurrentFocusCard() {
+            if (currentReviewIndex >= currentReviewQueue.length) {
+                alert('تبریک! مرور کارت‌های امروز به اتمام رسید 🎉');
+                switchView('dashboard');
+                return;
+            }
+            const card = currentReviewQueue[currentReviewIndex];
+            document.getElementById('reviewBoxLabel').innerText = `Box ${card.box} (${currentReviewIndex + 1} / ${currentReviewQueue.length})`;
+            document.getElementById('reviewWordDisplay').innerText = card.front;
+            document.getElementById('reviewMeaningDisplay').innerText = card.back;
+            document.getElementById('reviewExampleDisplay').innerText = card.example ? `💡 ${card.example}` : '';
+            document.getElementById('reviewBackContent').style.display = 'none';
+            document.getElementById('btnReveal').style.display = 'inline-block';
+        }
+
+        function revealReviewCard() {
+            document.getElementById('reviewBackContent').style.display = 'block';
+            document.getElementById('btnReveal').style.display = 'none';
+            speakCurrentWord();
+        }
+
+        function speakCurrentWord() {
+            if (currentReviewIndex < currentReviewQueue.length) {
+                const utterance = new SpeechSynthesisUtterance(currentReviewQueue[currentReviewIndex].front);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function submitReviewAnswer(target) {
+            const card = currentReviewQueue[currentReviewIndex];
+            const today = getTodayString();
+            let isCorrect = (target === 'next');
+
+            if (target === 1) { card.box = 1; card.nextReviewDate = today; }
+            else if (target === 'next') {
+                if (card.box === 1) { card.box = 2; card.nextReviewDate = addDays(today, 2); }
+                else if (card.box === 2) { card.box = 3; card.nextReviewDate = addDays(today, 4); }
+                else if (card.box === 3) { card.box = 4; card.nextReviewDate = addDays(today, 7); }
+                else if (card.box >= 4) { card.box = 5; card.nextReviewDate = addDays(today, 14); }
+            }
+
+            reviewsLog.push({ date: today, isCorrect: isCorrect, cardId: card.id });
+            saveDataToCloud();
+            currentReviewIndex++;
+            renderCurrentFocusCard();
+        }
+
+        function renderCardsManager() {
+            const container = document.getElementById('cardsManagerList');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = sampleCards.filter(c => c.front.toLowerCase().includes(searchVal) || c.back.toLowerCase().includes(searchVal));
+
+            if (filtered.length === 0) { container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">کارتی یافت نشد.</p>'; return; }
+            let html = '';
+            filtered.forEach(card => {
+                html += `<div class="card-list-item"><div><strong>${card.front}</strong> - <span style="color:var(--success-color);">${card.back}</span><div style="font-size:11px; color:var(--text-muted);">Box ${card.box}</div></div><button onclick="deleteCard(${card.id})" style="background:none; border:none; cursor:pointer;">🗑️</button></div>`;
+            });
+            container.innerHTML = html;
+        }
+
+        function deleteCard(id) {
+            if (confirm('حذف شود؟')) {
+                sampleCards = sampleCards.filter(c => c.id !== id);
+                saveDataToCloud();
+                renderCardsManager();
+            }
+        }
+
+        function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+        function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
+
+        async function autoTranslateWord() {
+            const word = document.getElementById('inputEnglish').value.trim();
+            if (!word) return;
+            const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
+            const data = await res.json();
+            if (data && data[0] && data[0][0]) {
+                document.getElementById('inputPersian').value = data[0][0][0];
+                document.getElementById('inputExample').value = `I learned ${word} today.`;
+            }
+        }
+
+        function addNewCard() {
+            const english = document.getElementById('inputEnglish').value.trim();
+            const persian = document.getElementById('inputPersian').value.trim();
+            if (!english || !persian) return;
+
+            sampleCards.push({ id: Date.now(), box: 1, front: english, back: persian, example: document.getElementById('inputExample').value.trim(), category: document.getElementById('inputCategory').value, nextReviewDate: getTodayString() });
+            saveDataToCloud();
+            closeAddModal();
+            updateDashboard();
+            alert('کارت در ابر ذخیره شد!');
+        }
+
+        function openBoxModal(boxNumber) {
+            const today = getTodayString();
+            const cards = sampleCards.filter(c => c.box === boxNumber && c.nextReviewDate <= today);
+            document.getElementById('boxModalTitle').innerText = `محتویات Box ${boxNumber}`;
+            document.getElementById('boxModalCardList').innerHTML = cards.length ? cards.map(c => `<div><b>${c.front}</b>: ${c.back}</div>`).join('') : 'خالی است';
+            document.getElementById('boxModal').style.display = 'flex';
+        }
+        function closeBoxModal() { document.getElementById('boxModal').style.display = 'none'; }
+
+        function toggleDarkMode() {
+            if (document.getElementById('darkModeToggle').checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
+    </script>
+</body>
+</html>
