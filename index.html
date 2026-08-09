@@ -83,12 +83,12 @@
         .hero-card h2 { font-size: 15px; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px; opacity: 0.9; }
         .hero-card .review-count { font-size: 64px; font-weight: 900; margin-bottom: 25px; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 16px 32px; font-size: 17px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; z-index: 2; }
+        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 16px 32px; font-size: 17px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 0; position: relative; z-index: 2; }
         .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
         .btn-primary:active { transform: translateY(0) scale(0.98); }
         
-        .btn-add-dashboard { background-color: rgba(255, 255, 255, 0.15); color: white; border: 2px solid rgba(255, 255, 255, 0.3); padding: 14px 28px; font-size: 15px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: 0.3s; backdrop-filter: blur(5px); position: relative; z-index: 2; }
-        .btn-add-dashboard:hover { background-color: rgba(255, 255, 255, 0.25); }
+        .btn-add-card { background: var(--primary-gradient); color: white; border: none; padding: 10px 18px; border-radius: 16px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: var(--shadow-md); transition: 0.3s; display: flex; align-items: center; gap: 5px;}
+        .btn-add-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); filter: brightness(1.1); }
 
         .section-title { font-size: 20px; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
@@ -99,9 +99,9 @@
         .stat-card .title { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
         .stat-card .value { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* جعبه‌ها (گرافیک پیشرفته) */
-        .boxes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .box-card { border-radius: 24px; padding: 25px 10px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
+        /* جعبه‌ها (۶ تایی) */
+        .boxes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .box-card { border-radius: 24px; padding: 22px 5px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
         .box-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%); pointer-events: none; }
         .box-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 30px rgba(0,0,0,0.15); filter: brightness(1.1); }
         
@@ -110,49 +110,50 @@
         .box-3 { background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); }
         .box-4 { background: linear-gradient(135deg, #B24592 0%, #F15F79 100%); }
         .box-5 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .box-6 { background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); color: #0f172a; text-shadow: none; }
         
-        .box-card .box-name { font-size: 13px; margin-bottom: 10px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
-        .box-card .box-count { font-size: 32px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
+        .box-card .box-count { font-size: 30px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .box-6 .box-count, .box-6 .box-name { text-shadow: none; }
 
-        /* ------------------ انقلاب در بخش مرور (کارت چرخشی سه‌بعدی) ------------------ */
-        .review-wrapper { perspective: 1500px; width: 100%; max-width: 500px; margin: 0 auto; height: 380px; }
+        /* مرور متمرکز (کارت چرخشی سه‌بعدی) */
+        .review-wrapper { perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; height: 320px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
         
-        .review-box-label { position: absolute; top: 20px; right: 20px; font-size: 14px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 5px 12px; border-radius: 12px; }
-        .review-word { font-size: 42px; font-weight: 900; margin-bottom: 20px; color: var(--text-main); }
-        .review-meaning { font-size: 36px; color: var(--success-color); font-weight: 900; margin-bottom: 15px; }
-        .review-example { font-size: 18px; color: var(--text-muted); font-weight: 600; line-height: 1.5; padding: 15px; border-radius: 12px; background: var(--bg-color); width: 100%; }
+        .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 10px; }
+        .review-word { font-size: 34px; font-weight: 900; margin-bottom: 15px; color: var(--text-main); }
+        .review-meaning { font-size: 28px; color: var(--success-color); font-weight: 900; margin-bottom: 12px; }
+        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.5; padding: 12px; border-radius: 12px; background: var(--bg-color); width: 100%; }
 
-        .btn-audio { width: 54px; height: 54px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.3s; margin-top: 10px; }
+        .btn-audio { width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.3s; margin-top: 10px; }
         .btn-audio:hover { transform: scale(1.1); }
         .btn-audio:active { transform: scale(0.9); }
 
-        .review-actions { max-width: 500px; margin: 30px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.5s; transform: translateY(20px); }
+        .review-actions { max-width: 420px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.5s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
         
-        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 18px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.3s; }
-        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 18px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.3s; }
+        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.3s; }
+        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.3s; }
         .btn-know:active, .btn-dont-know:active { transform: scale(0.95); }
 
-        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 18px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 500px; display: block; margin: 30px auto 0; box-shadow: var(--shadow-md); transition: 0.3s; }
+        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 16px 30px; font-size: 16px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 420px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.3s; }
 
         /* مدیریت کارت‌ها */
         .csv-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .btn-csv { flex: 1; min-width: 140px; padding: 14px; border-radius: 16px; border: 2px solid var(--primary-color); background: rgba(99,102,241,0.05); color: var(--primary-color); font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        .btn-csv { flex: 1; min-width: 140px; padding: 14px; border-radius: 16px; border: 2px solid var(--primary-color); background: rgba(99,102,241,0.05); color: var(--primary-color); font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 14px; }
         .btn-csv:hover { background: var(--primary-gradient); color: white; box-shadow: var(--shadow-glow); border-color: transparent; }
         
         .manager-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-        .search-input, .filter-select { flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 16px; border: 2px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 15px; outline: none; font-weight: 600; transition: 0.3s; }
+        .search-input, .filter-select { flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 16px; border: 2px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 14px; outline: none; font-weight: 600; transition: 0.3s; }
         .search-input:focus, .filter-select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
         
         .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); transition: 0.3s; box-shadow: var(--shadow-sm); }
         .card-list-item:hover { border-color: var(--primary-color); transform: translateX(-5px); box-shadow: var(--shadow-md); }
         
-        /* دکمه‌های آیکون‌دار */
         .icon-btn { background: var(--bg-color); border: none; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; margin-right: 8px; }
         .icon-btn:hover { background: var(--border-color); transform: scale(1.1); }
         .btn-del:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
@@ -172,7 +173,7 @@
         .form-control { width: 100%; padding: 16px; border: 2px solid var(--border-color); border-radius: 16px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; transition: 0.3s; }
         .form-control:focus { border-color: var(--primary-color); background: var(--surface-solid); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
         
-        /* طراحی شیشه‌ای منوی پایین (Glassmorphism) */
+        /* منوی پایین */
         .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 600px; background: var(--surface-color); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 30px; z-index: 99; display: none; }
         .bottom-nav.logged-in { display: flex; }
         .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; padding: 8px 15px; border-radius: 20px; transition: 0.3s; }
@@ -180,7 +181,7 @@
         .nav-item.active { color: var(--primary-color); background: rgba(99,102,241,0.1); }
         .nav-item.active .icon { transform: translateY(-3px) scale(1.1); }
 
-        /* سیستم پاپ‌آپ‌های اطلاع‌رسانی (Custom Toasts) */
+        /* Toast & Checkbox */
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; pointer-events: none; }
         .custom-toast { background: var(--surface-solid); color: var(--text-main); padding: 16px 24px; border-radius: 100px; font-weight: 800; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 2px solid var(--border-color); }
         .custom-toast.error { border-color: var(--danger-color); color: var(--danger-color); }
@@ -188,12 +189,10 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes toastOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
 
-        /* Checkbox Custom */
         .custom-checkbox { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 6px; outline: none; cursor: pointer; position: relative; background: var(--surface-solid); transition: 0.2s; }
         .custom-checkbox:checked { background: var(--primary-gradient); border-color: transparent; }
         .custom-checkbox:checked::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; }
 
-        /* Toggle Switch Custom */
         .toggle-switch { position: relative; width: 50px; height: 26px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 34px; }
@@ -201,11 +200,7 @@
         input:checked + .slider { background: var(--primary-gradient); }
         input:checked + .slider:before { transform: translateX(24px); }
 
-        @media (min-width: 800px) { 
-            .bottom-nav.logged-in { display: none; } 
-            body { padding-bottom: 20px; } 
-            .container { padding: 20px; }
-        }
+        @media (min-width: 800px) { .bottom-nav.logged-in { display: none; } body { padding-bottom: 20px; } .container { padding: 20px; } }
     </style>
 </head>
 <body>
@@ -230,7 +225,7 @@
             <div class="form-group"><input type="email" id="loginEmail" class="form-control" placeholder="ایمیل (Email)" dir="ltr"></div>
             <div class="form-group"><input type="password" id="loginPassword" class="form-control" placeholder="رمز عبور (Password)" dir="ltr"></div>
             <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit" style="max-width: 100%;">ورود به حساب</button>
-            <button class="btn-close" onclick="showSignup()" id="btnGoSignup" style="color:var(--text-muted);">حساب کاربری ندارید؟ ثبت‌نام کنید</button>
+            <button class="btn-close" onclick="showSignup()" id="btnGoSignup" style="color:var(--text-muted); font-size: 14px;">حساب کاربری ندارید؟ ثبت‌نام کنید</button>
         </section>
 
         <!-- بخش ثبت نام -->
@@ -241,7 +236,7 @@
             <div class="form-group"><input type="email" id="signupEmail" class="form-control" placeholder="ایمیل (Email)" dir="ltr"></div>
             <div class="form-group"><input type="password" id="signupPassword" class="form-control" placeholder="رمز عبور (6 کاراکتر)" dir="ltr"></div>
             <button class="btn-primary" onclick="handleSignup()" id="btnSignupSubmit" style="max-width: 100%;">ایجاد حساب جدید</button>
-            <button class="btn-close" onclick="showLogin()" id="btnGoLogin" style="color:var(--text-muted);">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</button>
+            <button class="btn-close" onclick="showLogin()" id="btnGoLogin" style="color:var(--text-muted); font-size: 14px;">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</button>
         </section>
 
         <!-- داشبورد -->
@@ -250,8 +245,6 @@
                 <h2 id="lblReadyReview">مستعد مرور امروز</h2>
                 <div class="review-count" id="totalReviewCount">0</div>
                 <button class="btn-primary" onclick="startFocusReview()" id="btnStartReview">شروع مرور متمرکز</button>
-                <br>
-                <button class="btn-add-dashboard" onclick="openAddModal()" id="btnAddDash">➕ افزودن کارت جدید</button>
             </section>
 
             <h3 class="section-title" id="lblStatsTitle">📊 آمار یادگیری</h3>
@@ -264,17 +257,18 @@
                 <div class="stat-card"><span class="title" id="lblMonth">این ماه</span><span class="value" id="statMonthLearned">0</span></div>
             </section>
 
-            <h3 class="section-title" id="lblBoxesTitle">📦 وضعیت جعبه‌ها</h3>
+            <h3 class="section-title" id="lblBoxesTitle">📦 وضعیت جعبه‌ها (۱ تا ۶)</h3>
             <section class="boxes-grid">
                 <div class="box-card box-1" onclick="openBoxModal(1)"><div class="box-name">Box 1</div><div class="box-count" id="count-1">0</div></div>
                 <div class="box-card box-2" onclick="openBoxModal(2)"><div class="box-name">Box 2</div><div class="box-count" id="count-2">0</div></div>
                 <div class="box-card box-3" onclick="openBoxModal(3)"><div class="box-name">Box 3</div><div class="box-count" id="count-3">0</div></div>
                 <div class="box-card box-4" onclick="openBoxModal(4)"><div class="box-name">Box 4</div><div class="box-count" id="count-4">0</div></div>
                 <div class="box-card box-5" onclick="openBoxModal(5)"><div class="box-name">Box 5</div><div class="box-count" id="count-5">0</div></div>
+                <div class="box-card box-6" onclick="openBoxModal(6)"><div class="box-name">Box 6</div><div class="box-count" id="count-6">0</div></div>
             </section>
         </section>
 
-        <!-- مرور متمرکز (کارت چرخشی سه‌بعدی) -->
+        <!-- مرور متمرکز -->
         <section id="view-review" class="view-section">
             <div class="review-wrapper">
                 <div class="flip-card" id="flipCardInner">
@@ -308,7 +302,11 @@
 
         <!-- مدیریت کارت‌ها -->
         <section id="view-cards" class="view-section">
-            <h3 class="section-title" id="lblCardsTitle">🗂 مدیریت بانک لغات</h3>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 class="section-title" id="lblCardsTitle" style="margin-bottom: 0;">🗂 مدیریت بانک لغات</h3>
+                <button class="btn-add-card" onclick="openAddModal()" id="btnAddDash">➕ افزودن کارت جدید</button>
+            </div>
             
             <div class="csv-actions">
                 <button class="btn-csv" onclick="document.getElementById('csvFileInput').click()" id="btnImportCSV">📥 آپلود اکسل (CSV)</button>
@@ -326,7 +324,7 @@
                 <input type="text" id="searchInput" class="search-input" placeholder="جستجو..." oninput="renderCardsManager()">
                 <select id="filterBox" class="filter-select" onchange="renderCardsManager()">
                     <option value="all" id="optAllBoxes">همه جعبه‌ها</option>
-                    <option value="1">Box 1</option><option value="2">Box 2</option><option value="3">Box 3</option><option value="4">Box 4</option><option value="5">Box 5</option>
+                    <option value="1">Box 1</option><option value="2">Box 2</option><option value="3">Box 3</option><option value="4">Box 4</option><option value="5">Box 5</option><option value="6">Box 6</option>
                 </select>
                 <select id="filterCategory" class="filter-select" onchange="renderCardsManager()">
                     <option value="all" id="optAllCats">همه دسته‌ها</option>
@@ -416,7 +414,6 @@
     </nav>
 
     <script>
-        // کانفیگ فایربیس
         const firebaseConfig = {
             apiKey: "AIzaSyCDQLnCscTx88RqMMpwIAzTATSYR08uUQ8",
             authDomain: "barname-4c40e.firebaseapp.com",
@@ -436,7 +433,6 @@
         let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '' };
         let isAllSelected = false; 
 
-        // سیستم Toast جایگزین Alert
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -528,7 +524,7 @@
                     });
                 });
             }).catch(err => {
-                btn.innerText = userProfile.lang === 'fa' ? 'ساخت حساب کاربری' : 'Create Account'; btn.disabled = false;
+                btn.innerText = userProfile.lang === 'fa' ? 'ایجاد حساب جدید' : 'Create Account'; btn.disabled = false;
                 showToast(err.code === 'auth/email-already-in-use' ? 'این ایمیل قبلاً ثبت شده!' : err.message, 'error');
             });
         }
@@ -608,7 +604,7 @@
             setTxt('btnLoginSubmit', isFa ? 'ورود به حساب' : 'Log in');
             setTxt('btnGoSignup', isFa ? 'حساب کاربری ندارید؟ ثبت‌نام کنید' : 'Don\'t have an account? Sign up');
             
-            setTxt('lblSignupTitle', isFa ? 'ثبت‌نام در لایتنر' : 'Create Account');
+            setTxt('lblSignupTitle', isFa ? 'ثبت‌نام سریع' : 'Create Account');
             setTxt('lblSignupDesc', isFa ? 'کارت‌های شما در ابر ذخیره می‌شوند.' : 'Sync your cards across all devices.');
             setPlc('signupName', isFa ? 'نام شما (Name)' : 'Full Name');
             setPlc('signupEmail', isFa ? 'ایمیل (Email)' : 'Email address');
@@ -627,7 +623,7 @@
             setTxt('lblAccuracy', isFa ? 'دقت پاسخ' : 'Accuracy');
             setTxt('lblWeek', isFa ? 'این هفته' : 'Learned This Week');
             setTxt('lblMonth', isFa ? 'این ماه' : 'Learned This Month');
-            setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها' : '📦 Boxes Status');
+            setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها (۱ تا ۶)' : '📦 Boxes Status (1 to 6)');
             
             setTxt('btnReveal', isFa ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)');
             setTxt('btnNo', isFa ? '❌ فراموش کردم' : '❌ Forgot');
@@ -689,10 +685,13 @@
         }
 
         function updateDashboard() {
-            let counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            let counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
             let dueTodayCount = 0; const today = getTodayString();
             sampleCards.forEach(card => { if (counts[card.box] !== undefined) counts[card.box]++; if (card.nextReviewDate <= today) dueTodayCount++; });
-            for (let i = 1; i <= 5; i++) { document.getElementById(`count-${i}`).innerText = counts[i]; }
+            for (let i = 1; i <= 6; i++) { 
+                const el = document.getElementById(`count-${i}`);
+                if(el) el.innerText = counts[i]; 
+            }
             document.getElementById('totalReviewCount').innerText = dueTodayCount;
 
             let todayReviews = reviewsLog.filter(r => r.date === today);
@@ -711,7 +710,6 @@
             document.getElementById('statMonthLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
         }
 
-        /* ---------------- مرور سه‌بعدی ---------------- */
         function startFocusReview() {
             const today = getTodayString();
             currentReviewQueue = sampleCards.filter(c => c.nextReviewDate <= today);
@@ -728,7 +726,6 @@
                 switchView('dashboard'); return;
             }
             
-            // ریست کردن کارت (برگرداندن به رو)
             document.getElementById('flipCardInner').classList.remove('flipped');
             document.getElementById('btnReveal').style.display = 'block';
             document.getElementById('reviewActions').classList.remove('show');
@@ -764,19 +761,21 @@
             const today = getTodayString();
             let isCorrect = (target === 'next');
 
-            if (target === 1) { card.box = 1; card.nextReviewDate = today; }
+            if (target === 1) { 
+                card.box = 1; card.nextReviewDate = today; 
+            }
             else if (target === 'next') {
                 if (card.box === 1) { card.box = 2; card.nextReviewDate = addDays(today, 2); }
                 else if (card.box === 2) { card.box = 3; card.nextReviewDate = addDays(today, 4); }
                 else if (card.box === 3) { card.box = 4; card.nextReviewDate = addDays(today, 7); }
-                else if (card.box >= 4) { card.box = 5; card.nextReviewDate = addDays(today, 14); }
+                else if (card.box === 4) { card.box = 5; card.nextReviewDate = addDays(today, 15); }
+                else if (card.box >= 5) { card.box = 6; card.nextReviewDate = addDays(today, 30); }
             }
 
             reviewsLog.push({ date: today, isCorrect: isCorrect, cardId: card.id });
             saveDataToCloud();
             currentReviewIndex++;
             
-            // یک تاخیر خیلی کوتاه برای حس بهتر انیمیشن
             setTimeout(() => renderCurrentFocusCard(), 150);
         }
 
