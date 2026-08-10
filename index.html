@@ -22,7 +22,7 @@
     <style>
         :root {
             --bg-color: #f4f7fe;
-            --surface-color: rgba(255, 255, 255, 0.9);
+            --surface-color: rgba(255, 255, 255, 0.95);
             --surface-solid: #ffffff;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -40,7 +40,7 @@
 
         [data-theme="dark"] {
             --bg-color: #0f172a;
-            --surface-color: rgba(30, 41, 59, 0.85);
+            --surface-color: rgba(30, 41, 59, 0.95);
             --surface-solid: #1e293b;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -50,19 +50,21 @@
             --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.15);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
         
+        body, .stat-card, .settings-card, .card-list-item, .form-control, .modal-content, header {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
         body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; padding-bottom: 100px; overflow-x: hidden; }
-        .container { max-width: 800px; margin: 0 auto; animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .container { max-width: 800px; margin: 0 auto; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* استایل شیشه‌ای هدر */
         header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
-            background: var(--surface-color); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            padding: 16px 24px; border-radius: var(--border-radius); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+            background: var(--surface-color); padding: 16px 24px; border-radius: var(--border-radius); 
+            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
             position: sticky; top: 15px; z-index: 50;
         }
         header h1 { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -71,132 +73,120 @@
         .streak-badge { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); padding: 6px 14px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 6px; font-size: 15px; border: 1px solid rgba(245, 158, 11, 0.3); }
         .profile-avatar { width: 44px; height: 44px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; box-shadow: var(--shadow-glow); font-size: 16px; border: 2px solid white; }
 
-        .view-section { display: none; animation: fadeUp 0.4s ease-out; }
+        .view-section { display: none; animation: fadeUp 0.3s ease-out; }
         .view-section.active { display: block; }
 
-        /* فرم‌ها و کارت‌های لاگین */
         .auth-card { max-width: 420px; margin: 40px auto; background: var(--surface-solid); padding: 40px; border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); text-align: center; }
         .auth-card h2 { margin-bottom: 15px; font-weight: 900; font-size: 28px; }
 
         .hero-card { background: var(--primary-gradient); color: white; border-radius: 30px; padding: 40px 20px; text-align: center; box-shadow: var(--shadow-glow); margin-bottom: 30px; position: relative; overflow: hidden; }
-        .hero-card::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%); pointer-events: none; }
         .hero-card h2 { font-size: 15px; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px; opacity: 0.9; }
         .hero-card .review-count { font-size: 64px; font-weight: 900; margin-bottom: 25px; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
 
-        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 16px 32px; font-size: 17px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 0; position: relative; z-index: 2; }
-        .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
-        .btn-primary:active { transform: translateY(0) scale(0.98); }
+        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 16px 32px; font-size: 17px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; z-index: 2; }
+        .btn-primary:active { transform: scale(0.98); }
         
-        .btn-add-card { background: var(--primary-gradient); color: white; border: none; padding: 10px 18px; border-radius: 16px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: var(--shadow-md); transition: 0.3s; display: flex; align-items: center; gap: 5px;}
-        .btn-add-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-glow); filter: brightness(1.1); }
+        .btn-add-card { background: var(--primary-gradient); color: white; border: none; padding: 10px 18px; border-radius: 16px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: var(--shadow-md); transition: 0.2s; display: flex; align-items: center; gap: 5px;}
+        .btn-add-card:active { transform: scale(0.95); }
 
         .section-title { font-size: 20px; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        /* آمار */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
-        .stat-card { background-color: var(--surface-solid); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); align-items: center; text-align: center; transition: 0.3s; }
-        .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .stat-card { background-color: var(--surface-solid); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); align-items: center; text-align: center; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); }
         .stat-card .title { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
         .stat-card .value { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* جعبه‌ها (۶ تایی) */
         .boxes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-        .box-card { border-radius: 24px; padding: 22px 5px; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
-        .box-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%); pointer-events: none; }
-        .box-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 15px 30px rgba(0,0,0,0.15); filter: brightness(1.1); }
-        
+        .box-card { border-radius: 24px; padding: 22px 5px; text-align: center; cursor: pointer; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
         .box-1 { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); }
         .box-2 { background: linear-gradient(135deg, #F2994A 0%, #F2C94C 100%); }
         .box-3 { background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); }
         .box-4 { background: linear-gradient(135deg, #B24592 0%, #F15F79 100%); }
         .box-5 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .box-6 { background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); color: #0f172a; text-shadow: none; }
-        
+        .box-6 { background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); color: #0f172a; }
         .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
-        .box-card .box-count { font-size: 30px; font-weight: 900; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .box-6 .box-count, .box-6 .box-name { text-shadow: none; }
+        .box-card .box-count { font-size: 30px; font-weight: 900; }
 
-        /* مرور متمرکز (کارت چرخشی سه‌بعدی) */
+        /* مرور متمرکز (کارت چرخشی سه‌بعدی بهبود یافته) */
         .review-wrapper { perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; height: 320px; }
-        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; pointer-events: none; }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
+        
+        /* برای اینکه دکمه صدا قابل کلیک باشد */
+        .flip-front > *, .flip-back > * { pointer-events: auto; }
         
         .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 10px; }
         .review-word { font-size: 34px; font-weight: 900; margin-bottom: 15px; color: var(--text-main); }
         .review-meaning { font-size: 28px; color: var(--success-color); font-weight: 900; margin-bottom: 12px; }
         .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.5; padding: 12px; border-radius: 12px; background: var(--bg-color); width: 100%; }
 
-        .btn-audio { width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.3s; margin-top: 10px; }
-        .btn-audio:hover { transform: scale(1.1); }
+        .btn-audio { width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.2s; margin-top: 10px; }
         .btn-audio:active { transform: scale(0.9); }
 
-        .review-actions { max-width: 420px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.5s; transform: translateY(20px); }
+        .review-actions { max-width: 420px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
         
-        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.3s; }
-        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.3s; }
+        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.2s; }
+        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.2s; }
         .btn-know:active, .btn-dont-know:active { transform: scale(0.95); }
 
-        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 16px 30px; font-size: 16px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 420px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.3s; }
+        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 16px 30px; font-size: 16px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 420px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
 
         /* مدیریت کارت‌ها */
         .csv-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .btn-csv { flex: 1; min-width: 140px; padding: 14px; border-radius: 16px; border: 2px solid var(--primary-color); background: rgba(99,102,241,0.05); color: var(--primary-color); font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 14px; }
-        .btn-csv:hover { background: var(--primary-gradient); color: white; box-shadow: var(--shadow-glow); border-color: transparent; }
+        .btn-csv { flex: 1; min-width: 140px; padding: 14px; border-radius: 16px; border: 2px solid var(--primary-color); background: rgba(99,102,241,0.05); color: var(--primary-color); font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 15px; }
+        .btn-csv:active { transform: scale(0.97); }
         
         .manager-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-        .search-input, .filter-select { flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 16px; border: 2px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 14px; outline: none; font-weight: 600; transition: 0.3s; }
-        .search-input:focus, .filter-select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        .search-input, .filter-select { flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 16px; border: 2px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 15px; outline: none; font-weight: 600; }
+        .search-input:focus, .filter-select:focus { border-color: var(--primary-color); }
         
-        .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); transition: 0.3s; box-shadow: var(--shadow-sm); }
-        .card-list-item:hover { border-color: var(--primary-color); transform: translateX(-5px); box-shadow: var(--shadow-md); }
-        
-        .icon-btn { background: var(--bg-color); border: none; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; margin-right: 8px; }
-        .icon-btn:hover { background: var(--border-color); transform: scale(1.1); }
-        .btn-del:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); }
+        .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
+        .icon-btn { background: var(--bg-color); border: none; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; transition: 0.2s;}
+        .icon-btn:active { transform: scale(0.9); }
 
-        /* مدال‌ها و تنظیمات */
-        .settings-card { background: var(--surface-solid); padding: 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); transition: 0.3s; }
-        .settings-card:hover { border-color: var(--primary-color); }
+        /* تنظیمات */
+        .settings-card { background: var(--surface-solid); padding: 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; z-index: 100; overflow-y: auto; opacity: 0; transition: opacity 0.3s; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.85); justify-content: center; align-items: center; padding: 20px; z-index: 100; overflow-y: auto; opacity: 0; transition: opacity 0.2s; }
         .modal.show { opacity: 1; }
-        .modal-content { background-color: var(--surface-solid); padding: 35px; border-radius: 30px; width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-content { background-color: var(--surface-solid); padding: 30px; border-radius: 30px; width: 100%; max-width: 480px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .modal.show .modal-content { transform: scale(1); }
 
         .form-group { margin-bottom: 20px; text-align: right; }
         [data-theme] .form-group { text-align: inherit; }
         .form-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 800; }
-        .form-control { width: 100%; padding: 16px; border: 2px solid var(--border-color); border-radius: 16px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; transition: 0.3s; }
-        .form-control:focus { border-color: var(--primary-color); background: var(--surface-solid); box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        .form-control { width: 100%; padding: 16px; border: 2px solid var(--border-color); border-radius: 16px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; }
+        .form-control:focus { border-color: var(--primary-color); }
         
-        /* منوی پایین */
-        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 600px; background: var(--surface-color); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 12px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 30px; z-index: 99; display: none; }
-        .bottom-nav.logged-in { display: flex; }
-        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; padding: 8px 15px; border-radius: 20px; transition: 0.3s; }
-        .nav-item .icon { font-size: 20px; transition: 0.3s; }
-        .nav-item.active { color: var(--primary-color); background: rgba(99,102,241,0.1); }
-        .nav-item.active .icon { transform: translateY(-3px) scale(1.1); }
+        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 14px; border-radius: 16px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 10px; }
+        .btn-close { background-color: transparent; color: var(--primary-color); border: none; padding: 12px 20px; border-radius: 16px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
 
-        /* Toast & Checkbox */
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 600px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 12px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 30px; z-index: 99; display: none; }
+        .bottom-nav.logged-in { display: flex; }
+        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; padding: 8px 15px; border-radius: 20px; transition: 0.2s; }
+        .nav-item .icon { font-size: 20px; }
+        .nav-item.active { color: var(--primary-color); background: rgba(99,102,241,0.1); }
+
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; pointer-events: none; }
-        .custom-toast { background: var(--surface-solid); color: var(--text-main); padding: 16px 24px; border-radius: 100px; font-weight: 800; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 2px solid var(--border-color); }
+        .custom-toast { background: var(--surface-solid); color: var(--text-main); padding: 16px 24px; border-radius: 100px; font-weight: 800; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 2px solid var(--border-color); }
         .custom-toast.error { border-color: var(--danger-color); color: var(--danger-color); }
         .custom-toast.success { border-color: var(--success-color); color: var(--success-color); }
         @keyframes toastIn { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes toastOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
 
-        .custom-checkbox { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 6px; outline: none; cursor: pointer; position: relative; background: var(--surface-solid); transition: 0.2s; }
+        .custom-checkbox { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 6px; outline: none; cursor: pointer; position: relative; background: var(--surface-solid); }
         .custom-checkbox:checked { background: var(--primary-gradient); border-color: transparent; }
         .custom-checkbox:checked::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; }
 
         .toggle-switch { position: relative; width: 50px; height: 26px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); border-radius: 34px; transition: 0.3s;}
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.3s;}
         input:checked + .slider { background: var(--primary-gradient); }
         input:checked + .slider:before { transform: translateX(24px); }
 
@@ -271,13 +261,15 @@
         <!-- مرور متمرکز -->
         <section id="view-review" class="view-section">
             <div class="review-wrapper">
-                <div class="flip-card" id="flipCardInner">
+                <!-- قابلیت چرخش با لمس خود کارت! -->
+                <div class="flip-card" id="flipCardInner" onclick="toggleFlipCard()" style="cursor: pointer;">
                     <div class="flip-card-inner">
                         <!-- روی کارت -->
                         <div class="flip-front">
                             <div class="review-box-label" id="reviewBoxLabel">Box 1</div>
                             <div class="review-word" id="reviewWordDisplay">Apple</div>
-                            <button class="btn-audio" onclick="speakCurrentWord()">🔊</button>
+                            <!-- جلوگیری از چرخش کارت هنگام لمس دکمه صدا -->
+                            <button class="btn-audio" onclick="speakCurrentWord(event)">🔊</button>
                         </div>
                         <!-- پشت کارت -->
                         <div class="flip-back">
@@ -288,7 +280,7 @@
                 </div>
             </div>
             
-            <button class="btn-reveal-main" onclick="revealReviewCard()" id="btnReveal">مشاهده پاسخ (Flip)</button>
+            <button class="btn-reveal-main" onclick="toggleFlipCard()" id="btnReveal">مشاهده پاسخ (Flip)</button>
             
             <div class="review-actions" id="reviewActions">
                 <button class="btn-dont-know" onclick="submitReviewAnswer(1)" id="btnNo">❌ فراموش کردم</button>
@@ -305,7 +297,7 @@
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h3 class="section-title" id="lblCardsTitle" style="margin-bottom: 0;">🗂 مدیریت بانک لغات</h3>
-                <button class="btn-add-card" onclick="openAddModal()" id="btnAddDash">➕ افزودن کارت جدید</button>
+                <button class="btn-add-card" onclick="openAddModal()" id="btnAddCardList">➕ افزودن کارت جدید</button>
             </div>
             
             <div class="csv-actions">
@@ -405,7 +397,7 @@
         </div>
     </div>
 
-    <!-- منوی ناوبری شیشه‌ای پایین -->
+    <!-- منوی ناوبری -->
     <nav class="bottom-nav" id="bottomNav">
         <div class="nav-item active" onclick="switchView('dashboard')"><span class="icon">📊</span><span id="navDash">داشبورد</span></div>
         <div class="nav-item" onclick="switchView('review')"><span class="icon">📖</span><span id="navReview">مرور</span></div>
@@ -432,6 +424,7 @@
         let reviewsLog = [];
         let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '' };
         let isAllSelected = false; 
+        let isCardRevealedThisTurn = false; // متغیر جدید برای کنترل دکمه‌های تایید مرور
 
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
@@ -442,9 +435,9 @@
             container.appendChild(toast);
             
             setTimeout(() => {
-                toast.style.animation = 'toastOut 0.4s ease forwards';
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
+                toast.style.animation = 'toastOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 350);
+            }, 3000);
         }
 
         function getTodayString() { return new Date().toISOString().split('T')[0]; }
@@ -614,7 +607,7 @@
 
             setTxt('lblReadyReview', isFa ? 'مستعد مرور امروز' : 'Ready to Review Today');
             setTxt('btnStartReview', isFa ? 'شروع مرور متمرکز' : 'Start Focus Review');
-            setTxt('btnAddDash', isFa ? '➕ افزودن کارت جدید' : '➕ Add New Card');
+            setTxt('btnAddCardList', isFa ? '➕ افزودن کارت جدید' : '➕ Add New Card');
             
             setTxt('lblStatsTitle', isFa ? '📊 آمار یادگیری' : '📊 Learning Stats');
             setTxt('lblRevToday', isFa ? 'مرور امروز' : 'Reviewed Today');
@@ -625,7 +618,14 @@
             setTxt('lblMonth', isFa ? 'این ماه' : 'Learned This Month');
             setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها (۱ تا ۶)' : '📦 Boxes Status (1 to 6)');
             
-            setTxt('btnReveal', isFa ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)');
+            // اصلاح متن دکمه مرور
+            const cardInner = document.getElementById('flipCardInner');
+            if (cardInner && cardInner.classList.contains('flipped')) {
+                setTxt('btnReveal', isFa ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)');
+            } else {
+                setTxt('btnReveal', isFa ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)');
+            }
+
             setTxt('btnNo', isFa ? '❌ فراموش کردم' : '❌ Forgot');
             setTxt('btnYes', isFa ? '✅ به یاد داشتم' : '✅ Remembered');
             setTxt('btnExitReview', isFa ? 'خروج موقت' : 'Exit to Dashboard');
@@ -710,6 +710,7 @@
             document.getElementById('statMonthLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
         }
 
+        /* ---------------- مرور سه‌بعدی ---------------- */
         function startFocusReview() {
             const today = getTodayString();
             currentReviewQueue = sampleCards.filter(c => c.nextReviewDate <= today);
@@ -726,8 +727,13 @@
                 switchView('dashboard'); return;
             }
             
+            isCardRevealedThisTurn = false;
             document.getElementById('flipCardInner').classList.remove('flipped');
-            document.getElementById('btnReveal').style.display = 'block';
+            
+            const btnReveal = document.getElementById('btnReveal');
+            btnReveal.style.display = 'block';
+            btnReveal.innerText = userProfile.lang === 'fa' ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)';
+            
             document.getElementById('reviewActions').classList.remove('show');
             
             const card = currentReviewQueue[currentReviewIndex];
@@ -740,14 +746,30 @@
             document.getElementById('reviewExampleDisplay').innerText = card.example ? `💡 ${card.example}` : '';
         }
 
-        function revealReviewCard() {
-            document.getElementById('flipCardInner').classList.add('flipped');
-            document.getElementById('btnReveal').style.display = 'none';
-            document.getElementById('reviewActions').classList.add('show');
-            speakCurrentWord();
+        // تابع چرخاندن کارت (با دکمه یا لمس کارت)
+        function toggleFlipCard() {
+            const cardInner = document.getElementById('flipCardInner');
+            const isFlipped = cardInner.classList.toggle('flipped');
+            const btnReveal = document.getElementById('btnReveal');
+            
+            if (isFlipped) {
+                btnReveal.innerText = userProfile.lang === 'fa' ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)';
+                
+                // دکمه‌های تایید فقط دفعه اول که کارت میچرخد نمایش داده می‌شوند
+                if (!isCardRevealedThisTurn) {
+                    document.getElementById('reviewActions').classList.add('show');
+                    isCardRevealedThisTurn = true;
+                    speakCurrentWord();
+                }
+            } else {
+                btnReveal.innerText = userProfile.lang === 'fa' ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)';
+            }
         }
 
-        function speakCurrentWord() {
+        function speakCurrentWord(e) {
+            // جلوگیری از چرخیدن کارت وقتی روی دکمه صدا کلیک می‌شود
+            if (e) e.stopPropagation(); 
+            
             if (currentReviewIndex < currentReviewQueue.length) {
                 const utterance = new SpeechSynthesisUtterance(currentReviewQueue[currentReviewIndex].front);
                 utterance.lang = 'en-US';
