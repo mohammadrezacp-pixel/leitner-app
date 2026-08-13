@@ -108,7 +108,7 @@
         .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
         .box-card .box-count { font-size: 30px; font-weight: 900; }
 
-        /* مرور متمرکز (کارت چرخشی سه‌بعدی بهبود یافته) */
+        /* مرور متمرکز */
         .review-wrapper { perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; height: 320px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -116,7 +116,6 @@
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; pointer-events: none; }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
         
-        /* برای اینکه دکمه صدا قابل کلیک باشد */
         .flip-front > *, .flip-back > * { pointer-events: auto; }
         
         .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 10px; }
@@ -261,17 +260,13 @@
         <!-- مرور متمرکز -->
         <section id="view-review" class="view-section">
             <div class="review-wrapper">
-                <!-- قابلیت چرخش با لمس خود کارت! -->
                 <div class="flip-card" id="flipCardInner" onclick="toggleFlipCard()" style="cursor: pointer;">
                     <div class="flip-card-inner">
-                        <!-- روی کارت -->
                         <div class="flip-front">
                             <div class="review-box-label" id="reviewBoxLabel">Box 1</div>
                             <div class="review-word" id="reviewWordDisplay">Apple</div>
-                            <!-- جلوگیری از چرخش کارت هنگام لمس دکمه صدا -->
                             <button class="btn-audio" onclick="speakCurrentWord(event)">🔊</button>
                         </div>
-                        <!-- پشت کارت -->
                         <div class="flip-back">
                             <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
                             <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
@@ -424,7 +419,7 @@
         let reviewsLog = [];
         let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '' };
         let isAllSelected = false; 
-        let isCardRevealedThisTurn = false; // متغیر جدید برای کنترل دکمه‌های تایید مرور
+        let isCardRevealedThisTurn = false; 
 
         function showToast(msg, type = 'info') {
             const container = document.getElementById('toast-container');
@@ -485,13 +480,16 @@
 
             auth.signInWithEmailAndPassword(email, pass).then((userCredential) => {
                 if (!userCredential.user.emailVerified) {
-                    showToast(userProfile.lang === 'fa' ? 'ایمیل شما هنوز تأیید نشده است!' : 'Verify your email first!', 'error');
+                    showToast(userProfile.lang === 'fa' ? 'ایمیل شما هنوز تأیید نشده است! لطفاً صندوق ورودی یا اسپم ایمیل خود را چک کنید و روی لینک کلیک کنید.' : 'Verify your email first!', 'error');
                     auth.signOut();
                 }
-                btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
             }).catch(err => {
+                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+                    showToast(userProfile.lang === 'fa' ? '❌ ایمیل یا رمز عبور اشتباه است، یا هنوز حسابی نساخته‌اید!' : 'Invalid email or password!', 'error');
+                } else {
+                    showToast('Error: ' + err.message, 'error');
+                }
                 btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
-                showToast(userProfile.lang === 'fa' ? 'اطلاعات ورود اشتباه است.' : 'Invalid credentials.', 'error');
             });
         }
 
@@ -501,7 +499,7 @@
             const pass = document.getElementById('signupPassword').value.trim();
             
             if (!fullName || !email || pass.length < 6) {
-                showToast(userProfile.lang === 'fa' ? 'لطفاً فیلدها را پر کنید (رمز بالای ۶ حرف).' : 'Fill all fields. Pass > 6 chars.', 'error');
+                showToast(userProfile.lang === 'fa' ? '⚠️ لطفاً تمام فیلدها را پر کنید. رمز عبور حداقل ۶ حرف.' : 'Please fill all fields. Password min 6 chars.', 'error');
                 return; 
             }
 
@@ -511,14 +509,18 @@
             auth.createUserWithEmailAndPassword(email, pass).then((userCredential) => {
                 userCredential.user.updateProfile({ displayName: fullName }).then(() => {
                     userCredential.user.sendEmailVerification().then(() => {
-                        showToast(userProfile.lang === 'fa' ? 'حساب ساخته شد! صندوق ایمیل را چک کنید.' : 'Created! Check email to verify.', 'success');
+                        showToast(userProfile.lang === 'fa' ? '✅ حساب ساخته شد! یک ایمیل تأیید برای شما ارسال کردیم. لطفاً صندوق ایمیل خود را چک کنید.' : 'Account created! Please check your email to verify.', 'success');
                         auth.signOut(); 
                         showLogin(); 
                     });
                 });
             }).catch(err => {
+                if (err.code === 'auth/email-already-in-use') {
+                    showToast(userProfile.lang === 'fa' ? '⚠️ این ایمیل قبلاً ثبت شده است! لطفاً وارد حساب خود شوید.' : 'Email already in use!', 'error');
+                } else {
+                    showToast('Error: ' + err.message, 'error');
+                }
                 btn.innerText = userProfile.lang === 'fa' ? 'ایجاد حساب جدید' : 'Create Account'; btn.disabled = false;
-                showToast(err.code === 'auth/email-already-in-use' ? 'این ایمیل قبلاً ثبت شده!' : err.message, 'error');
             });
         }
 
@@ -618,7 +620,6 @@
             setTxt('lblMonth', isFa ? 'این ماه' : 'Learned This Month');
             setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها (۱ تا ۶)' : '📦 Boxes Status (1 to 6)');
             
-            // اصلاح متن دکمه مرور
             const cardInner = document.getElementById('flipCardInner');
             if (cardInner && cardInner.classList.contains('flipped')) {
                 setTxt('btnReveal', isFa ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)');
@@ -710,7 +711,6 @@
             document.getElementById('statMonthLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
         }
 
-        /* ---------------- مرور سه‌بعدی ---------------- */
         function startFocusReview() {
             const today = getTodayString();
             currentReviewQueue = sampleCards.filter(c => c.nextReviewDate <= today);
@@ -922,22 +922,51 @@
             setTimeout(() => modal.style.display = 'none', 300);
         }
 
+        // ==========================================
+        //  موتور ترجمه و استخراج مثال آپدیت شد
+        // ==========================================
         async function autoTranslateWord() {
             const word = document.getElementById('inputEnglish').value.trim();
             if (!word) { showToast(userProfile.lang === 'fa' ? 'کلمه انگلیسی را وارد کنید.' : 'Enter an English word first.', 'error'); return; }
             
             const btn = document.getElementById('btnAutoTranslate');
-            btn.innerText = 'در حال ترجمه...';
+            btn.innerText = userProfile.lang === 'fa' ? 'در حال جستجو...' : 'Searching...';
             
             try {
-                const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
-                const data = await res.json();
-                if (data && data[0] && data[0][0]) {
-                    document.getElementById('inputPersian').value = data[0][0][0];
-                    document.getElementById('inputExample').value = `I learned ${word} today.`;
+                // 1. ترجمه معنی فارسی
+                const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
+                const transData = await transRes.json();
+                if (transData && transData[0] && transData[0][0]) {
+                    document.getElementById('inputPersian').value = transData[0][0][0];
                 }
+
+                // 2. پیدا کردن مثال واقعی از دیکشنری انگلیسی
+                try {
+                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+                    const dictData = await dictRes.json();
+                    
+                    let realExample = '';
+                    if (Array.isArray(dictData) && dictData.length > 0) {
+                        for (let meaning of dictData[0].meanings) {
+                            for (let def of meaning.definitions) {
+                                if (def.example) {
+                                    // حذف تگ‌های احتمالی HTML از متن مثال
+                                    realExample = def.example.replace(/(<([^>]+)>)/gi, "");
+                                    // بزرگ کردن حرف اول
+                                    realExample = realExample.charAt(0).toUpperCase() + realExample.slice(1);
+                                    break;
+                                }
+                            }
+                            if (realExample) break;
+                        }
+                    }
+                    document.getElementById('inputExample').value = realExample || ''; // اگر مثالی نبود خالی میذاره
+                } catch (dictErr) {
+                    document.getElementById('inputExample').value = '';
+                }
+
             } catch (e) {
-                showToast("خطا در ترجمه هوشمند.", "error");
+                showToast(userProfile.lang === 'fa' ? "خطا در ارتباط با سرور ترجمه." : "Translation server error.", "error");
             }
             btn.innerText = userProfile.lang === 'fa' ? '✨ ترجمه هوشمند' : '✨ Smart Translate';
         }
