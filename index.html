@@ -209,7 +209,6 @@
         <header>
             <div class="header-left">
                 <h1 id="appTitle">Leitner</h1>
-                <!-- دکمه جادویی انتخاب پوشه -->
                 <select id="headerDeckSelect" class="deck-selector" onchange="handleDeckChange(this.value)" style="display:none;"></select>
             </div>
             
@@ -339,7 +338,6 @@
         <section id="view-settings" class="view-section">
             <h3 class="section-title" id="lblSettingsTitle">⚙️ تنظیمات برنامه</h3>
             
-            <!-- دکمه حذف پوشه جدید -->
             <div class="settings-card">
                 <div>
                     <h4 style="margin-bottom: 5px;" id="lblDeleteFolder">حذف پوشه فعلی</h4>
@@ -436,6 +434,11 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // فعال‌سازی دیتابیس آفلاین فایربیس برای دسترسی بدون اینترنت
+        db.enablePersistence().catch(function(err) {
+            console.error("Firebase Offline Error: ", err);
+        });
+
         let currentUser = null;
         let sampleCards = [];
         let reviewsLog = [];
@@ -450,7 +453,7 @@
             const icon = type === 'error' ? '❌' : (type === 'success' ? '✅' : 'ℹ️');
             toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 350); }, 3000);
+            setTimeout(() => { toast.style.animation = 'toastOut 0.4s ease forwards'; setTimeout(() => toast.remove(), 400); }, 3500);
         }
 
         function getTodayString() { return new Date().toISOString().split('T')[0]; }
@@ -468,8 +471,6 @@
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                if (!user.emailVerified) { auth.signOut(); return; }
-                
                 currentUser = user;
                 document.getElementById('currentUserEmail').innerText = user.email;
                 let displayName = user.displayName || user.email.split('@')[0];
@@ -478,6 +479,21 @@
                 
                 document.getElementById('headerProfileArea').style.display = 'flex';
                 document.getElementById('bottomNav').classList.add('logged-in'); 
+
+                // لودینگ سریع آفلاین (قبل از خواندن از فایربیس)
+                const localCards = localStorage.getItem('leitner_offline_cards');
+                if(localCards) {
+                    try {
+                        sampleCards = JSON.parse(localCards);
+                        reviewsLog = JSON.parse(localStorage.getItem('leitner_offline_logs') || '[]');
+                        userProfile = { ...userProfile, ...JSON.parse(localStorage.getItem('leitner_offline_profile') || '{}') };
+                        
+                        applyTheme();
+                        applyLanguage();
+                        renderDeckSelector();
+                        switchView('dashboard');
+                    } catch(e) { console.error("Local load error", e); }
+                }
                 
                 loadDataFromCloud();
             } else {
@@ -496,12 +512,7 @@
             const btn = document.getElementById('btnLoginSubmit');
             btn.innerText = '...'; btn.disabled = true;
 
-            auth.signInWithEmailAndPassword(email, pass).then((userCredential) => {
-                if (!userCredential.user.emailVerified) {
-                    showToast(userProfile.lang === 'fa' ? 'ایمیل شما هنوز تأیید نشده است!' : 'Verify your email first!', 'error');
-                    auth.signOut();
-                }
-            }).catch(err => {
+            auth.signInWithEmailAndPassword(email, pass).catch(err => {
                 btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
                 showToast(userProfile.lang === 'fa' ? 'اطلاعات ورود اشتباه است.' : 'Invalid credentials.', 'error');
             });
@@ -522,11 +533,7 @@
 
             auth.createUserWithEmailAndPassword(email, pass).then((userCredential) => {
                 userCredential.user.updateProfile({ displayName: fullName }).then(() => {
-                    userCredential.user.sendEmailVerification().then(() => {
-                        showToast(userProfile.lang === 'fa' ? 'حساب ساخته شد! صندوق ایمیل را چک کنید.' : 'Created! Check email to verify.', 'success');
-                        auth.signOut(); 
-                        showLogin(); 
-                    });
+                    showToast(userProfile.lang === 'fa' ? 'حساب شما با موفقیت ساخته شد!' : 'Account created successfully!', 'success');
                 });
             }).catch(err => {
                 btn.innerText = userProfile.lang === 'fa' ? 'ایجاد حساب جدید' : 'Create Account'; btn.disabled = false;
@@ -546,17 +553,14 @@
                     sampleCards = data.cards || [];
                     reviewsLog = data.reviewsLog || [];
                     userProfile = { ...userProfile, ...(data.profile || {}) };
-                } else {
+                } else if(sampleCards.length === 0) {
                     sampleCards = [];
                     reviewsLog = [];
                     saveDataToCloud();
                 }
                 
-                // مقداردهی اولیه سیستم پوشه‌ها اگر وجود نداشت
                 if (!userProfile.decks || userProfile.decks.length === 0) userProfile.decks = ['General'];
                 if (!userProfile.activeDeck) userProfile.activeDeck = 'General';
-                
-                // دادن پوشه پیشفرض به کارت‌های قدیمی که پوشه ندارند
                 sampleCards.forEach(c => { if (!c.deck) c.deck = 'General'; });
                 
                 document.getElementById('darkModeToggle').checked = userProfile.darkMode;
@@ -564,25 +568,37 @@
                 document.getElementById('langSelect').value = userProfile.lang;
                 document.getElementById('headerStreakVal').innerText = userProfile.streak || 0;
                 
+                // بکاپ محلی برای بار بعدی که آفلاین است
+                localStorage.setItem('leitner_offline_cards', JSON.stringify(sampleCards));
+                localStorage.setItem('leitner_offline_logs', JSON.stringify(reviewsLog));
+                localStorage.setItem('leitner_offline_profile', JSON.stringify(userProfile));
+
                 applyTheme();
                 applyLanguage(); 
                 renderDeckSelector();
                 switchView('dashboard');
             } catch (err) {
-                showToast("خطا در دریافت اطلاعات. اتصال اینترنت را بررسی کنید.", "error");
+                console.log("در حال اجرای آفلاین...");
             }
         }
 
         function saveDataToCloud() {
             if (!currentUser) return;
+            
+            // همگام‌سازی آفلاینِ آنی
+            localStorage.setItem('leitner_offline_cards', JSON.stringify(sampleCards));
+            localStorage.setItem('leitner_offline_logs', JSON.stringify(reviewsLog));
+            localStorage.setItem('leitner_offline_profile', JSON.stringify(userProfile));
+
+            // ذخیره در فایربیس
             db.collection('users').doc(currentUser.uid).set({
                 cards: sampleCards,
                 reviewsLog: reviewsLog,
                 profile: userProfile
-            }, { merge: true });
+            }, { merge: true }).catch(e => console.log('ذخیره در صف آفلاین قرار گرفت.'));
         }
 
-        // --- توابع مربوط به سیستم پوشه‌ها ---
+        // --- مدیریت پوشه‌ها ---
         function renderDeckSelector() {
             const sel = document.getElementById('headerDeckSelect');
             sel.style.display = currentUser ? 'block' : 'none';
@@ -615,9 +631,7 @@
             if (document.getElementById('view-cards').classList.contains('active')) renderCardsManager();
         }
 
-        function getActiveCards() {
-            return sampleCards.filter(c => c.deck === userProfile.activeDeck);
-        }
+        function getActiveCards() { return sampleCards.filter(c => c.deck === userProfile.activeDeck); }
 
         function deleteCurrentDeck() {
             if(userProfile.decks.length <= 1) {
@@ -634,7 +648,7 @@
                 showToast(userProfile.lang === 'fa' ? 'پوشه حذف شد.' : 'Folder deleted.', 'success');
             }
         }
-        // -------------------------------------
+        // -----------------------
 
         function checkAndUpdateStreak() {
             const today = getTodayString();
@@ -719,7 +733,6 @@
             
             setTxt('lblSettingsTitle', isFa ? '⚙️ تنظیمات برنامه' : '⚙️ App Settings');
             
-            // ترجمه تنظیمات پوشه
             setTxt('lblDeleteFolder', isFa ? 'حذف پوشه فعلی' : 'Delete Current Folder');
             setTxt('lblDeleteFolderDesc', isFa ? 'تمام کارت‌های این پوشه پاک می‌شود' : 'All cards in this folder will be deleted');
             
@@ -766,7 +779,6 @@
             let counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
             let dueTodayCount = 0; const today = getTodayString();
             
-            // استفاده از کارت‌های پوشه فعال
             const activeCards = getActiveCards();
 
             activeCards.forEach(card => { 
@@ -779,7 +791,6 @@
             }
             document.getElementById('totalReviewCount').innerText = dueTodayCount;
 
-            // آمارگیری فقط برای کارت‌های پوشه فعال
             const activeCardIds = new Set(activeCards.map(c => c.id));
             let activeLogs = reviewsLog.filter(r => activeCardIds.has(r.cardId));
 
@@ -933,7 +944,6 @@
             const filterCatElem = document.getElementById('filterCategory');
             const filterCat = filterCatElem ? filterCatElem.value : 'all';
 
-            // گرفتن کارت‌های پوشه فعال
             const activeCards = getActiveCards();
 
             let filtered = activeCards.filter(c => {
@@ -1065,7 +1075,6 @@
                 if(card) { card.front = english; card.back = persian; card.example = example; card.category = category; }
                 showToast(userProfile.lang === 'fa' ? 'کارت ویرایش شد.' : 'Card updated.', 'success');
             } else {
-                // درج کارت با تخصیص پوشه فعال
                 sampleCards.push({ 
                     id: Date.now(), box: 1, front: english, back: persian, 
                     example: example, category: category, nextReviewDate: getTodayString(),
@@ -1109,7 +1118,7 @@
                             example: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
                             category: row[3] ? row[3].replace(/^"|"$/g, '').trim() : 'CSV Import',
                             box: 1, nextReviewDate: getTodayString(),
-                            deck: userProfile.activeDeck // اضافه شدن به پوشه فعلی
+                            deck: userProfile.activeDeck
                         });
                         newCards++;
                     }
