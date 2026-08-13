@@ -61,17 +61,25 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* هدر و انتخاب پوشه */
         header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
-            background: var(--surface-color); padding: 16px 24px; border-radius: var(--border-radius); 
+            background: var(--surface-color); padding: 16px 20px; border-radius: var(--border-radius); 
             box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
-            position: sticky; top: 15px; z-index: 50;
+            position: sticky; top: 15px; z-index: 50; flex-wrap: wrap; gap: 10px;
         }
-        header h1 { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        header h1 { font-size: 22px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;}
+        
+        .deck-selector {
+            background: rgba(99,102,241,0.1); color: var(--primary-color); border: 1px solid rgba(99,102,241,0.2);
+            padding: 8px 12px; border-radius: 14px; font-weight: 800; font-size: 13px; outline: none; cursor: pointer; transition: 0.3s; max-width: 140px;
+        }
+        .deck-selector:hover { background: rgba(99,102,241,0.2); }
 
-        .profile-area { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .streak-badge { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); padding: 6px 14px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 6px; font-size: 15px; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .profile-avatar { width: 44px; height: 44px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; box-shadow: var(--shadow-glow); font-size: 16px; border: 2px solid white; }
+        .profile-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .streak-badge { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); padding: 6px 12px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px; font-size: 14px; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .profile-avatar { width: 40px; height: 40px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; box-shadow: var(--shadow-glow); font-size: 15px; border: 2px solid white; }
 
         .view-section { display: none; animation: fadeUp 0.3s ease-out; }
         .view-section.active { display: block; }
@@ -115,7 +123,6 @@
         
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; pointer-events: none; }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
-        
         .flip-front > *, .flip-back > * { pointer-events: auto; }
         
         .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 10px; }
@@ -165,6 +172,7 @@
         .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 14px; border-radius: 16px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 10px; }
         .btn-close { background-color: transparent; color: var(--primary-color); border: none; padding: 12px 20px; border-radius: 16px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
 
+        /* ناوبری */
         .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 600px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 12px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 30px; z-index: 99; display: none; }
         .bottom-nav.logged-in { display: flex; }
         .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; padding: 8px 15px; border-radius: 20px; transition: 0.2s; }
@@ -199,10 +207,15 @@
     <div class="container">
         
         <header>
-            <h1 id="appTitle">Leitner Pro</h1>
+            <div class="header-left">
+                <h1 id="appTitle">Leitner</h1>
+                <!-- دکمه جادویی انتخاب پوشه -->
+                <select id="headerDeckSelect" class="deck-selector" onchange="handleDeckChange(this.value)" style="display:none;"></select>
+            </div>
+            
             <div class="profile-area" id="headerProfileArea" style="display: none;" onclick="switchView('settings')">
                 <div class="streak-badge" title="زنجیره روزانه">🔥 <span id="headerStreakVal">0</span></div>
-                <span id="headerUserName" style="font-weight: 800; font-size: 15px; margin-left: 8px;">کاربر</span>
+                <span id="headerUserName" style="font-weight: 800; font-size: 14px; margin-left: 5px;">کاربر</span>
                 <div class="profile-avatar" id="headerAvatar">MR</div>
             </div>
         </header>
@@ -326,9 +339,13 @@
         <section id="view-settings" class="view-section">
             <h3 class="section-title" id="lblSettingsTitle">⚙️ تنظیمات برنامه</h3>
             
+            <!-- دکمه حذف پوشه جدید -->
             <div class="settings-card">
-                <div><h4 id="lblCloudAccount" style="margin-bottom: 5px;">حساب متصل</h4><p style="color: var(--text-muted); font-size: 13px; font-family: monospace;" id="currentUserEmail">---</p></div>
-                <button id="btnLogout" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 12px; border:none; background: rgba(239, 68, 68, 0.1); color:var(--danger-color); font-weight:900; cursor:pointer; font-size: 14px; transition: 0.3s;">خروج 🚪</button>
+                <div>
+                    <h4 style="margin-bottom: 5px;" id="lblDeleteFolder">حذف پوشه فعلی</h4>
+                    <p style="color: var(--text-muted); font-size: 13px;" id="lblDeleteFolderDesc">تمام کارت‌های این پوشه پاک می‌شود</p>
+                </div>
+                <button onclick="deleteCurrentDeck()" style="padding: 10px 15px; border-radius: 12px; border:none; background: rgba(239, 68, 68, 0.1); color:var(--danger-color); font-weight:900; cursor:pointer; font-size: 14px; transition: 0.3s;">حذف 🗑️</button>
             </div>
 
             <div class="settings-card">
@@ -362,6 +379,11 @@
                     <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
                     <span class="slider"></span>
                 </label>
+            </div>
+
+            <div class="settings-card">
+                <div><h4 id="lblCloudAccount" style="margin-bottom: 5px;">حساب متصل</h4><p style="color: var(--text-muted); font-size: 13px; font-family: monospace;" id="currentUserEmail">---</p></div>
+                <button id="btnLogout" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 12px; border:none; background: rgba(239, 68, 68, 0.1); color:var(--danger-color); font-weight:900; cursor:pointer; font-size: 14px; transition: 0.3s;">خروج 🚪</button>
             </div>
         </section>
 
@@ -417,7 +439,7 @@
         let currentUser = null;
         let sampleCards = [];
         let reviewsLog = [];
-        let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '' };
+        let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '', decks: ['General'], activeDeck: 'General' };
         let isAllSelected = false; 
         let isCardRevealedThisTurn = false; 
 
@@ -428,11 +450,7 @@
             const icon = type === 'error' ? '❌' : (type === 'success' ? '✅' : 'ℹ️');
             toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
             container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.animation = 'toastOut 0.3s ease forwards';
-                setTimeout(() => toast.remove(), 350);
-            }, 3000);
+            setTimeout(() => { toast.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 350); }, 3000);
         }
 
         function getTodayString() { return new Date().toISOString().split('T')[0]; }
@@ -476,20 +494,16 @@
             if (!email || !pass) { showToast(userProfile.lang === 'fa' ? 'ایمیل و رمز عبور الزامی است!' : 'Email and password required!', 'error'); return; }
 
             const btn = document.getElementById('btnLoginSubmit');
-            btn.innerText = 'در حال ورود...'; btn.disabled = true;
+            btn.innerText = '...'; btn.disabled = true;
 
             auth.signInWithEmailAndPassword(email, pass).then((userCredential) => {
                 if (!userCredential.user.emailVerified) {
-                    showToast(userProfile.lang === 'fa' ? 'ایمیل شما هنوز تأیید نشده است! لطفاً صندوق ورودی یا اسپم ایمیل خود را چک کنید و روی لینک کلیک کنید.' : 'Verify your email first!', 'error');
+                    showToast(userProfile.lang === 'fa' ? 'ایمیل شما هنوز تأیید نشده است!' : 'Verify your email first!', 'error');
                     auth.signOut();
                 }
             }).catch(err => {
-                if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-                    showToast(userProfile.lang === 'fa' ? '❌ ایمیل یا رمز عبور اشتباه است، یا هنوز حسابی نساخته‌اید!' : 'Invalid email or password!', 'error');
-                } else {
-                    showToast('Error: ' + err.message, 'error');
-                }
                 btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
+                showToast(userProfile.lang === 'fa' ? 'اطلاعات ورود اشتباه است.' : 'Invalid credentials.', 'error');
             });
         }
 
@@ -499,28 +513,24 @@
             const pass = document.getElementById('signupPassword').value.trim();
             
             if (!fullName || !email || pass.length < 6) {
-                showToast(userProfile.lang === 'fa' ? '⚠️ لطفاً تمام فیلدها را پر کنید. رمز عبور حداقل ۶ حرف.' : 'Please fill all fields. Password min 6 chars.', 'error');
+                showToast(userProfile.lang === 'fa' ? 'لطفاً فیلدها را پر کنید (رمز بالای ۶ حرف).' : 'Fill all fields. Pass > 6 chars.', 'error');
                 return; 
             }
 
             const btn = document.getElementById('btnSignupSubmit');
-            btn.innerText = 'در حال ساخت...'; btn.disabled = true;
+            btn.innerText = '...'; btn.disabled = true;
 
             auth.createUserWithEmailAndPassword(email, pass).then((userCredential) => {
                 userCredential.user.updateProfile({ displayName: fullName }).then(() => {
                     userCredential.user.sendEmailVerification().then(() => {
-                        showToast(userProfile.lang === 'fa' ? '✅ حساب ساخته شد! یک ایمیل تأیید برای شما ارسال کردیم. لطفاً صندوق ایمیل خود را چک کنید.' : 'Account created! Please check your email to verify.', 'success');
+                        showToast(userProfile.lang === 'fa' ? 'حساب ساخته شد! صندوق ایمیل را چک کنید.' : 'Created! Check email to verify.', 'success');
                         auth.signOut(); 
                         showLogin(); 
                     });
                 });
             }).catch(err => {
-                if (err.code === 'auth/email-already-in-use') {
-                    showToast(userProfile.lang === 'fa' ? '⚠️ این ایمیل قبلاً ثبت شده است! لطفاً وارد حساب خود شوید.' : 'Email already in use!', 'error');
-                } else {
-                    showToast('Error: ' + err.message, 'error');
-                }
                 btn.innerText = userProfile.lang === 'fa' ? 'ایجاد حساب جدید' : 'Create Account'; btn.disabled = false;
+                showToast(err.code === 'auth/email-already-in-use' ? 'این ایمیل قبلاً ثبت شده!' : err.message, 'error');
             });
         }
 
@@ -537,10 +547,17 @@
                     reviewsLog = data.reviewsLog || [];
                     userProfile = { ...userProfile, ...(data.profile || {}) };
                 } else {
-                    sampleCards = [ { id: 1, box: 1, front: "Welcome", back: "خوش آمدید", example: "Welcome to Leitner Premium.", category: "Daily English", nextReviewDate: getTodayString() } ];
+                    sampleCards = [];
                     reviewsLog = [];
                     saveDataToCloud();
                 }
+                
+                // مقداردهی اولیه سیستم پوشه‌ها اگر وجود نداشت
+                if (!userProfile.decks || userProfile.decks.length === 0) userProfile.decks = ['General'];
+                if (!userProfile.activeDeck) userProfile.activeDeck = 'General';
+                
+                // دادن پوشه پیشفرض به کارت‌های قدیمی که پوشه ندارند
+                sampleCards.forEach(c => { if (!c.deck) c.deck = 'General'; });
                 
                 document.getElementById('darkModeToggle').checked = userProfile.darkMode;
                 document.getElementById('reverseToggle').checked = userProfile.reverseReview;
@@ -549,6 +566,7 @@
                 
                 applyTheme();
                 applyLanguage(); 
+                renderDeckSelector();
                 switchView('dashboard');
             } catch (err) {
                 showToast("خطا در دریافت اطلاعات. اتصال اینترنت را بررسی کنید.", "error");
@@ -563,6 +581,60 @@
                 profile: userProfile
             }, { merge: true });
         }
+
+        // --- توابع مربوط به سیستم پوشه‌ها ---
+        function renderDeckSelector() {
+            const sel = document.getElementById('headerDeckSelect');
+            sel.style.display = currentUser ? 'block' : 'none';
+            if (!currentUser) return;
+            
+            let html = '';
+            userProfile.decks.forEach(d => { html += `<option value="${d}">${d}</option>`; });
+            const newText = userProfile.lang === 'fa' ? '+ پوشه جدید' : '+ New Folder';
+            html += `<option value="NEW_DECK" style="font-weight:bold;">${newText}</option>`;
+            
+            sel.innerHTML = html;
+            sel.value = userProfile.activeDeck;
+        }
+
+        function handleDeckChange(val) {
+            if (val === 'NEW_DECK') {
+                const deckName = prompt(userProfile.lang === 'fa' ? 'نام پوشه جدید را وارد کنید:' : 'Enter new folder name:');
+                if (deckName && deckName.trim() !== '') {
+                    const cleanName = deckName.trim();
+                    if (!userProfile.decks.includes(cleanName)) { userProfile.decks.push(cleanName); }
+                    userProfile.activeDeck = cleanName;
+                }
+            } else {
+                userProfile.activeDeck = val;
+            }
+            renderDeckSelector();
+            saveDataToCloud();
+            
+            if (document.getElementById('view-dashboard').classList.contains('active')) updateDashboard();
+            if (document.getElementById('view-cards').classList.contains('active')) renderCardsManager();
+        }
+
+        function getActiveCards() {
+            return sampleCards.filter(c => c.deck === userProfile.activeDeck);
+        }
+
+        function deleteCurrentDeck() {
+            if(userProfile.decks.length <= 1) {
+                showToast(userProfile.lang === 'fa' ? 'نمی‌توانید تنها پوشه موجود را حذف کنید!' : 'Cannot delete the only folder!', 'error');
+                return;
+            }
+            if(confirm(userProfile.lang === 'fa' ? 'آیا از حذف این پوشه و تمام کارت‌های آن مطمئنید؟' : 'Delete this folder and ALL its cards?')) {
+                sampleCards = sampleCards.filter(c => c.deck !== userProfile.activeDeck);
+                userProfile.decks = userProfile.decks.filter(d => d !== userProfile.activeDeck);
+                userProfile.activeDeck = userProfile.decks[0];
+                saveDataToCloud();
+                renderDeckSelector();
+                switchView('dashboard');
+                showToast(userProfile.lang === 'fa' ? 'پوشه حذف شد.' : 'Folder deleted.', 'success');
+            }
+        }
+        // -------------------------------------
 
         function checkAndUpdateStreak() {
             const today = getTodayString();
@@ -580,7 +652,7 @@
         function toggleReverseMode() { userProfile.reverseReview = document.getElementById('reverseToggle').checked; saveDataToCloud(); }
         function applyTheme() { document.documentElement.toggleAttribute('data-theme', userProfile.darkMode ? 'dark' : null); }
 
-        function changeLanguage(lang) { userProfile.lang = lang; applyLanguage(); saveDataToCloud(); }
+        function changeLanguage(lang) { userProfile.lang = lang; applyLanguage(); renderDeckSelector(); saveDataToCloud(); }
         
         function applyLanguage() {
             const root = document.getElementById('htmlRoot');
@@ -591,7 +663,7 @@
             const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
             const setPlc = (id, txt) => { const el = document.getElementById(id); if(el) el.placeholder = txt; };
             
-            setTxt('appTitle', isFa ? 'لایتنر ابری' : 'Leitner Cloud');
+            setTxt('appTitle', isFa ? 'لایتنر' : 'Leitner');
             setTxt('lblLoginTitle', isFa ? 'ورود به لایتنر' : 'Welcome Back');
             setTxt('lblLoginDesc', isFa ? 'یادگیری هوشمند را ادامه دهید.' : 'Log in to continue learning.');
             setPlc('loginEmail', isFa ? 'ایمیل (Email)' : 'Email address');
@@ -646,6 +718,11 @@
             setTxt('btnBulkDelete', isFa ? 'حذف گروهی 🗑️' : 'Delete Selected 🗑️');
             
             setTxt('lblSettingsTitle', isFa ? '⚙️ تنظیمات برنامه' : '⚙️ App Settings');
+            
+            // ترجمه تنظیمات پوشه
+            setTxt('lblDeleteFolder', isFa ? 'حذف پوشه فعلی' : 'Delete Current Folder');
+            setTxt('lblDeleteFolderDesc', isFa ? 'تمام کارت‌های این پوشه پاک می‌شود' : 'All cards in this folder will be deleted');
+            
             setTxt('lblCloudAccount', isFa ? 'حساب متصل' : 'Cloud Account');
             setTxt('btnLogout', isFa ? 'خروج 🚪' : 'Log out 🚪');
             setTxt('lblReverseReview', isFa ? 'آموزش معکوس' : 'Reverse Review');
@@ -688,16 +765,27 @@
         function updateDashboard() {
             let counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
             let dueTodayCount = 0; const today = getTodayString();
-            sampleCards.forEach(card => { if (counts[card.box] !== undefined) counts[card.box]++; if (card.nextReviewDate <= today) dueTodayCount++; });
+            
+            // استفاده از کارت‌های پوشه فعال
+            const activeCards = getActiveCards();
+
+            activeCards.forEach(card => { 
+                if (counts[card.box] !== undefined) counts[card.box]++; 
+                if (card.nextReviewDate <= today) dueTodayCount++; 
+            });
             for (let i = 1; i <= 6; i++) { 
                 const el = document.getElementById(`count-${i}`);
                 if(el) el.innerText = counts[i]; 
             }
             document.getElementById('totalReviewCount').innerText = dueTodayCount;
 
-            let todayReviews = reviewsLog.filter(r => r.date === today);
-            let correctCount = reviewsLog.filter(r => r.isCorrect).length;
-            let incorrectCount = reviewsLog.filter(r => !r.isCorrect).length;
+            // آمارگیری فقط برای کارت‌های پوشه فعال
+            const activeCardIds = new Set(activeCards.map(c => c.id));
+            let activeLogs = reviewsLog.filter(r => activeCardIds.has(r.cardId));
+
+            let todayReviews = activeLogs.filter(r => r.date === today);
+            let correctCount = activeLogs.filter(r => r.isCorrect).length;
+            let incorrectCount = activeLogs.filter(r => !r.isCorrect).length;
             let accuracy = (correctCount + incorrectCount) > 0 ? Math.round((correctCount / (correctCount + incorrectCount)) * 100) : 0;
 
             const oneWeekAgo = new Date(); oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -707,15 +795,15 @@
             document.getElementById('statCorrect').innerText = correctCount;
             document.getElementById('statIncorrect').innerText = incorrectCount;
             document.getElementById('statAccuracy').innerText = accuracy + '%';
-            document.getElementById('statWeekLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneWeekAgo && r.isCorrect).length;
-            document.getElementById('statMonthLearned').innerText = reviewsLog.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
+            document.getElementById('statWeekLearned').innerText = activeLogs.filter(r => new Date(r.date) >= oneWeekAgo && r.isCorrect).length;
+            document.getElementById('statMonthLearned').innerText = activeLogs.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
         }
 
         function startFocusReview() {
             const today = getTodayString();
-            currentReviewQueue = sampleCards.filter(c => c.nextReviewDate <= today);
+            currentReviewQueue = getActiveCards().filter(c => c.nextReviewDate <= today);
             currentReviewIndex = 0;
-            if (currentReviewQueue.length === 0) { showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز وجود ندارد!' : 'No cards for review today!', 'info'); switchView('dashboard'); return; }
+            if (currentReviewQueue.length === 0) { showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز در این پوشه وجود ندارد!' : 'No cards for review today in this folder!', 'info'); switchView('dashboard'); return; }
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('view-review').classList.add('active');
             renderCurrentFocusCard();
@@ -723,7 +811,7 @@
 
         function renderCurrentFocusCard() {
             if (currentReviewIndex >= currentReviewQueue.length) {
-                showToast(userProfile.lang === 'fa' ? 'تبریک! مرور کارت‌های امروز به اتمام رسید 🎉' : 'Review completed! 🎉', 'success');
+                showToast(userProfile.lang === 'fa' ? 'تبریک! مرور این پوشه به اتمام رسید 🎉' : 'Review completed! 🎉', 'success');
                 switchView('dashboard'); return;
             }
             
@@ -746,7 +834,6 @@
             document.getElementById('reviewExampleDisplay').innerText = card.example ? `💡 ${card.example}` : '';
         }
 
-        // تابع چرخاندن کارت (با دکمه یا لمس کارت)
         function toggleFlipCard() {
             const cardInner = document.getElementById('flipCardInner');
             const isFlipped = cardInner.classList.toggle('flipped');
@@ -755,7 +842,6 @@
             if (isFlipped) {
                 btnReveal.innerText = userProfile.lang === 'fa' ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)';
                 
-                // دکمه‌های تایید فقط دفعه اول که کارت میچرخد نمایش داده می‌شوند
                 if (!isCardRevealedThisTurn) {
                     document.getElementById('reviewActions').classList.add('show');
                     isCardRevealedThisTurn = true;
@@ -767,9 +853,7 @@
         }
 
         function speakCurrentWord(e) {
-            // جلوگیری از چرخیدن کارت وقتی روی دکمه صدا کلیک می‌شود
             if (e) e.stopPropagation(); 
-            
             if (currentReviewIndex < currentReviewQueue.length) {
                 const utterance = new SpeechSynthesisUtterance(currentReviewQueue[currentReviewIndex].front);
                 utterance.lang = 'en-US';
@@ -849,7 +933,10 @@
             const filterCatElem = document.getElementById('filterCategory');
             const filterCat = filterCatElem ? filterCatElem.value : 'all';
 
-            let filtered = sampleCards.filter(c => {
+            // گرفتن کارت‌های پوشه فعال
+            const activeCards = getActiveCards();
+
+            let filtered = activeCards.filter(c => {
                 let matchSearch = c.front.toLowerCase().includes(searchVal) || c.back.toLowerCase().includes(searchVal);
                 let matchBox = (filterBox === 'all' || c.box.toString() === filterBox);
                 let matchCat = (filterCat === 'all' || c.category === filterCat);
@@ -922,9 +1009,6 @@
             setTimeout(() => modal.style.display = 'none', 300);
         }
 
-        // ==========================================
-        //  موتور ترجمه و استخراج مثال آپدیت شد
-        // ==========================================
         async function autoTranslateWord() {
             const word = document.getElementById('inputEnglish').value.trim();
             if (!word) { showToast(userProfile.lang === 'fa' ? 'کلمه انگلیسی را وارد کنید.' : 'Enter an English word first.', 'error'); return; }
@@ -933,14 +1017,12 @@
             btn.innerText = userProfile.lang === 'fa' ? 'در حال جستجو...' : 'Searching...';
             
             try {
-                // 1. ترجمه معنی فارسی
                 const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
                 const transData = await transRes.json();
                 if (transData && transData[0] && transData[0][0]) {
                     document.getElementById('inputPersian').value = transData[0][0][0];
                 }
 
-                // 2. پیدا کردن مثال واقعی از دیکشنری انگلیسی
                 try {
                     const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
                     const dictData = await dictRes.json();
@@ -950,9 +1032,7 @@
                         for (let meaning of dictData[0].meanings) {
                             for (let def of meaning.definitions) {
                                 if (def.example) {
-                                    // حذف تگ‌های احتمالی HTML از متن مثال
                                     realExample = def.example.replace(/(<([^>]+)>)/gi, "");
-                                    // بزرگ کردن حرف اول
                                     realExample = realExample.charAt(0).toUpperCase() + realExample.slice(1);
                                     break;
                                 }
@@ -960,7 +1040,7 @@
                             if (realExample) break;
                         }
                     }
-                    document.getElementById('inputExample').value = realExample || ''; // اگر مثالی نبود خالی میذاره
+                    document.getElementById('inputExample').value = realExample || ''; 
                 } catch (dictErr) {
                     document.getElementById('inputExample').value = '';
                 }
@@ -985,7 +1065,12 @@
                 if(card) { card.front = english; card.back = persian; card.example = example; card.category = category; }
                 showToast(userProfile.lang === 'fa' ? 'کارت ویرایش شد.' : 'Card updated.', 'success');
             } else {
-                sampleCards.push({ id: Date.now(), box: 1, front: english, back: persian, example: example, category: category, nextReviewDate: getTodayString() });
+                // درج کارت با تخصیص پوشه فعال
+                sampleCards.push({ 
+                    id: Date.now(), box: 1, front: english, back: persian, 
+                    example: example, category: category, nextReviewDate: getTodayString(),
+                    deck: userProfile.activeDeck 
+                });
                 showToast(userProfile.lang === 'fa' ? 'کارت جدید اضافه شد.' : 'Card added.', 'success');
             }
             
@@ -996,11 +1081,11 @@
         }
 
         function exportCSV() {
-            let csv = "front,back,example,category,box,nextReviewDate\n";
-            sampleCards.forEach(c => { csv += `"${c.front}","${c.back}","${c.example||''}","${c.category||''}",${c.box},${c.nextReviewDate}\n`; });
+            let csv = "front,back,example,category,box,nextReviewDate,deck\n";
+            getActiveCards().forEach(c => { csv += `"${c.front}","${c.back}","${c.example||''}","${c.category||''}",${c.box},${c.nextReviewDate},"${c.deck||'General'}"\n`; });
             const blob = new Blob([csv], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'leitner_backup.csv'; a.click();
+            const a = document.createElement('a'); a.href = url; a.download = `leitner_${userProfile.activeDeck}.csv`; a.click();
             showToast(userProfile.lang === 'fa' ? 'فایل دانلود شد.' : 'File exported.', 'success');
         }
 
@@ -1023,7 +1108,8 @@
                             id: Date.now() + i, front: front, back: back,
                             example: row[2] ? row[2].replace(/^"|"$/g, '').trim() : '',
                             category: row[3] ? row[3].replace(/^"|"$/g, '').trim() : 'CSV Import',
-                            box: 1, nextReviewDate: getTodayString()
+                            box: 1, nextReviewDate: getTodayString(),
+                            deck: userProfile.activeDeck // اضافه شدن به پوشه فعلی
                         });
                         newCards++;
                     }
@@ -1037,7 +1123,7 @@
 
         function openBoxModal(boxNumber) {
             const today = getTodayString();
-            const cards = sampleCards.filter(c => c.box === boxNumber && c.nextReviewDate <= today);
+            const cards = getActiveCards().filter(c => c.box === boxNumber && c.nextReviewDate <= today);
             document.getElementById('boxModalTitle').innerText = userProfile.lang === 'fa' ? `محتویات Box ${boxNumber}` : `Box ${boxNumber} Content`;
             
             const container = document.getElementById('boxModalCardList');
@@ -1070,4 +1156,3 @@
     </script>
 </body>
 </html>
-
