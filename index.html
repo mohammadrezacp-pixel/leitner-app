@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Leitner Cloud Premium</title>
+    <title>Leitner Ultra</title>
     
-    <!-- فونت زیبای وزیرمتن -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <!-- فونت‌های حرفه‌ای -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- آیکون‌های مینیمال و لوکس Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <!-- PWA Settings -->
-    <meta name="theme-color" content="#6366f1">
+    <meta name="theme-color" content="#f8fafc">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3043/3043888.png">
@@ -21,198 +24,234 @@
 
     <style>
         :root {
-            --bg-color: #f4f7fe;
-            --surface-color: rgba(255, 255, 255, 0.95);
+            /* پالت رنگی فوق‌مدرن و سافت */
+            --bg-color: #f8fafc;
+            --surface-color: rgba(255, 255, 255, 0.85);
             --surface-solid: #ffffff;
-            --text-main: #1e293b;
+            --text-main: #0f172a;
             --text-muted: #64748b;
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            --primary-color: #6366f1;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --border-radius: 24px;
+            
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-glow: rgba(79, 70, 229, 0.25);
+            
+            --success: #10b981;
+            --success-light: #d1fae5;
+            
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+
+            --border-radius-lg: 32px;
+            --border-radius-md: 20px;
             --border-color: rgba(226, 232, 240, 0.8);
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.08);
-            --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            
+            --shadow-float: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
         }
 
         [data-theme="dark"] {
-            --bg-color: #0f172a;
-            --surface-color: rgba(30, 41, 59, 0.95);
-            --surface-solid: #1e293b;
-            --text-main: #f8fafc;
+            --bg-color: #0b0f19;
+            --surface-color: rgba(15, 23, 42, 0.85);
+            --surface-solid: #0f172a;
+            --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --border-color: rgba(51, 65, 85, 0.6);
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
-            --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.3);
-            --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.15);
+            --border-color: rgba(51, 65, 85, 0.5);
+            --primary: #6366f1;
+            --primary-light: rgba(99, 102, 241, 0.15);
+            --success-light: rgba(16, 185, 129, 0.15);
+            --danger-light: rgba(239, 68, 68, 0.15);
+            --warning-light: rgba(245, 158, 11, 0.15);
+            --shadow-float: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.2);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
         
-        body, .stat-card, .settings-card, .card-list-item, .form-control, .modal-content, header {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
+        /* ترکیب فونت Vazirmatn و Inter */
+        [dir="ltr"], .en-text { font-family: 'Inter', sans-serif !important; letter-spacing: -0.02em; }
 
-        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; padding-bottom: 100px; overflow-x: hidden; }
-        .container { max-width: 800px; margin: 0 auto; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px; padding-bottom: 120px; overflow-x: hidden; transition: background-color 0.4s ease; }
+        .container { max-width: 800px; margin: 0 auto; animation: fadeUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* هدر شناور مینیمال */
         header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
-            background: var(--surface-color); padding: 16px 20px; border-radius: var(--border-radius); 
-            box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
-            position: sticky; top: 15px; z-index: 50; flex-wrap: wrap; gap: 10px;
+            background: var(--surface-color); padding: 12px 20px; border-radius: 100px; 
+            box-shadow: var(--shadow-card); border: 1px solid var(--border-color);
+            position: sticky; top: 15px; z-index: 50; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
         .header-left { display: flex; align-items: center; gap: 12px; }
-        header h1 { font-size: 22px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;}
+        header h1 { font-size: 20px; font-weight: 900; color: var(--primary); margin: 0; letter-spacing: -0.5px;}
         
         .deck-selector {
-            background: rgba(99,102,241,0.1); color: var(--primary-color); border: 1px solid rgba(99,102,241,0.2);
-            padding: 8px 12px; border-radius: 14px; font-weight: 800; font-size: 13px; outline: none; cursor: pointer; transition: 0.3s; max-width: 140px;
+            background: var(--primary-light); color: var(--primary); border: none;
+            padding: 8px 16px; border-radius: 100px; font-weight: 800; font-size: 13px; outline: none; cursor: pointer; transition: 0.2s;
+            appearance: none; -webkit-appearance: none; padding-left: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234f46e5' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: left 10px center;
         }
-        .deck-selector:hover { background: rgba(99,102,241,0.2); }
 
-        .profile-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .streak-badge { background: rgba(245, 158, 11, 0.15); color: var(--warning-color); padding: 6px 12px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px; font-size: 14px; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .profile-avatar { width: 40px; height: 40px; background: var(--primary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 900; box-shadow: var(--shadow-glow); font-size: 15px; border: 2px solid white; }
+        .profile-area { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .streak-badge { background: var(--warning-light); color: var(--warning); padding: 6px 12px; border-radius: 100px; font-weight: 800; display: flex; align-items: center; gap: 4px; font-size: 14px; }
+        .profile-avatar { width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px; box-shadow: 0 4px 10px var(--primary-glow); }
 
-        #offline-indicator {
-            display: none; background: var(--danger-color); color: white; font-size: 11px; font-weight: bold;
-            padding: 4px 8px; border-radius: 10px; margin-right: 10px; animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        #offline-indicator { display: none; background: var(--danger); color: white; font-size: 11px; font-weight: bold; padding: 4px 10px; border-radius: 100px; margin-right: 10px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        .view-section { display: none; animation: fadeUp 0.3s ease-out; }
+        .view-section { display: none; animation: fadeUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .view-section.active { display: block; }
 
-        .auth-card { max-width: 420px; margin: 40px auto; background: var(--surface-solid); padding: 40px; border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); text-align: center; }
-        .auth-card h2 { margin-bottom: 15px; font-weight: 900; font-size: 28px; }
-
-        .hero-card { background: var(--primary-gradient); color: white; border-radius: 30px; padding: 40px 20px; text-align: center; box-shadow: var(--shadow-glow); margin-bottom: 30px; position: relative; overflow: hidden; }
-        .hero-card h2 { font-size: 15px; margin-bottom: 12px; font-weight: 600; letter-spacing: 1px; opacity: 0.9; }
-        .hero-card .review-count { font-size: 64px; font-weight: 900; margin-bottom: 25px; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-
-        .btn-primary { background-color: white; color: var(--primary-color); border: none; padding: 16px 32px; font-size: 17px; font-weight: 800; border-radius: 30px; cursor: pointer; width: 100%; max-width: 280px; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 16px; position: relative; z-index: 2; }
-        .btn-primary:active { transform: scale(0.98); }
+        /* دکمه‌های اصلی (طراحی اپل) */
+        .btn-primary { background-color: var(--primary); color: white; border: none; padding: 18px 32px; font-size: 16px; font-weight: 800; border-radius: 100px; cursor: pointer; width: 100%; transition: 0.2s; box-shadow: 0 8px 20px var(--primary-glow); display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-primary:active { transform: scale(0.96); box-shadow: 0 4px 10px var(--primary-glow); }
         
-        .btn-add-card { background: var(--primary-gradient); color: white; border: none; padding: 10px 18px; border-radius: 16px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: var(--shadow-md); transition: 0.2s; display: flex; align-items: center; gap: 5px;}
-        .btn-add-card:active { transform: scale(0.95); }
+        .btn-secondary { background: var(--surface-solid); color: var(--text-main); border: 1px solid var(--border-color); padding: 14px 24px; border-radius: 100px; font-weight: 800; cursor: pointer; font-size: 14px; box-shadow: var(--shadow-card); transition: 0.2s; display: flex; align-items: center; gap: 8px; justify-content: center;}
+        .btn-secondary:active { transform: scale(0.96); background: var(--bg-color);}
 
-        .section-title { font-size: 20px; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        /* کارت خوش‌آمدگویی و آمار */
+        .hero-card { background: var(--surface-solid); border-radius: var(--border-radius-lg); padding: 35px 25px; text-align: center; box-shadow: var(--shadow-card); margin-bottom: 30px; border: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; }
+        .hero-card h2 { font-size: 14px; margin-bottom: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .hero-card .review-count { font-size: 72px; font-weight: 900; margin-bottom: 25px; line-height: 1; color: var(--text-main); letter-spacing: -2px;}
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
-        .stat-card { background-color: var(--surface-solid); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); align-items: center; text-align: center; }
-        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); }
-        .stat-card .title { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
-        .stat-card .value { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-title { font-size: 18px; margin-bottom: 20px; font-weight: 900; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+        .section-title i { color: var(--primary); font-size: 22px; }
 
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 35px; }
+        .stat-card { background: var(--surface-solid); border-radius: var(--border-radius-md); padding: 18px 10px; box-shadow: var(--shadow-card); border: 1px solid var(--border-color); text-align: center; display: flex; flex-direction: column; gap: 5px; }
+        .stat-card .title { color: var(--text-muted); font-size: 12px; font-weight: 800; }
+        .stat-card .value { font-size: 22px; font-weight: 900; color: var(--text-main); }
+
+        /* جعبه‌های مینیمال پاستلی */
         .boxes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-        .box-card { border-radius: 24px; padding: 22px 5px; text-align: center; cursor: pointer; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
-        .box-1 { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); }
-        .box-2 { background: linear-gradient(135deg, #F2994A 0%, #F2C94C 100%); }
-        .box-3 { background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); }
-        .box-4 { background: linear-gradient(135deg, #B24592 0%, #F15F79 100%); }
-        .box-5 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .box-6 { background: linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%); color: #0f172a; }
-        .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
-        .box-card .box-count { font-size: 30px; font-weight: 900; }
+        .box-card { border-radius: var(--border-radius-md); padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .box-card:active { transform: scale(0.95); }
+        
+        .box-1 { background: var(--danger-light); color: var(--danger); }
+        .box-2 { background: var(--warning-light); color: var(--warning); }
+        .box-3 { background: #e0f2fe; color: #0284c7; }
+        .box-4 { background: #f3e8ff; color: #7e22ce; }
+        .box-5 { background: var(--success-light); color: var(--success); }
+        .box-6 { background: #f1f5f9; color: #475569; }
+        
+        [data-theme="dark"] .box-6 { background: rgba(255,255,255,0.05); color: #cbd5e1; }
 
-        /* مرور متمرکز */
-        .review-wrapper { perspective: 2000px; width: 100%; max-width: 440px; margin: 0 auto; height: 60vh; min-height: 400px; max-height: 550px; }
+        .box-card .box-name { font-size: 12px; font-weight: 800; opacity: 0.8; margin-bottom: 4px; text-transform: uppercase;}
+        .box-card .box-count { font-size: 28px; font-weight: 900; }
+
+        /* ------------------ فلش‌کارت فوق‌مدرن (Super Modern Flip Card) ------------------ */
+        .review-wrapper { perspective: 2000px; width: 100%; max-width: 400px; margin: 0 auto; height: 60vh; min-height: 400px; max-height: 550px; }
         .flip-card { width: 100%; height: 100%; }
-        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         
         .flip-front, .flip-back { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; 
-            background: var(--surface-solid); border-radius: 32px; box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); 
-            border: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 20px; 
+            background: var(--surface-solid); border-radius: 40px; box-shadow: var(--shadow-float); 
+            border: 1px solid var(--border-color); display: flex; flex-direction: column; padding: 25px; 
         }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
         
         .card-header-bar { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
-        .review-box-label { font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 6px 14px; border-radius: 12px; }
+        .review-box-label { font-size: 12px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 6px 14px; border-radius: 100px; }
 
         .card-content-scroll { flex: 1; width: 100%; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; }
         .card-content-scroll::-webkit-scrollbar { display: none; }
         
-        .review-word { font-size: 28px; font-weight: 900; color: var(--text-main); line-height: 1.5; word-wrap: break-word; text-align: center; width: 100%; margin-top: auto; margin-bottom: 25px; }
-        .review-meaning { font-size: 26px; color: var(--success-color); font-weight: 900; line-height: 1.5; word-wrap: break-word; text-align: center; width: 100%; margin-top: auto; margin-bottom: 15px; }
-        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 16px; border-radius: 16px; background: var(--bg-color); width: 100%; text-align: center; margin-bottom: auto; }
+        .review-word { font-size: 32px; font-weight: 900; color: var(--text-main); line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-top: auto; margin-bottom: 25px; letter-spacing: -0.5px;}
+        .review-meaning { font-size: 28px; color: var(--success); font-weight: 900; line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-top: auto; margin-bottom: 20px; }
+        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 20px; border-radius: 20px; background: var(--bg-color); width: 100%; text-align: center; margin-bottom: auto; border: 1px solid var(--border-color);}
 
-        .btn-audio { width: 56px; height: 56px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(99,102,241,0.35); transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; margin-bottom: auto; }
-        .btn-audio:active { transform: scale(0.85); }
+        .btn-audio { width: 60px; height: 60px; border-radius: 50%; border: none; background: var(--primary-light); color: var(--primary); cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; margin-bottom: auto; }
+        .btn-audio:active { transform: scale(0.85); background: var(--primary); color: white;}
 
-        .review-actions { max-width: 440px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
+        .review-actions { max-width: 400px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
         
-        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.2s; }
-        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.2s; }
-        .btn-know:active, .btn-dont-know:active { transform: scale(0.95); }
+        .btn-know, .btn-dont-know { border: none; padding: 18px 10px; border-radius: 24px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
+        .btn-know { background: var(--success-light); color: var(--success); }
+        .btn-dont-know { background: var(--danger-light); color: var(--danger); }
+        .btn-know:active, .btn-dont-know:active { transform: scale(0.95); filter: brightness(0.95);}
 
-        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 17px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 440px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
-        .btn-reveal-main:active { transform: scale(0.98); }
-
-        /* مدیریت کارت‌ها */
-        .csv-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .btn-csv { flex: 1; min-width: 140px; padding: 14px; border-radius: 16px; border: 2px solid var(--primary-color); background: rgba(99,102,241,0.05); color: var(--primary-color); font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 15px; }
-        .btn-csv:active { transform: scale(0.97); }
+        /* لیست کارت‌ها */
+        .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-input { flex: 1; padding: 16px 20px; border-radius: 100px; border: 1px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 15px; outline: none; font-weight: 600; transition: 0.2s; }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
         
-        .manager-controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-        .search-input, .filter-select { flex: 1; min-width: 130px; padding: 14px 18px; border-radius: 16px; border: 2px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 15px; outline: none; font-weight: 600; }
-        .search-input:focus, .filter-select:focus { border-color: var(--primary-color); }
+        .filters-container { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px;}
+        .filters-container::-webkit-scrollbar { display: none; }
+        .filter-select { padding: 12px 20px; border-radius: 100px; border: 1px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 14px; outline: none; font-weight: 800; cursor: pointer; white-space: nowrap;}
         
-        .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
-        .icon-btn { background: var(--bg-color); border: none; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px; transition: 0.2s;}
+        .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 24px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
+        .card-info-wrap { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
+        .card-texts { display: flex; flex-direction: column; gap: 4px; overflow: hidden;}
+        .card-texts strong { font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .card-texts span { color: var(--success); font-weight: 800; font-size: 14px;}
+        .card-texts small { font-size: 11px; color: var(--text-muted); font-weight: 600; background: var(--bg-color); padding: 2px 8px; border-radius: 6px; display: inline-block; width: fit-content;}
+        
+        .icon-btn { background: var(--bg-color); color: var(--text-muted); border: none; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 20px; display: inline-flex; align-items: center; justify-content: center; transition: 0.2s; margin-right: 5px;}
         .icon-btn:active { transform: scale(0.9); }
+        .btn-del:active { background: var(--danger-light); color: var(--danger); }
 
         /* تنظیمات */
-        .settings-card { background: var(--surface-solid); padding: 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); }
+        .settings-card { background: var(--surface-solid); padding: 20px 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-card); }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.85); justify-content: center; align-items: center; padding: 20px; z-index: 100; overflow-y: auto; opacity: 0; transition: opacity 0.2s; }
+        /* پنل‌های کشویی (iOS Bottom Sheet) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 100; opacity: 0; transition: opacity 0.3s; align-items: flex-end; justify-content: center;}
         .modal.show { opacity: 1; }
-        .modal-content { background-color: var(--surface-solid); padding: 30px; border-radius: 30px; width: 100%; max-width: 480px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); text-align: center; border: 1px solid var(--border-color); transform: scale(0.9); transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .modal.show .modal-content { transform: scale(1); }
-
-        .form-group { margin-bottom: 20px; text-align: right; }
-        [data-theme] .form-group { text-align: inherit; }
-        .form-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 8px; font-weight: 800; }
-        .form-control { width: 100%; padding: 16px; border: 2px solid var(--border-color); border-radius: 16px; font-size: 16px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; }
-        .form-control:focus { border-color: var(--primary-color); }
+        .modal-content { background-color: var(--surface-solid); padding: 35px 25px 40px; border-radius: 32px 32px 0 0; width: 100%; max-width: 600px; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 90vh; overflow-y: auto;}
+        .modal.show .modal-content { transform: translateY(0); }
         
-        .btn-submit { background: var(--primary-gradient); color: white; border: none; padding: 14px; border-radius: 16px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 10px; }
-        .btn-close { background-color: transparent; color: var(--primary-color); border: none; padding: 12px 20px; border-radius: 16px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
+        /* خط کوچک بالای Bottom Sheet */
+        .modal-drag-indicator { width: 40px; height: 5px; background: var(--border-color); border-radius: 10px; margin: 0 auto 25px; }
 
-        /* ناوبری */
-        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 600px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 12px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border-color); border-radius: 30px; z-index: 99; display: none; }
+        .form-group { margin-bottom: 16px; text-align: right; }
+        [data-theme] .form-group { text-align: inherit; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 800; }
+        .form-control { width: 100%; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 15px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; transition: 0.2s;}
+        .form-control:focus { border-color: var(--primary); background: var(--surface-solid);}
+        
+        /* ناوبری کپسولی معلق */
+        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 400px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 8px; box-shadow: var(--shadow-float); border: 1px solid var(--border-color); border-radius: 100px; z-index: 99; display: none; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
         .bottom-nav.logged-in { display: flex; }
-        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; padding: 8px 15px; border-radius: 20px; transition: 0.2s; }
-        .nav-item .icon { font-size: 20px; }
-        .nav-item.active { color: var(--primary-color); background: rgba(99,102,241,0.1); }
+        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 800; padding: 10px 16px; border-radius: 100px; transition: 0.2s; }
+        .nav-item i { font-size: 24px; transition: 0.2s; }
+        .nav-item.active { color: var(--primary); background: var(--primary-light); }
+        /* تغییر آیکون به حالت توپر هنگام اکتیو بودن */
+        .nav-item.active i { font-family: 'Phosphor-Fill', sans-serif; font-weight: 900;}
 
         #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; pointer-events: none; }
-        .custom-toast { background: var(--surface-solid); color: var(--text-main); padding: 16px 24px; border-radius: 100px; font-weight: 800; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 2px solid var(--border-color); }
-        .custom-toast.error { border-color: var(--danger-color); color: var(--danger-color); }
-        .custom-toast.success { border-color: var(--success-color); color: var(--success-color); }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(-30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .custom-toast { background: var(--surface-solid); color: var(--text-main); padding: 16px 24px; border-radius: 100px; font-weight: 800; font-size: 14px; box-shadow: var(--shadow-float); display: flex; align-items: center; gap: 10px; animation: toastIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border: 1px solid var(--border-color); }
+        .custom-toast i { font-size: 20px; }
+        .custom-toast.error i { color: var(--danger); }
+        .custom-toast.success i { color: var(--success); }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(-20px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes toastOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
 
-        .custom-checkbox { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border: 2px solid var(--border-color); border-radius: 6px; outline: none; cursor: pointer; position: relative; background: var(--surface-solid); }
-        .custom-checkbox:checked { background: var(--primary-gradient); border-color: transparent; }
-        .custom-checkbox:checked::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; }
+        .custom-checkbox { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border: 2px solid var(--text-muted); border-radius: 8px; outline: none; cursor: pointer; position: relative; background: transparent; transition: 0.2s; }
+        .custom-checkbox:checked { background: var(--primary); border-color: var(--primary); }
+        .custom-checkbox:checked::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; font-family: sans-serif;}
 
-        .toggle-switch { position: relative; width: 50px; height: 26px; }
+        .toggle-switch { position: relative; width: 50px; height: 28px; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); border-radius: 34px; transition: 0.3s;}
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.3s;}
-        input:checked + .slider { background: var(--primary-gradient); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); border-radius: 100px; transition: 0.3s;}
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);}
+        input:checked + .slider { background: var(--success); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
-        @media (min-width: 800px) { .bottom-nav.logged-in { display: none; } body { padding-bottom: 20px; } .container { padding: 20px; } }
+        @media (min-width: 800px) { 
+            .bottom-nav.logged-in { display: none; } 
+            body { padding-bottom: 20px; } 
+            .container { padding: 20px; }
+            .modal { align-items: center; }
+            .modal-content { border-radius: 32px; transform: scale(0.95); }
+            .modal.show .modal-content { transform: scale(1); }
+            .modal-drag-indicator { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -224,65 +263,65 @@
         <header id="mainHeader">
             <div class="header-left">
                 <h1 id="appTitle">Leitner</h1>
-                <select id="headerDeckSelect" class="deck-selector" onchange="handleDeckChange(this.value)" style="display:none;"></select>
-                <!-- نشانگر وضعیت آفلاین -->
+                <select id="headerDeckSelect" class="deck-selector en-text" onchange="handleDeckChange(this.value)" style="display:none;"></select>
                 <span id="offline-indicator">آفلاین</span>
             </div>
             
             <div class="profile-area" id="headerProfileArea" style="display: none;" onclick="switchView('settings')">
-                <div class="streak-badge" title="زنجیره روزانه">🔥 <span id="headerStreakVal">0</span></div>
-                <span id="headerUserName" style="font-weight: 800; font-size: 14px; margin-left: 5px;">کاربر</span>
+                <div class="streak-badge" title="زنجیره روزانه"><i class="ph-fill ph-fire"></i> <span id="headerStreakVal">0</span></div>
                 <div class="profile-avatar" id="headerAvatar">MR</div>
             </div>
         </header>
 
         <!-- بخش ورود -->
         <section id="view-login" class="view-section active auth-card">
-            <h2 id="lblLoginTitle">ورود به دنیای لایتنر</h2>
+            <div style="font-size: 48px; color: var(--primary); margin-bottom: 10px;"><i class="ph-fill ph-student"></i></div>
+            <h2 id="lblLoginTitle">ورود به حساب</h2>
             <p id="lblLoginDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">یادگیری هوشمند زبان را ادامه دهید.</p>
-            <div class="form-group"><input type="email" id="loginEmail" class="form-control" placeholder="ایمیل (Email)" dir="ltr"></div>
-            <div class="form-group"><input type="password" id="loginPassword" class="form-control" placeholder="رمز عبور (Password)" dir="ltr"></div>
-            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit" style="max-width: 100%;">ورود به حساب</button>
-            <button class="btn-close" onclick="showSignup()" id="btnGoSignup" style="color:var(--text-muted); font-size: 14px;">حساب کاربری ندارید؟ ثبت‌نام کنید</button>
+            <div class="form-group"><input type="email" id="loginEmail" class="form-control en-text" placeholder="Email" dir="ltr"></div>
+            <div class="form-group"><input type="password" id="loginPassword" class="form-control en-text" placeholder="Password" dir="ltr"></div>
+            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit" style="max-width: 100%;">ورود <i class="ph-bold ph-arrow-right"></i></button>
+            <button class="btn-secondary" onclick="showSignup()" id="btnGoSignup" style="width: 100%;">ثبت‌نام حساب جدید</button>
         </section>
 
         <!-- بخش ثبت نام -->
         <section id="view-signup" class="view-section auth-card">
+            <div style="font-size: 48px; color: var(--primary); margin-bottom: 10px;"><i class="ph-fill ph-user-plus"></i></div>
             <h2 id="lblSignupTitle">ثبت‌نام سریع</h2>
             <p id="lblSignupDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">کارت‌های شما در سرور ابری ذخیره می‌شوند.</p>
-            <div class="form-group"><input type="text" id="signupName" class="form-control" placeholder="نام شما (Name)"></div>
-            <div class="form-group"><input type="email" id="signupEmail" class="form-control" placeholder="ایمیل (Email)" dir="ltr"></div>
-            <div class="form-group"><input type="password" id="signupPassword" class="form-control" placeholder="رمز عبور (6 کاراکتر)" dir="ltr"></div>
-            <button class="btn-primary" onclick="handleSignup()" id="btnSignupSubmit" style="max-width: 100%;">ایجاد حساب جدید</button>
-            <button class="btn-close" onclick="showLogin()" id="btnGoLogin" style="color:var(--text-muted); font-size: 14px;">قبلاً ثبت‌نام کرده‌اید؟ وارد شوید</button>
+            <div class="form-group"><input type="text" id="signupName" class="form-control" placeholder="نام شما"></div>
+            <div class="form-group"><input type="email" id="signupEmail" class="form-control en-text" placeholder="Email" dir="ltr"></div>
+            <div class="form-group"><input type="password" id="signupPassword" class="form-control en-text" placeholder="Password (Min 6)" dir="ltr"></div>
+            <button class="btn-primary" onclick="handleSignup()" id="btnSignupSubmit" style="max-width: 100%;">ایجاد حساب <i class="ph-bold ph-check"></i></button>
+            <button class="btn-secondary" onclick="showLogin()" id="btnGoLogin" style="width: 100%;">بازگشت به ورود</button>
         </section>
 
         <!-- داشبورد -->
         <section id="view-dashboard" class="view-section">
             <section class="hero-card">
-                <h2 id="lblReadyReview">مستعد مرور امروز</h2>
-                <div class="review-count" id="totalReviewCount">0</div>
-                <button class="btn-primary" onclick="startFocusReview()" id="btnStartReview">شروع مرور متمرکز</button>
+                <h2 id="lblReadyReview">کارت‌های آماده مرور امروز</h2>
+                <div class="review-count en-text" id="totalReviewCount">0</div>
+                <button class="btn-primary" onclick="startFocusReview()" id="btnStartReview" style="background: white; color: var(--primary);">شروع مرور <i class="ph-bold ph-play"></i></button>
             </section>
 
-            <h3 class="section-title" id="lblStatsTitle">📊 آمار یادگیری</h3>
+            <h3 class="section-title" id="lblStatsTitle"><i class="ph-fill ph-chart-bar"></i> آمار یادگیری</h3>
             <section class="stats-grid">
-                <div class="stat-card"><span class="title" id="lblRevToday">مرور امروز</span><span class="value" id="statReviewedToday">0</span></div>
-                <div class="stat-card"><span class="title" id="lblCorrect">جواب درست</span><span class="value" id="statCorrect">0</span></div>
-                <div class="stat-card"><span class="title" id="lblIncorrect">جواب اشتباه</span><span class="value" id="statIncorrect">0</span></div>
-                <div class="stat-card"><span class="title" id="lblAccuracy">دقت پاسخ</span><span class="value" id="statAccuracy">0%</span></div>
-                <div class="stat-card"><span class="title" id="lblWeek">این هفته</span><span class="value" id="statWeekLearned">0</span></div>
-                <div class="stat-card"><span class="title" id="lblMonth">این ماه</span><span class="value" id="statMonthLearned">0</span></div>
+                <div class="stat-card"><span class="title" id="lblRevToday">مرور امروز</span><span class="value en-text" id="statReviewedToday">0</span></div>
+                <div class="stat-card"><span class="title" id="lblCorrect">جواب درست</span><span class="value en-text" id="statCorrect">0</span></div>
+                <div class="stat-card"><span class="title" id="lblIncorrect">جواب اشتباه</span><span class="value en-text" id="statIncorrect">0</span></div>
+                <div class="stat-card"><span class="title" id="lblAccuracy">دقت پاسخ</span><span class="value en-text" id="statAccuracy">0%</span></div>
+                <div class="stat-card"><span class="title" id="lblWeek">این هفته</span><span class="value en-text" id="statWeekLearned">0</span></div>
+                <div class="stat-card"><span class="title" id="lblMonth">این ماه</span><span class="value en-text" id="statMonthLearned">0</span></div>
             </section>
 
-            <h3 class="section-title" id="lblBoxesTitle">📦 وضعیت جعبه‌ها (۱ تا ۶)</h3>
+            <h3 class="section-title" id="lblBoxesTitle"><i class="ph-fill ph-package"></i> وضعیت جعبه‌ها</h3>
             <section class="boxes-grid">
-                <div class="box-card box-1" onclick="openBoxModal(1)"><div class="box-name">Box 1</div><div class="box-count" id="count-1">0</div></div>
-                <div class="box-card box-2" onclick="openBoxModal(2)"><div class="box-name">Box 2</div><div class="box-count" id="count-2">0</div></div>
-                <div class="box-card box-3" onclick="openBoxModal(3)"><div class="box-name">Box 3</div><div class="box-count" id="count-3">0</div></div>
-                <div class="box-card box-4" onclick="openBoxModal(4)"><div class="box-name">Box 4</div><div class="box-count" id="count-4">0</div></div>
-                <div class="box-card box-5" onclick="openBoxModal(5)"><div class="box-name">Box 5</div><div class="box-count" id="count-5">0</div></div>
-                <div class="box-card box-6" onclick="openBoxModal(6)"><div class="box-name">Box 6</div><div class="box-count" id="count-6">0</div></div>
+                <div class="box-card box-1" onclick="openBoxModal(1)"><div class="box-name en-text">BOX 1</div><div class="box-count en-text" id="count-1">0</div></div>
+                <div class="box-card box-2" onclick="openBoxModal(2)"><div class="box-name en-text">BOX 2</div><div class="box-count en-text" id="count-2">0</div></div>
+                <div class="box-card box-3" onclick="openBoxModal(3)"><div class="box-name en-text">BOX 3</div><div class="box-count en-text" id="count-3">0</div></div>
+                <div class="box-card box-4" onclick="openBoxModal(4)"><div class="box-name en-text">BOX 4</div><div class="box-count en-text" id="count-4">0</div></div>
+                <div class="box-card box-5" onclick="openBoxModal(5)"><div class="box-name en-text">BOX 5</div><div class="box-count en-text" id="count-5">0</div></div>
+                <div class="box-card box-6" onclick="openBoxModal(6)"><div class="box-name en-text">BOX 6</div><div class="box-count en-text" id="count-6">0</div></div>
             </section>
         </section>
 
@@ -293,35 +332,35 @@
                     <div class="flip-card-inner">
                         <div class="flip-front">
                             <div class="card-header-bar">
-                                <div class="review-box-label" id="reviewBoxLabel">Box 1</div>
+                                <div class="review-box-label en-text" id="reviewBoxLabel">Box 1</div>
                             </div>
                             <div class="card-content-scroll">
-                                <div class="review-word" id="reviewWordDisplay">Apple</div>
-                                <button class="btn-audio" onclick="speakCurrentWord(event)">🔊</button>
+                                <div class="review-word en-text" id="reviewWordDisplay">Apple</div>
+                                <button class="btn-audio" onclick="speakCurrentWord(event)"><i class="ph-bold ph-speaker-high"></i></button>
                             </div>
                         </div>
                         <div class="flip-back">
                             <div class="card-header-bar">
-                                <div class="review-box-label" style="opacity: 0.6;">پاسخ</div>
+                                <div class="review-box-label" style="background: var(--bg-color); color: var(--text-muted);">پاسخ</div>
                             </div>
                             <div class="card-content-scroll">
                                 <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
-                                <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
+                                <div class="review-example en-text" id="reviewExampleDisplay">I eat an apple.</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <button class="btn-reveal-main" onclick="toggleFlipCard()" id="btnReveal">مشاهده پاسخ (Flip)</button>
+            <button class="btn-reveal-main" onclick="toggleFlipCard()" id="btnReveal"><i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ</button>
             
             <div class="review-actions" id="reviewActions">
-                <button class="btn-dont-know" onclick="submitReviewAnswer(1)" id="btnNo">❌ فراموش کردم</button>
-                <button class="btn-know" onclick="submitReviewAnswer('next')" id="btnYes">✅ به یاد داشتم</button>
+                <button class="btn-dont-know" onclick="submitReviewAnswer(1)" id="btnNo"><i class="ph-bold ph-x"></i> فراموش کردم</button>
+                <button class="btn-know" onclick="submitReviewAnswer('next')" id="btnYes"><i class="ph-bold ph-check"></i> به یاد داشتم</button>
             </div>
             
             <div style="text-align: center;">
-                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: var(--surface-solid); box-shadow: var(--shadow-sm); width: auto; padding: 12px 30px; margin-top: 25px;">خروج موقت</button>
+                <button class="btn-secondary" onclick="switchView('dashboard')" id="btnExitReview" style="margin: 30px auto 0;">خروج موقت</button>
             </div>
         </section>
 
@@ -329,53 +368,56 @@
         <section id="view-cards" class="view-section">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 class="section-title" id="lblCardsTitle" style="margin-bottom: 0;">🗂 مدیریت بانک لغات</h3>
-                <button class="btn-add-card" onclick="openAddModal()" id="btnAddCardList">➕ افزودن کارت جدید</button>
+                <h3 class="section-title" id="lblCardsTitle" style="margin-bottom: 0;"><i class="ph-fill ph-cards"></i> بانک لغات</h3>
+                <button class="btn-primary" onclick="openAddModal()" id="btnAddCardList" style="width: auto; padding: 10px 16px; margin:0; border-radius: 16px; font-size: 14px;"><i class="ph-bold ph-plus"></i> افزودن</button>
             </div>
             
-            <div class="csv-actions">
-                <button class="btn-csv" onclick="document.getElementById('csvFileInput').click()" id="btnImportCSV">📥 آپلود اکسل (CSV)</button>
-                <input type="file" id="csvFileInput" accept=".csv" style="display:none" onchange="importCSV(event)">
-                <button class="btn-csv" onclick="exportCSV()" id="btnExportCSV">📤 دانلود بکاپ (CSV)</button>
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="جستجوی کلمه..." oninput="renderCardsManager()">
             </div>
-
-            <div id="bulkActionsBar" style="display: none; justify-content: space-between; align-items: center; background: rgba(239, 68, 68, 0.1); padding: 15px 20px; border-radius: 16px; margin-bottom: 20px; border: 1px solid rgba(239, 68, 68, 0.3);">
-                <span id="lblSelectedCount" style="color: var(--danger-color); font-weight: 800; font-size: 15px;">0 مورد انتخاب شده</span>
-                <button id="btnBulkDelete" onclick="deleteSelectedCards()" style="background: var(--danger-color); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 14px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);">حذف گروهی 🗑️</button>
-            </div>
-
-            <div class="manager-controls">
-                <button id="btnSelectAll" onclick="toggleSelectAll()" style="padding: 14px 15px; border-radius: 16px; border: 2px solid var(--primary-color); background: transparent; color: var(--primary-color); cursor: pointer; font-weight: 800; flex: 1; min-width: 120px; transition: 0.3s;">انتخاب همه ✔️</button>
-                <input type="text" id="searchInput" class="search-input" placeholder="جستجو..." oninput="renderCardsManager()">
-                <select id="filterBox" class="filter-select" onchange="renderCardsManager()">
-                    <option value="all" id="optAllBoxes">همه جعبه‌ها</option>
+            
+            <div class="filters-container">
+                <select id="filterBox" class="filter-select en-text" onchange="renderCardsManager()">
+                    <option value="all" id="optAllBoxes">All Boxes</option>
                     <option value="1">Box 1</option><option value="2">Box 2</option><option value="3">Box 3</option><option value="4">Box 4</option><option value="5">Box 5</option><option value="6">Box 6</option>
                 </select>
-                <select id="filterCategory" class="filter-select" onchange="renderCardsManager()">
-                    <option value="all" id="optAllCats">همه دسته‌ها</option>
+                <select id="filterCategory" class="filter-select en-text" onchange="renderCardsManager()">
+                    <option value="all" id="optAllCats">All Categories</option>
                     <option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option>
                 </select>
             </div>
+
+            <div id="bulkActionsBar" style="display: none; justify-content: space-between; align-items: center; background: var(--danger-light); padding: 12px 20px; border-radius: 100px; margin-bottom: 20px;">
+                <span id="lblSelectedCount" style="color: var(--danger); font-weight: 800; font-size: 14px;">0 مورد انتخاب شده</span>
+                <button id="btnBulkDelete" onclick="deleteSelectedCards()" style="background: var(--danger); color: white; border: none; padding: 8px 16px; border-radius: 100px; font-weight: 800; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px;"><i class="ph-bold ph-trash"></i> حذف</button>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; color: var(--text-muted); cursor: pointer; width: fit-content;">
+                    <input type="checkbox" class="custom-checkbox" id="selectAllCb" onchange="toggleSelectAll()">
+                    <span id="btnSelectAll">انتخاب همه</span>
+                </label>
+            </div>
             
-            <div id="cardsManagerList" style="max-height: 60vh; overflow-y: auto; padding-right: 5px;"></div>
+            <div id="cardsManagerList" style="max-height: 55vh; overflow-y: auto; padding-right: 5px; padding-bottom: 20px;"></div>
         </section>
 
         <!-- تنظیمات -->
         <section id="view-settings" class="view-section">
-            <h3 class="section-title" id="lblSettingsTitle">⚙️ تنظیمات برنامه</h3>
+            <h3 class="section-title" id="lblSettingsTitle"><i class="ph-fill ph-gear"></i> تنظیمات</h3>
             
             <div class="settings-card">
                 <div>
                     <h4 style="margin-bottom: 5px;" id="lblDeleteFolder">حذف پوشه فعلی</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblDeleteFolderDesc">تمام کارت‌های این پوشه پاک می‌شود</p>
+                    <p style="color: var(--text-muted); font-size: 12px;" id="lblDeleteFolderDesc">تمام کارت‌های این پوشه پاک می‌شود</p>
                 </div>
-                <button onclick="deleteCurrentDeck()" style="padding: 10px 15px; border-radius: 12px; border:none; background: rgba(239, 68, 68, 0.1); color:var(--danger-color); font-weight:900; cursor:pointer; font-size: 14px; transition: 0.3s;">حذف 🗑️</button>
+                <button onclick="deleteCurrentDeck()" style="padding: 10px 16px; border-radius: 100px; border:none; background: var(--danger-light); color:var(--danger); font-weight:800; cursor:pointer; font-size: 13px; display: flex; align-items: center; gap: 6px;"><i class="ph-bold ph-trash"></i> حذف</button>
             </div>
 
             <div class="settings-card">
                 <div>
                     <h4 style="margin-bottom: 5px;" id="lblReverseReview">آموزش معکوس</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblReverseDesc">نمایش فارسی، حدس انگلیسی</p>
+                    <p style="color: var(--text-muted); font-size: 12px;" id="lblReverseDesc">نمایش فارسی، حدس انگلیسی</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="reverseToggle" onchange="toggleReverseMode()">
@@ -386,9 +428,9 @@
             <div class="settings-card">
                 <div>
                     <h4 style="margin-bottom: 5px;" id="lblLang">زبان (Language)</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblLangDesc">تغییر زبان رابط کاربری</p>
+                    <p style="color: var(--text-muted); font-size: 12px;" id="lblLangDesc">تغییر زبان رابط کاربری</p>
                 </div>
-                <select id="langSelect" class="filter-select" style="max-width: 140px; padding: 10px;" onchange="changeLanguage(this.value)">
+                <select id="langSelect" class="filter-select en-text" style="padding: 8px 16px;" onchange="changeLanguage(this.value)">
                     <option value="fa">فارسی</option>
                     <option value="en">English</option>
                 </select>
@@ -397,7 +439,7 @@
             <div class="settings-card">
                 <div>
                     <h4 style="margin-bottom: 5px;" id="lblDarkMode">تم تاریک (Dark Mode)</h4>
-                    <p style="color: var(--text-muted); font-size: 13px;" id="lblDarkDesc">جلوگیری از خستگی چشم</p>
+                    <p style="color: var(--text-muted); font-size: 12px;" id="lblDarkDesc">جلوگیری از خستگی چشم</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
@@ -405,45 +447,60 @@
                 </label>
             </div>
 
+            <h3 class="section-title" style="margin-top: 30px; font-size: 16px;"><i class="ph-fill ph-cloud-arrow-down"></i> پشتیبان‌گیری</h3>
+            <div class="settings-card" style="flex-direction: column; gap: 10px; align-items: stretch;">
+                <button class="btn-secondary" onclick="exportCSV()" id="btnExportCSV"><i class="ph-bold ph-download-simple"></i> دانلود فایل اکسل (Backup)</button>
+                <button class="btn-secondary" onclick="document.getElementById('csvFileInput').click()" id="btnImportCSV"><i class="ph-bold ph-upload-simple"></i> بازیابی از اکسل</button>
+            </div>
+
+            <h3 class="section-title" style="margin-top: 30px; font-size: 16px;"><i class="ph-fill ph-user-circle"></i> حساب کاربری</h3>
             <div class="settings-card">
-                <div><h4 id="lblCloudAccount" style="margin-bottom: 5px;">حساب متصل</h4><p style="color: var(--text-muted); font-size: 13px; font-family: monospace;" id="currentUserEmail">---</p></div>
-                <button id="btnLogout" onclick="handleLogout()" style="padding: 10px 15px; border-radius: 12px; border:none; background: rgba(239, 68, 68, 0.1); color:var(--danger-color); font-weight:900; cursor:pointer; font-size: 14px; transition: 0.3s;">خروج 🚪</button>
+                <div><p style="color: var(--text-main); font-size: 14px; font-weight: 800;" class="en-text" id="currentUserEmail">---</p></div>
+                <button onclick="handleLogout()" style="padding: 10px 16px; border-radius: 100px; border:none; background: var(--bg-color); color:var(--danger); font-weight:800; cursor:pointer; font-size: 13px; display: flex; align-items: center; gap: 6px;"><i class="ph-bold ph-sign-out"></i> خروج</button>
             </div>
         </section>
 
     </div>
 
-    <!-- مدال افزودن/ویرایش -->
+    <!-- Bottom Sheet افزودن کارت -->
     <div id="addModal" class="modal">
         <div class="modal-content">
-            <h2 id="lblAddTitle" style="margin-bottom: 25px; font-weight: 900;">افزودن فلش‌کارت</h2>
+            <div class="modal-drag-indicator"></div>
+            <h2 id="lblAddTitle" style="margin-bottom: 25px; font-weight: 900; text-align: right; display: flex; align-items: center; gap: 8px;"><i class="ph-fill ph-plus-circle" style="color: var(--primary);"></i> افزودن فلش‌کارت</h2>
             <input type="hidden" id="editCardId">
-            <div class="form-group"><label id="lblAddEng">کلمه / اصطلاح:</label><input type="text" id="inputEnglish" class="form-control" placeholder="Word..." dir="ltr"><button id="btnAutoTranslate" onclick="autoTranslateWord()" style="background:var(--primary-gradient); color:white; border:none; padding:12px; border-radius:12px; width:100%; margin-top:8px; cursor:pointer; font-weight:800; box-shadow: var(--shadow-glow);">✨ ترجمه هوشمند</button></div>
-            <div class="form-group"><label id="lblAddPer">معنی:</label><input type="text" id="inputPersian" class="form-control" placeholder="معنی..."></div>
-            <div class="form-group"><label id="lblAddEx">مثال (Example):</label><input type="text" id="inputExample" class="form-control" placeholder="Sentence..." dir="ltr"></div>
-            <div class="form-group"><label id="lblAddCat">دسته‌بندی:</label><select id="inputCategory" class="form-control"><option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option></select></div>
-            <div style="display: flex; gap: 10px; margin-top: 30px;">
-                <button class="btn-close" onclick="closeAddModal()" id="btnCancelAdd" style="margin: 0; background: var(--bg-color);">انصراف</button>
-                <button class="btn-submit" onclick="saveCard()" id="btnSaveCard" style="margin: 0;">ذخیره کارت ✔️</button>
+            <div class="form-group">
+                <label id="lblAddEng">کلمه یا اصطلاح:</label>
+                <div style="position: relative;">
+                    <input type="text" id="inputEnglish" class="form-control en-text" placeholder="Type here..." dir="ltr" style="padding-right: 50px;">
+                    <button id="btnAutoTranslate" onclick="autoTranslateWord()" style="position: absolute; right: 8px; top: 8px; bottom: 8px; background:var(--primary-light); color:var(--primary); border:none; border-radius:12px; width: 40px; cursor:pointer; display: flex; align-items: center; justify-content: center; font-size: 20px;" title="ترجمه هوشمند"><i class="ph-fill ph-magic-wand"></i></button>
+                </div>
+            </div>
+            <div class="form-group"><label id="lblAddPer">معنی:</label><input type="text" id="inputPersian" class="form-control" placeholder="معنی فارسی..."></div>
+            <div class="form-group"><label id="lblAddEx">مثال کاربردی:</label><input type="text" id="inputExample" class="form-control en-text" placeholder="Example sentence..." dir="ltr"></div>
+            <div class="form-group"><label id="lblAddCat">دسته‌بندی:</label><select id="inputCategory" class="form-control en-text"><option value="Daily English">Daily English</option><option value="Travel">Travel</option><option value="Food">Food</option><option value="Grammar">Grammar</option></select></div>
+            <div style="display: flex; gap: 12px; margin-top: 30px;">
+                <button class="btn-secondary" onclick="closeAddModal()" id="btnCancelAdd" style="flex: 1;">انصراف</button>
+                <button class="btn-primary" onclick="saveCard()" id="btnSaveCard" style="flex: 2; margin: 0;">ذخیره کارت</button>
             </div>
         </div>
     </div>
 
-    <!-- مدال مشاهده محتویات باکس -->
+    <!-- Bottom Sheet مشاهده محتویات باکس -->
     <div id="boxModal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
-            <h2 id="boxModalTitle" style="margin-bottom: 20px;">محتویات جعبه</h2>
-            <div id="boxModalCardList" style="text-align: left; padding-right: 5px; max-height: 400px; overflow-y: auto;"></div>
-            <button class="btn-primary" onclick="closeBoxModal()" id="btnCloseBox" style="margin-top: 20px;">بستن صفحه</button>
+            <div class="modal-drag-indicator"></div>
+            <h2 id="boxModalTitle" style="margin-bottom: 20px; font-weight: 900; text-align: right; display: flex; align-items: center; gap: 8px;"><i class="ph-fill ph-package" style="color: var(--primary);"></i> محتویات جعبه</h2>
+            <div id="boxModalCardList" style="text-align: right; max-height: 50vh; overflow-y: auto;"></div>
+            <button class="btn-secondary" onclick="closeBoxModal()" id="btnCloseBox" style="margin-top: 20px; width: 100%;">بستن صفحه</button>
         </div>
     </div>
 
-    <!-- منوی ناوبری -->
+    <!-- ناوبری کپسولی شناور -->
     <nav class="bottom-nav" id="bottomNav">
-        <div class="nav-item active" onclick="switchView('dashboard')"><span class="icon">📊</span><span id="navDash">داشبورد</span></div>
-        <div class="nav-item" onclick="switchView('review')"><span class="icon">📖</span><span id="navReview">مرور</span></div>
-        <div class="nav-item" onclick="switchView('cards')"><span class="icon">🗂</span><span id="navCards">لغات</span></div>
-        <div class="nav-item" onclick="switchView('settings')"><span class="icon">⚙️</span><span id="navSettings">تنظیمات</span></div>
+        <div class="nav-item active" onclick="switchView('dashboard')"><i class="ph ph-squares-four"></i><span id="navDash">داشبورد</span></div>
+        <div class="nav-item" onclick="switchView('review')"><i class="ph ph-cards"></i><span id="navReview">مرور</span></div>
+        <div class="nav-item" onclick="switchView('cards')"><i class="ph ph-folder-open"></i><span id="navCards">لغات</span></div>
+        <div class="nav-item" onclick="switchView('settings')"><i class="ph ph-gear-six"></i><span id="navSettings">تنظیمات</span></div>
     </nav>
 
     <script>
@@ -460,6 +517,10 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        db.enablePersistence().catch(function(err) {
+            console.error("Firebase Offline Error: ", err);
+        });
+
         let currentUser = null;
         let sampleCards = [];
         let reviewsLog = [];
@@ -467,7 +528,14 @@
         let isAllSelected = false; 
         let isCardRevealedThisTurn = false; 
 
-        // سیستم مدیریت اتصال اینترنت
+        // بستن مدال با کلیک بیرون آن (حالت iOS)
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+                setTimeout(() => event.target.style.display = 'none', 300);
+            }
+        }
+
         window.addEventListener('online', () => {
             document.getElementById('offline-indicator').style.display = 'none';
             if (currentUser) loadDataFromCloud();
@@ -480,10 +548,10 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `custom-toast ${type}`;
-            const icon = type === 'error' ? '❌' : (type === 'success' ? '✅' : 'ℹ️');
-            toast.innerHTML = `<span>${icon}</span> <span>${msg}</span>`;
+            const icon = type === 'error' ? '<i class="ph-fill ph-warning-circle"></i>' : (type === 'success' ? '<i class="ph-fill ph-check-circle"></i>' : '<i class="ph-fill ph-info"></i>');
+            toast.innerHTML = `${icon} <span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 400); }, 3500);
+            setTimeout(() => { toast.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
         function getTodayString() { return new Date().toISOString().split('T')[0]; }
@@ -501,7 +569,6 @@
             document.getElementById('mainHeader').style.display = 'flex';
         }
 
-        // تابع اجرای اطلاعات ذخیره شده در گوشی (لودینگ فوری آفلاین)
         function loadLocalData() {
             const localCards = localStorage.getItem('leitner_offline_cards');
             if(localCards) {
@@ -520,17 +587,15 @@
             return false;
         }
 
-        // اگر هنگام باز کردن برنامه اینترنت قطع بود
         window.addEventListener('load', () => {
             if (!navigator.onLine) {
                 document.getElementById('offline-indicator').style.display = 'inline-block';
                 const hasLocalData = loadLocalData();
                 if (hasLocalData) {
-                    // دور زدن صفحه لاگین اگر کاربر قبلاً لاگین بوده و الان آفلاین است
                     document.getElementById('headerProfileArea').style.display = 'flex';
                     document.getElementById('bottomNav').classList.add('logged-in');
                     switchView('dashboard');
-                    showToast('شما آفلاین هستید. برنامه با اطلاعات قبلی اجرا شد.', 'info');
+                    showToast('شما آفلاین هستید. برنامه با اطلاعات محلی اجرا شد.', 'info');
                 }
             }
         });
@@ -548,20 +613,13 @@
                 document.getElementById('headerProfileArea').style.display = 'flex';
                 document.getElementById('bottomNav').classList.add('logged-in'); 
 
-                // ابتدا لود سریع اطلاعات از گوشی
                 loadLocalData();
                 switchView('dashboard');
                 
-                // سپس در پس‌زمینه با سرور چک کند (اگر اینترنت وصل بود)
-                if (navigator.onLine) {
-                    loadDataFromCloud();
-                }
+                if (navigator.onLine) { loadDataFromCloud(); }
             } else {
                 currentUser = null;
-                // اگر آفلاین هستیم و دیتای محلی داریم، کاربر را بیرون نیندازیم
-                if (!navigator.onLine && localStorage.getItem('leitner_offline_cards')) {
-                    return; // کاربر در داشبورد میماند
-                }
+                if (!navigator.onLine && localStorage.getItem('leitner_offline_cards')) return;
                 document.getElementById('headerProfileArea').style.display = 'none';
                 document.getElementById('bottomNav').classList.remove('logged-in'); 
                 showLogin(); 
@@ -575,10 +633,10 @@
             if (!email || !pass) { showToast(userProfile.lang === 'fa' ? 'ایمیل و رمز عبور الزامی است!' : 'Email and password required!', 'error'); return; }
 
             const btn = document.getElementById('btnLoginSubmit');
-            btn.innerText = '...'; btn.disabled = true;
+            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i>'; btn.disabled = true;
 
             auth.signInWithEmailAndPassword(email, pass).catch(err => {
-                btn.innerText = userProfile.lang === 'fa' ? 'ورود به حساب' : 'Log in'; btn.disabled = false;
+                btn.innerHTML = userProfile.lang === 'fa' ? 'ورود <i class="ph-bold ph-arrow-right"></i>' : 'Log in <i class="ph-bold ph-arrow-right"></i>'; btn.disabled = false;
                 showToast(userProfile.lang === 'fa' ? 'اطلاعات ورود اشتباه است.' : 'Invalid credentials.', 'error');
             });
         }
@@ -595,20 +653,20 @@
             }
 
             const btn = document.getElementById('btnSignupSubmit');
-            btn.innerText = '...'; btn.disabled = true;
+            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i>'; btn.disabled = true;
 
             auth.createUserWithEmailAndPassword(email, pass).then((userCredential) => {
                 userCredential.user.updateProfile({ displayName: fullName }).then(() => {
                     showToast(userProfile.lang === 'fa' ? 'حساب شما با موفقیت ساخته شد!' : 'Account created successfully!', 'success');
                 });
             }).catch(err => {
-                btn.innerText = userProfile.lang === 'fa' ? 'ایجاد حساب جدید' : 'Create Account'; btn.disabled = false;
+                btn.innerHTML = userProfile.lang === 'fa' ? 'ایجاد حساب <i class="ph-bold ph-check"></i>' : 'Create <i class="ph-bold ph-check"></i>'; btn.disabled = false;
                 showToast(err.code === 'auth/email-already-in-use' ? 'این ایمیل قبلاً ثبت شده!' : err.message, 'error');
             });
         }
 
         function handleLogout() { 
-            if(confirm(userProfile.lang === 'fa' ? 'آیا می‌خواهید خارج شوید؟ (اطلاعات آفلاین پاک می‌شود)' : 'Logout? (Offline data will be cleared)')) {
+            if(confirm(userProfile.lang === 'fa' ? 'آیا می‌خواهید خارج شوید؟' : 'Logout?')) {
                 localStorage.removeItem('leitner_offline_cards');
                 localStorage.removeItem('leitner_offline_logs');
                 localStorage.removeItem('leitner_offline_profile');
@@ -627,16 +685,13 @@
                     reviewsLog = data.reviewsLog || [];
                     userProfile = { ...userProfile, ...(data.profile || {}) };
                 } else if(sampleCards.length === 0) {
-                    sampleCards = [];
-                    reviewsLog = [];
-                    saveDataToCloud();
+                    sampleCards = []; reviewsLog = []; saveDataToCloud();
                 }
                 
                 if (!userProfile.decks || userProfile.decks.length === 0) userProfile.decks = ['General'];
                 if (!userProfile.activeDeck) userProfile.activeDeck = 'General';
                 sampleCards.forEach(c => { if (!c.deck) c.deck = 'General'; });
                 
-                // بکاپ محلی برای بار بعدی که آفلاین است
                 localStorage.setItem('leitner_offline_cards', JSON.stringify(sampleCards));
                 localStorage.setItem('leitner_offline_logs', JSON.stringify(reviewsLog));
                 localStorage.setItem('leitner_offline_profile', JSON.stringify(userProfile));
@@ -646,30 +701,22 @@
                 document.getElementById('langSelect').value = userProfile.lang;
                 document.getElementById('headerStreakVal').innerText = userProfile.streak || 0;
                 
-                applyTheme();
-                applyLanguage(); 
-                renderDeckSelector();
+                applyTheme(); applyLanguage(); renderDeckSelector();
                 updateDashboard();
                 if(document.getElementById('view-cards').classList.contains('active')) renderCardsManager();
-            } catch (err) {
-                console.log("خطا در همگام‌سازی ابری:", err);
-            }
+            } catch (err) { console.log("Cloud sync error"); }
         }
 
         function saveDataToCloud() {
-            // ۱. ذخیره فوری روی گوشی (حتی اگر اینترنت قطع باشد)
             localStorage.setItem('leitner_offline_cards', JSON.stringify(sampleCards));
             localStorage.setItem('leitner_offline_logs', JSON.stringify(reviewsLog));
             localStorage.setItem('leitner_offline_profile', JSON.stringify(userProfile));
 
-            // ۲. ارسال به سرور اگر آنلاین بود
             if (!currentUser || !navigator.onLine) return;
             
             db.collection('users').doc(currentUser.uid).set({
-                cards: sampleCards,
-                reviewsLog: reviewsLog,
-                profile: userProfile
-            }, { merge: true }).catch(e => console.log('ذخیره در صف آفلاین قرار گرفت.'));
+                cards: sampleCards, reviewsLog: reviewsLog, profile: userProfile
+            }, { merge: true }).catch(e => console.log('Offline queue'));
         }
 
         function renderDeckSelector() {
@@ -694,12 +741,8 @@
                     if (!userProfile.decks.includes(cleanName)) { userProfile.decks.push(cleanName); }
                     userProfile.activeDeck = cleanName;
                 }
-            } else {
-                userProfile.activeDeck = val;
-            }
-            renderDeckSelector();
-            saveDataToCloud();
-            
+            } else { userProfile.activeDeck = val; }
+            renderDeckSelector(); saveDataToCloud();
             if (document.getElementById('view-dashboard').classList.contains('active')) updateDashboard();
             if (document.getElementById('view-cards').classList.contains('active')) renderCardsManager();
         }
@@ -708,16 +751,13 @@
 
         function deleteCurrentDeck() {
             if(userProfile.decks.length <= 1) {
-                showToast(userProfile.lang === 'fa' ? 'نمی‌توانید تنها پوشه موجود را حذف کنید!' : 'Cannot delete the only folder!', 'error');
-                return;
+                showToast(userProfile.lang === 'fa' ? 'نمی‌توانید تنها پوشه موجود را حذف کنید!' : 'Cannot delete the only folder!', 'error'); return;
             }
             if(confirm(userProfile.lang === 'fa' ? 'آیا از حذف این پوشه و تمام کارت‌های آن مطمئنید؟' : 'Delete this folder and ALL its cards?')) {
                 sampleCards = sampleCards.filter(c => c.deck !== userProfile.activeDeck);
                 userProfile.decks = userProfile.decks.filter(d => d !== userProfile.activeDeck);
                 userProfile.activeDeck = userProfile.decks[0];
-                saveDataToCloud();
-                renderDeckSelector();
-                switchView('dashboard');
+                saveDataToCloud(); renderDeckSelector(); switchView('dashboard');
                 showToast(userProfile.lang === 'fa' ? 'پوشه حذف شد.' : 'Folder deleted.', 'success');
             }
         }
@@ -725,7 +765,6 @@
         function checkAndUpdateStreak() {
             const today = getTodayString();
             if (userProfile.lastReviewDate === today) return;
-
             const yesterday = addDays(today, -1);
             if (userProfile.lastReviewDate === yesterday) { userProfile.streak = (userProfile.streak || 0) + 1; } 
             else { userProfile.streak = 1; }
@@ -746,70 +785,65 @@
             root.setAttribute('dir', userProfile.lang === 'fa' ? 'rtl' : 'ltr');
             
             const isFa = userProfile.lang === 'fa';
-            const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerText = txt; };
+            const setTxt = (id, txt) => { const el = document.getElementById(id); if(el) el.innerHTML = txt; };
             const setPlc = (id, txt) => { const el = document.getElementById(id); if(el) el.placeholder = txt; };
             
             setTxt('appTitle', isFa ? 'لایتنر' : 'Leitner');
-            setTxt('lblLoginTitle', isFa ? 'ورود به لایتنر' : 'Welcome Back');
+            setTxt('lblLoginTitle', isFa ? 'ورود به حساب' : 'Welcome Back');
             setTxt('lblLoginDesc', isFa ? 'یادگیری هوشمند را ادامه دهید.' : 'Log in to continue learning.');
             setPlc('loginEmail', isFa ? 'ایمیل (Email)' : 'Email address');
             setPlc('loginPassword', isFa ? 'رمز عبور (Password)' : 'Password');
-            setTxt('btnLoginSubmit', isFa ? 'ورود به حساب' : 'Log in');
-            setTxt('btnGoSignup', isFa ? 'حساب کاربری ندارید؟ ثبت‌نام کنید' : 'Don\'t have an account? Sign up');
+            setTxt('btnLoginSubmit', isFa ? 'ورود <i class="ph-bold ph-arrow-right"></i>' : 'Log in <i class="ph-bold ph-arrow-right"></i>');
+            setTxt('btnGoSignup', isFa ? 'ثبت‌نام حساب جدید' : 'Create new account');
             
             setTxt('lblSignupTitle', isFa ? 'ثبت‌نام سریع' : 'Create Account');
-            setTxt('lblSignupDesc', isFa ? 'کارت‌های شما در ابر ذخیره می‌شوند.' : 'Sync your cards across all devices.');
-            setPlc('signupName', isFa ? 'نام شما (Name)' : 'Full Name');
+            setTxt('lblSignupDesc', isFa ? 'کارت‌های شما در سرور ابری ذخیره می‌شوند.' : 'Sync your cards across all devices.');
+            setPlc('signupName', isFa ? 'نام شما' : 'Full Name');
             setPlc('signupEmail', isFa ? 'ایمیل (Email)' : 'Email address');
-            setPlc('signupPassword', isFa ? 'رمز عبور (6 کاراکتر)' : 'Password (min 6 chars)');
-            setTxt('btnSignupSubmit', isFa ? 'ایجاد حساب جدید' : 'Create Account');
-            setTxt('btnGoLogin', isFa ? 'قبلاً ثبت‌نام کرده‌اید؟ وارد شوید' : 'Already registered? Log in');
+            setPlc('signupPassword', isFa ? 'رمز عبور (Min 6)' : 'Password (min 6)');
+            setTxt('btnSignupSubmit', isFa ? 'ایجاد حساب <i class="ph-bold ph-check"></i>' : 'Create <i class="ph-bold ph-check"></i>');
+            setTxt('btnGoLogin', isFa ? 'بازگشت به ورود' : 'Back to Login');
 
-            setTxt('lblReadyReview', isFa ? 'مستعد مرور امروز' : 'Ready to Review Today');
-            setTxt('btnStartReview', isFa ? 'شروع مرور متمرکز' : 'Start Focus Review');
-            setTxt('btnAddCardList', isFa ? '➕ افزودن کارت جدید' : '➕ Add New Card');
+            setTxt('lblReadyReview', isFa ? 'کارت‌های آماده مرور امروز' : 'Ready to Review Today');
+            setTxt('btnStartReview', isFa ? 'شروع مرور <i class="ph-bold ph-play"></i>' : 'Start Review <i class="ph-bold ph-play"></i>');
+            setTxt('btnAddCardList', isFa ? '<i class="ph-bold ph-plus"></i> افزودن' : '<i class="ph-bold ph-plus"></i> Add');
             
-            setTxt('lblStatsTitle', isFa ? '📊 آمار یادگیری' : '📊 Learning Stats');
-            setTxt('lblRevToday', isFa ? 'مرور امروز' : 'Reviewed Today');
-            setTxt('lblCorrect', isFa ? 'جواب درست' : 'Correct Answers');
-            setTxt('lblIncorrect', isFa ? 'جواب اشتباه' : 'Incorrect Answers');
+            setTxt('lblStatsTitle', isFa ? '<i class="ph-fill ph-chart-bar"></i> آمار یادگیری' : '<i class="ph-fill ph-chart-bar"></i> Learning Stats');
+            setTxt('lblRevToday', isFa ? 'مرور امروز' : 'Reviewed');
+            setTxt('lblCorrect', isFa ? 'جواب درست' : 'Correct');
+            setTxt('lblIncorrect', isFa ? 'جواب اشتباه' : 'Incorrect');
             setTxt('lblAccuracy', isFa ? 'دقت پاسخ' : 'Accuracy');
-            setTxt('lblWeek', isFa ? 'این هفته' : 'Learned This Week');
-            setTxt('lblMonth', isFa ? 'این ماه' : 'Learned This Month');
-            setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها (۱ تا ۶)' : '📦 Boxes Status (1 to 6)');
+            setTxt('lblWeek', isFa ? 'این هفته' : 'This Week');
+            setTxt('lblMonth', isFa ? 'این ماه' : 'This Month');
+            setTxt('lblBoxesTitle', isFa ? '<i class="ph-fill ph-package"></i> وضعیت جعبه‌ها' : '<i class="ph-fill ph-package"></i> Boxes Status');
             
             const cardInner = document.getElementById('flipCardMain');
             if (cardInner && cardInner.classList.contains('flipped')) {
-                setTxt('btnReveal', isFa ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)');
+                setTxt('btnReveal', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت' : '<i class="ph-bold ph-arrows-left-right"></i> Back');
             } else {
-                setTxt('btnReveal', isFa ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)');
+                setTxt('btnReveal', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer');
             }
 
-            setTxt('btnNo', isFa ? '❌ فراموش کردم' : '❌ Forgot');
-            setTxt('btnYes', isFa ? '✅ به یاد داشتم' : '✅ Remembered');
+            setTxt('btnNo', isFa ? '<i class="ph-bold ph-x"></i> فراموش کردم' : '<i class="ph-bold ph-x"></i> Forgot');
+            setTxt('btnYes', isFa ? '<i class="ph-bold ph-check"></i> به یاد داشتم' : '<i class="ph-bold ph-check"></i> Remembered');
             setTxt('btnExitReview', isFa ? 'خروج موقت' : 'Exit to Dashboard');
             
-            setTxt('lblCardsTitle', isFa ? '🗂 مدیریت بانک لغات' : '🗂 Cards Manager');
-            setTxt('btnImportCSV', isFa ? '📥 آپلود اکسل (CSV)' : '📥 Import CSV');
-            setTxt('btnExportCSV', isFa ? '📤 دانلود بکاپ (CSV)' : '📤 Export CSV');
+            setTxt('lblCardsTitle', isFa ? '<i class="ph-fill ph-cards"></i> بانک لغات' : '<i class="ph-fill ph-cards"></i> Word Bank');
+            setTxt('btnImportCSV', isFa ? '📥 آپلود اکسل' : '📥 Import CSV');
+            setTxt('btnExportCSV', isFa ? '📤 دانلود بکاپ' : '📤 Export CSV');
             setTxt('optAllBoxes', isFa ? 'همه جعبه‌ها' : 'All Boxes');
             setTxt('optAllCats', isFa ? 'همه دسته‌ها' : 'All Categories');
-            setPlc('searchInput', isFa ? 'جستجو...' : 'Search...');
+            setPlc('searchInput', isFa ? 'جستجوی کلمه...' : 'Search...');
+            setTxt('btnSelectAll', isFa ? 'انتخاب همه' : 'Select All');
+            setTxt('btnBulkDelete', isFa ? '<i class="ph-bold ph-trash"></i> حذف' : '<i class="ph-bold ph-trash"></i> Delete');
             
-            const btnSelectAll = document.getElementById('btnSelectAll');
-            if(btnSelectAll) {
-                if(isAllSelected) btnSelectAll.innerText = isFa ? 'لغو انتخاب ✖️' : 'Deselect All ✖️';
-                else btnSelectAll.innerText = isFa ? 'انتخاب همه ✔️' : 'Select All ✔️';
-            }
-            setTxt('btnBulkDelete', isFa ? 'حذف گروهی 🗑️' : 'Delete Selected 🗑️');
-            
-            setTxt('lblSettingsTitle', isFa ? '⚙️ تنظیمات برنامه' : '⚙️ App Settings');
+            setTxt('lblSettingsTitle', isFa ? '<i class="ph-fill ph-gear"></i> تنظیمات' : '<i class="ph-fill ph-gear"></i> Settings');
             
             setTxt('lblDeleteFolder', isFa ? 'حذف پوشه فعلی' : 'Delete Current Folder');
             setTxt('lblDeleteFolderDesc', isFa ? 'تمام کارت‌های این پوشه پاک می‌شود' : 'All cards in this folder will be deleted');
             
-            setTxt('lblCloudAccount', isFa ? 'حساب متصل' : 'Cloud Account');
-            setTxt('btnLogout', isFa ? 'خروج 🚪' : 'Log out 🚪');
+            setTxt('lblCloudAccount', isFa ? 'حساب کاربری' : 'Account');
+            setTxt('btnLogout', isFa ? '<i class="ph-bold ph-sign-out"></i> خروج' : '<i class="ph-bold ph-sign-out"></i> Logout');
             setTxt('lblReverseReview', isFa ? 'آموزش معکوس' : 'Reverse Review');
             setTxt('lblReverseDesc', isFa ? 'نمایش فارسی، حدس انگلیسی' : 'Show Persian, guess English');
             setTxt('lblLang', isFa ? 'زبان (Language)' : 'Language (زبان)');
@@ -817,22 +851,22 @@
             setTxt('lblDarkMode', isFa ? 'تم تاریک (Dark Mode)' : 'Dark Theme');
             setTxt('lblDarkDesc', isFa ? 'جلوگیری از خستگی چشم' : 'Protect your eyes at night');
             
-            setTxt('lblAddTitle', isFa ? 'افزودن فلش‌کارت' : 'Add Flashcard');
-            setTxt('lblAddEng', isFa ? 'کلمه / اصطلاح:' : 'Word / Phrase:');
-            setTxt('btnAutoTranslate', isFa ? '✨ ترجمه هوشمند' : '✨ Smart Translate');
+            setTxt('lblAddTitle', isFa ? '<i class="ph-fill ph-plus-circle" style="color: var(--primary);"></i> افزودن فلش‌کارت' : '<i class="ph-fill ph-plus-circle" style="color: var(--primary);"></i> Add Flashcard');
+            setTxt('lblAddEng', isFa ? 'کلمه یا اصطلاح:' : 'Word / Phrase:');
+            setPlc('inputEnglish', isFa ? 'تایپ کنید...' : 'Type here...');
             setTxt('lblAddPer', isFa ? 'معنی:' : 'Meaning:');
-            setPlc('inputPersian', isFa ? 'معنی...' : 'Meaning...');
-            setTxt('lblAddEx', isFa ? 'مثال (Example):' : 'Example Sentence:');
+            setPlc('inputPersian', isFa ? 'معنی فارسی...' : 'Meaning...');
+            setTxt('lblAddEx', isFa ? 'مثال کاربردی:' : 'Example Sentence:');
             setTxt('lblAddCat', isFa ? 'دسته‌بندی:' : 'Category:');
-            setTxt('btnSaveCard', isFa ? 'ذخیره کارت ✔️' : 'Save Card ✔️');
+            setTxt('btnSaveCard', isFa ? 'ذخیره کارت' : 'Save Card');
             setTxt('btnCancelAdd', isFa ? 'انصراف' : 'Cancel');
             
-            setTxt('boxModalTitle', isFa ? 'محتویات جعبه' : 'Box Content');
+            setTxt('boxModalTitle', isFa ? '<i class="ph-fill ph-package" style="color: var(--primary);"></i> محتویات جعبه' : '<i class="ph-fill ph-package" style="color: var(--primary);"></i> Box Content');
             setTxt('btnCloseBox', isFa ? 'بستن صفحه' : 'Close');
 
             setTxt('navDash', isFa ? 'داشبورد' : 'Dashboard');
             setTxt('navReview', isFa ? 'مرور' : 'Review');
-            setTxt('navCards', isFa ? 'لغات' : 'Cards');
+            setTxt('navCards', isFa ? 'لغات' : 'Words');
             setTxt('navSettings', isFa ? 'تنظیمات' : 'Settings');
             
             updateBulkSelection(); 
@@ -908,7 +942,7 @@
             currentReviewQueue = getActiveCards().filter(c => c.nextReviewDate <= today);
             currentReviewIndex = 0;
             if (currentReviewQueue.length === 0) { 
-                showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز در این پوشه وجود ندارد!' : 'No cards for review today in this folder!', 'info'); 
+                showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز در این پوشه وجود ندارد!' : 'No cards to review today in this folder!', 'info'); 
                 switchView('dashboard'); 
                 return; 
             }
@@ -928,7 +962,7 @@
             
             const btnReveal = document.getElementById('btnReveal');
             btnReveal.style.display = 'block';
-            btnReveal.innerText = userProfile.lang === 'fa' ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)';
+            btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer';
             
             document.getElementById('reviewActions').classList.remove('show');
             
@@ -948,15 +982,14 @@
             const btnReveal = document.getElementById('btnReveal');
             
             if (isFlipped) {
-                btnReveal.innerText = userProfile.lang === 'fa' ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)';
-                
+                btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت به سوال' : '<i class="ph-bold ph-arrows-left-right"></i> Back to Question';
                 if (!isCardRevealedThisTurn) {
                     document.getElementById('reviewActions').classList.add('show');
                     isCardRevealedThisTurn = true;
                     speakCurrentWord();
                 }
             } else {
-                btnReveal.innerText = userProfile.lang === 'fa' ? 'مشاهده پاسخ (Flip)' : 'Show Answer (Flip)';
+                btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer';
             }
         }
 
@@ -1007,29 +1040,26 @@
         }
 
         function toggleSelectAll() {
-            isAllSelected = !isAllSelected;
+            isAllSelected = !document.getElementById('selectAllCb').checked;
+            document.getElementById('selectAllCb').checked = !isAllSelected;
+            isAllSelected = !isAllSelected; // toggle logic
+            
             const checkboxes = document.querySelectorAll('.card-checkbox');
             checkboxes.forEach(cb => cb.checked = isAllSelected);
             updateBulkSelection();
-            
-            const btn = document.getElementById('btnSelectAll');
-            if(isAllSelected) btn.innerText = userProfile.lang === 'fa' ? 'لغو انتخاب ✖️' : 'Deselect All ✖️';
-            else btn.innerText = userProfile.lang === 'fa' ? 'انتخاب همه ✔️' : 'Select All ✔️';
         }
 
         function deleteSelectedCards() {
             const checkboxes = document.querySelectorAll('.card-checkbox:checked');
             if (checkboxes.length === 0) return;
             
-            const msg = userProfile.lang === 'fa' ? `آیا از حذف ${checkboxes.length} کارت مطمئنید؟` : `Delete ${checkboxes.length} cards?`;
-            
-            if (confirm(msg)) {
+            if (confirm(userProfile.lang === 'fa' ? `آیا از حذف ${checkboxes.length} کارت مطمئنید؟` : `Delete ${checkboxes.length} cards?`)) {
                 const idsToDelete = Array.from(checkboxes).map(cb => parseInt(cb.value));
                 sampleCards = sampleCards.filter(c => !idsToDelete.includes(c.id));
-                saveDataToCloud();
-                renderCardsManager();
-                updateDashboard();
+                saveDataToCloud(); renderCardsManager(); updateDashboard();
                 showToast(userProfile.lang === 'fa' ? 'کارت‌ها با موفقیت حذف شدند.' : 'Cards deleted successfully.', 'success');
+                document.getElementById('selectAllCb').checked = false;
+                isAllSelected = false;
             }
         }
 
@@ -1055,24 +1085,24 @@
             filtered.forEach(card => {
                 html += `
                     <div class="card-list-item">
-                        <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="card-info-wrap">
                             <input type="checkbox" class="custom-checkbox card-checkbox" value="${card.id}" onchange="updateBulkSelection()">
-                            <div dir="ltr" style="text-align:left;">
-                                <strong style="font-size: 17px;">${card.front}</strong> - <span style="color:var(--success-color); font-weight: 800;">${card.back}</span>
-                                <div style="font-size:12px; color:var(--text-muted); margin-top: 4px;">Box ${card.box} • Due: ${card.nextReviewDate}</div>
+                            <div class="card-texts" dir="ltr" style="text-align:left;">
+                                <strong class="en-text">${card.front}</strong>
+                                <span>${card.back}</span>
+                                <small>Box ${card.box} • Due: ${card.nextReviewDate}</small>
                             </div>
                         </div>
-                        <div class="card-actions">
-                            <button class="icon-btn" onclick="openEditModal(${card.id})" title="ویرایش">✏️</button>
-                            <button class="icon-btn btn-del" onclick="deleteCard(${card.id})" title="حذف">🗑️</button>
+                        <div class="card-actions" style="display:flex;">
+                            <button class="icon-btn" onclick="openEditModal(${card.id})"><i class="ph-bold ph-pencil-simple"></i></button>
+                            <button class="icon-btn btn-del" onclick="deleteCard(${card.id})" style="margin:0;"><i class="ph-bold ph-trash"></i></button>
                         </div>
                     </div>`;
             });
             container.innerHTML = html;
             
             isAllSelected = false;
-            const btnAll = document.getElementById('btnSelectAll');
-            if(btnAll) btnAll.innerText = userProfile.lang === 'fa' ? 'انتخاب همه ✔️' : 'Select All ✔️';
+            if(document.getElementById('selectAllCb')) document.getElementById('selectAllCb').checked = false;
             updateBulkSelection();
         }
 
@@ -1089,7 +1119,7 @@
             document.getElementById('inputEnglish').value = '';
             document.getElementById('inputPersian').value = '';
             document.getElementById('inputExample').value = '';
-            document.getElementById('lblAddTitle').innerText = userProfile.lang === 'fa' ? 'افزودن فلش‌کارت' : 'Add Flashcard';
+            document.getElementById('lblAddTitle').innerHTML = userProfile.lang === 'fa' ? '<i class="ph-fill ph-plus-circle" style="color: var(--primary);"></i> افزودن فلش‌کارت' : '<i class="ph-fill ph-plus-circle" style="color: var(--primary);"></i> Add Flashcard';
             
             const modal = document.getElementById('addModal');
             modal.style.display = 'flex'; 
@@ -1103,7 +1133,7 @@
             document.getElementById('inputEnglish').value = card.front;
             document.getElementById('inputPersian').value = card.back;
             document.getElementById('inputExample').value = card.example || '';
-            document.getElementById('lblAddTitle').innerText = userProfile.lang === 'fa' ? 'ویرایش فلش‌کارت' : 'Edit Flashcard';
+            document.getElementById('lblAddTitle').innerHTML = userProfile.lang === 'fa' ? '<i class="ph-fill ph-pencil-circle" style="color: var(--warning);"></i> ویرایش فلش‌کارت' : '<i class="ph-fill ph-pencil-circle" style="color: var(--warning);"></i> Edit Flashcard';
             
             const modal = document.getElementById('addModal');
             modal.style.display = 'flex'; 
@@ -1113,7 +1143,7 @@
         function closeAddModal() { 
             const modal = document.getElementById('addModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
+            setTimeout(() => modal.style.display = 'none', 400);
         }
 
         async function autoTranslateWord() {
@@ -1121,7 +1151,7 @@
             if (!word) { showToast(userProfile.lang === 'fa' ? 'کلمه انگلیسی را وارد کنید.' : 'Enter an English word first.', 'error'); return; }
             
             const btn = document.getElementById('btnAutoTranslate');
-            btn.innerText = userProfile.lang === 'fa' ? 'در حال جستجو...' : 'Searching...';
+            btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i>';
             
             try {
                 const transRes = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=fa&dt=t&q=${encodeURIComponent(word)}`);
@@ -1153,9 +1183,9 @@
                 }
 
             } catch (e) {
-                showToast(userProfile.lang === 'fa' ? "خطا در ارتباط با سرور ترجمه." : "Translation server error.", "error");
+                showToast(userProfile.lang === 'fa' ? "خطا در ارتباط با سرور." : "Server error.", "error");
             }
-            btn.innerText = userProfile.lang === 'fa' ? '✨ ترجمه هوشمند' : '✨ Smart Translate';
+            btn.innerHTML = '<i class="ph-fill ph-magic-wand"></i>';
         }
 
         function saveCard() {
@@ -1180,9 +1210,7 @@
                 showToast(userProfile.lang === 'fa' ? 'کارت جدید اضافه شد.' : 'Card added.', 'success');
             }
             
-            saveDataToCloud();
-            closeAddModal();
-            updateDashboard();
+            saveDataToCloud(); closeAddModal(); updateDashboard();
             if(document.getElementById('view-cards').classList.contains('active')) renderCardsManager();
         }
 
@@ -1230,21 +1258,21 @@
         function openBoxModal(boxNumber) {
             const today = getTodayString();
             const cards = getActiveCards().filter(c => c.box === boxNumber && c.nextReviewDate <= today);
-            document.getElementById('boxModalTitle').innerText = userProfile.lang === 'fa' ? `محتویات Box ${boxNumber}` : `Box ${boxNumber} Content`;
+            document.getElementById('boxModalTitle').innerHTML = userProfile.lang === 'fa' ? `<i class="ph-fill ph-package" style="color: var(--primary);"></i> محتویات Box ${boxNumber}` : `<i class="ph-fill ph-package" style="color: var(--primary);"></i> Box ${boxNumber} Content`;
             
             const container = document.getElementById('boxModalCardList');
             if (cards.length === 0) {
-                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:30px; font-weight:bold;">${userProfile.lang === 'fa' ? '🎉 هیچ کارتی برای مرور امروز در این جعبه نیست!' : '🎉 No cards due today in this box!'}</p>`;
+                container.innerHTML = `<div style="text-align:center; padding:40px 0; color:var(--text-muted);"><i class="ph-fill ph-confetti" style="font-size: 48px; color: var(--success); margin-bottom: 10px;"></i><br><p style="font-weight:800;">${userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز نیست!' : 'No cards due today!'}</p></div>`;
             } else {
                 let html = '';
                 cards.forEach(c => {
                     html += `
-                        <div style="background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 12px; box-shadow: var(--shadow-sm);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                <strong style="font-size: 20px; color: var(--primary-color);">${c.front}</strong>
-                                <span style="background: rgba(16, 185, 129, 0.1); color: var(--success-color); padding: 6px 12px; border-radius: 12px; font-size: 15px; font-weight: 900;">${c.back}</span>
+                        <div style="background: var(--bg-color); border-radius: 20px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border-color);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <strong class="en-text" style="font-size: 18px; color: var(--primary);">${c.front}</strong>
+                                <span style="background: var(--success-light); color: var(--success); padding: 4px 10px; border-radius: 8px; font-size: 14px; font-weight: 800;">${c.back}</span>
                             </div>
-                            ${c.example ? `<div style="font-size: 14px; color: var(--text-muted); border-left: 4px solid var(--primary-color); padding-left: 12px; margin-top: 15px; text-align: left; font-weight: 600;" dir="ltr">${c.example}</div>` : ''}
+                            ${c.example ? `<div class="en-text" style="font-size: 13px; color: var(--text-muted); border-left: 3px solid var(--primary); padding-left: 10px; margin-top: 10px; text-align: left; font-weight: 600;" dir="ltr">${c.example}</div>` : ''}
                         </div>`;
                 });
                 container.innerHTML = html;
@@ -1257,9 +1285,10 @@
         function closeBoxModal() { 
             const modal = document.getElementById('boxModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
+            setTimeout(() => modal.style.display = 'none', 400);
         }
     </script>
 </body>
 </html>
+
 
