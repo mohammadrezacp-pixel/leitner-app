@@ -61,7 +61,7 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* هدر و انتخاب پوشه */
+        /* هدر */
         header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
             background: var(--surface-color); padding: 16px 20px; border-radius: var(--border-radius); 
@@ -84,6 +84,7 @@
         .view-section { display: none; animation: fadeUp 0.3s ease-out; }
         .view-section.active { display: block; }
 
+        /* فرم‌ها و کارت‌های لاگین */
         .auth-card { max-width: 420px; margin: 40px auto; background: var(--surface-solid); padding: 40px; border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); text-align: center; }
         .auth-card h2 { margin-bottom: 15px; font-weight: 900; font-size: 28px; }
 
@@ -99,12 +100,14 @@
 
         .section-title { font-size: 20px; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
+        /* آمار */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
         .stat-card { background-color: var(--surface-solid); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); align-items: center; text-align: center; }
         .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); }
         .stat-card .title { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
         .stat-card .value { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
+        /* جعبه‌ها */
         .boxes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
         .box-card { border-radius: 24px; padding: 22px 5px; text-align: center; cursor: pointer; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
         .box-1 { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); }
@@ -116,26 +119,38 @@
         .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
         .box-card .box-count { font-size: 30px; font-weight: 900; }
 
-        /* مرور متمرکز (تغییرات مهم برای متن‌های طولانی) */
-        .review-wrapper { perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; height: 350px; /* افزایش ارتفاع برای جملات */ }
+        /* ------------------ حل مشکل کارت‌های مرور ------------------ */
+        .review-wrapper { perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; height: 50vh; min-height: 350px; max-height: 480px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         
-        /* اضافه شدن overflow-y: auto برای اسکرول شدن متون خیلی طولانی */
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; overflow-y: auto; }
-        .flip-front::-webkit-scrollbar, .flip-back::-webkit-scrollbar { display: none; } /* مخفی کردن اسکرول‌بار زشت */
+        .flip-front, .flip-back { 
+            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
+            background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); 
+            border: 1px solid var(--border-color); 
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: flex-start; /* تغییر کلیدی برای جلوگیری از بریدگی بالا */
+            padding: 60px 20px 25px 20px; /* حاشیه امن ۶۰ پیکسلی برای لیبل بالای کارت */
+            overflow-y: auto; 
+        }
+        
+        /* استایل اسکرول‌بار داخل کارت‌ها */
+        .flip-front::-webkit-scrollbar, .flip-back::-webkit-scrollbar { width: 4px; }
+        .flip-front::-webkit-scrollbar-thumb, .flip-back::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
         .flip-front > *, .flip-back > * { pointer-events: auto; }
         
-        .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 10px; }
+        .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 5px 12px; border-radius: 10px; z-index: 10; }
         
-        /* کاهش سایز فونت‌ها برای جا شدن جملات طولانی */
-        .review-word { font-size: 24px; font-weight: 900; margin-top: 15px; margin-bottom: 15px; color: var(--text-main); line-height: 1.4; word-wrap: break-word; text-align: center;}
-        .review-meaning { font-size: 22px; color: var(--success-color); font-weight: 900; margin-top: 15px; margin-bottom: 12px; line-height: 1.4; word-wrap: break-word; text-align: center;}
-        .review-example { font-size: 15px; color: var(--text-muted); font-weight: 600; line-height: 1.5; padding: 12px; border-radius: 12px; background: var(--bg-color); width: 100%; text-align: center;}
+        /* ترفند margin: auto برای وسط‌چین کردن هوشمند بدون بریدگی */
+        .review-word { font-size: 22px; font-weight: 900; margin-top: auto; margin-bottom: 20px; color: var(--text-main); line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; }
+        .review-meaning { font-size: 20px; color: var(--success-color); font-weight: 900; margin-top: auto; margin-bottom: 15px; line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; }
+        .review-example { font-size: 15px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 15px; border-radius: 12px; background: var(--bg-color); width: 100%; text-align: left; margin-bottom: auto; }
 
-        .btn-audio { width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.2s; margin-top: 10px; flex-shrink: 0;}
+        .btn-audio { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 22px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.2s; margin-bottom: auto; flex-shrink: 0; }
         .btn-audio:active { transform: scale(0.9); }
+        /* ------------------------------------------------------------- */
 
         .review-actions { max-width: 420px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
@@ -465,11 +480,13 @@
         function showLogin() {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('view-login').classList.add('active');
+            document.getElementById('mainHeader').style.display = 'flex';
         }
 
         function showSignup() {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.getElementById('view-signup').classList.add('active');
+            document.getElementById('mainHeader').style.display = 'flex';
         }
 
         auth.onAuthStateChanged(user => {
@@ -772,24 +789,24 @@
             if(viewName === 'dashboard') { 
                 document.getElementById('view-dashboard').classList.add('active'); 
                 document.querySelectorAll('.nav-item')[0].classList.add('active'); 
-                mainHeader.style.display = 'flex'; // نمایش هدر
+                if (currentUser) mainHeader.style.display = 'flex'; 
                 updateDashboard(); 
             }
             else if(viewName === 'review') { 
                 document.querySelectorAll('.nav-item')[1].classList.add('active'); 
-                mainHeader.style.display = 'none'; // مخفی کردن هدر برای تمرکز کامل
+                mainHeader.style.display = 'none'; // مخفی کردن هدر در زمان مرور
                 startFocusReview(); 
             }
             else if(viewName === 'cards') { 
                 document.getElementById('view-cards').classList.add('active'); 
                 document.querySelectorAll('.nav-item')[2].classList.add('active'); 
-                mainHeader.style.display = 'flex'; // نمایش هدر
+                if (currentUser) mainHeader.style.display = 'flex'; 
                 renderCardsManager(); 
             }
             else if(viewName === 'settings') { 
                 document.getElementById('view-settings').classList.add('active'); 
                 document.querySelectorAll('.nav-item')[3].classList.add('active'); 
-                mainHeader.style.display = 'flex'; // نمایش هدر
+                if (currentUser) mainHeader.style.display = 'flex'; 
             }
         }
 
