@@ -84,7 +84,6 @@
         .view-section { display: none; animation: fadeUp 0.3s ease-out; }
         .view-section.active { display: block; }
 
-        /* فرم‌ها و کارت‌های لاگین */
         .auth-card { max-width: 420px; margin: 40px auto; background: var(--surface-solid); padding: 40px; border-radius: 30px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); text-align: center; }
         .auth-card h2 { margin-bottom: 15px; font-weight: 900; font-size: 28px; }
 
@@ -100,14 +99,12 @@
 
         .section-title { font-size: 20px; margin-bottom: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
 
-        /* آمار */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
         .stat-card { background-color: var(--surface-solid); border-radius: 20px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; position: relative; overflow: hidden; border: 1px solid var(--border-color); align-items: center; text-align: center; }
         .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--primary-gradient); }
         .stat-card .title { color: var(--text-muted); font-size: 13px; margin-bottom: 8px; font-weight: 600; }
         .stat-card .value { font-size: 24px; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* جعبه‌ها */
         .boxes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
         .box-card { border-radius: 24px; padding: 22px 5px; text-align: center; cursor: pointer; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.08); border: 1px solid rgba(255,255,255,0.1); }
         .box-1 { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); }
@@ -119,48 +116,146 @@
         .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
         .box-card .box-count { font-size: 30px; font-weight: 900; }
 
-        /* ------------------ فلش‌کارت (بزرگ‌تر، وسط‌چین و ضد کراپ) ------------------ */
+        /* ------------------ فلش‌کارت (مدرن و بدون کراپ شدن) ------------------ */
         .review-wrapper { 
-            perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; 
-            height: 60vh; /* ارتفاع بسیار بیشتر (۶۰ درصد صفحه) */
-            min-height: 440px; /* حداقل ارتفاع تضمین شده */
-            max-height: 650px; 
+            perspective: 2000px; 
+            width: 100%; 
+            max-width: 440px; 
+            margin: 0 auto; 
+            height: 60vh; /* ارتفاع بلند و متناسب با گوشی */
+            min-height: 400px; 
+            max-height: 550px; 
         }
-        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+        
+        .flip-card {
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card-inner { 
+            position: relative; 
+            width: 100%; 
+            height: 100%; 
+            text-align: center; 
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transform-style: preserve-3d; 
+            cursor: pointer; 
+        }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         
-        /* کادر سفید اصلی */
         .flip-front, .flip-back { 
-            position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-            background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            padding: 60px 20px 30px 20px; /* پدینگ بالا برای جلوگیری از تداخل با لیبل Box */
-            overflow-y: auto; 
+            position: absolute; 
+            top: 0; left: 0;
+            width: 100%; 
+            height: 100%; 
+            -webkit-backface-visibility: hidden; /* این خط معجزه میکند در آیفون */
+            backface-visibility: hidden; 
+            background: var(--surface-solid); 
+            border-radius: 32px; 
+            box-shadow: 0 15px 35px -5px rgba(0,0,0,0.1); 
+            border: 1px solid var(--border-color); 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px; 
         }
-        /* مخفی کردن نوار اسکرول و دادن قابلیت لمس */
-        .flip-front::-webkit-scrollbar, .flip-back::-webkit-scrollbar { display: none; }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
-        .flip-front > *, .flip-back > * { pointer-events: auto; }
         
-        .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 5px 12px; border-radius: 10px; z-index: 10; }
-        
-        /* متون با سایز و فاصله مناسب برای جملات طولانی */
-        .review-word { font-size: 26px; font-weight: 900; color: var(--text-main); line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; margin: 0 0 20px 0; }
-        .review-meaning { font-size: 24px; color: var(--success-color); font-weight: 900; line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; margin: 0 0 15px 0; }
-        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 15px; border-radius: 12px; background: var(--bg-color); width: 100%; text-align: center; margin: 0; }
+        /* بخش بالایی کارت برای دکمه باکس */
+        .card-header-bar {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
 
-        .btn-audio { width: 54px; height: 54px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.2s; flex-shrink: 0; margin: 0; }
-        .btn-audio:active { transform: scale(0.9); }
+        .review-box-label { 
+            font-size: 13px; 
+            font-weight: 800; 
+            color: var(--primary-color); 
+            background: rgba(99,102,241,0.1); 
+            padding: 6px 14px; 
+            border-radius: 12px; 
+        }
+
+        /* بخش وسطی کارت که اسکرول می‌شود (ضد بریدگی متن) */
+        .card-content-scroll {
+            flex: 1;
+            width: 100%;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .card-content-scroll::-webkit-scrollbar { display: none; }
+        
+        /* متون وسط کارت */
+        .review-word { 
+            font-size: 28px; 
+            font-weight: 900; 
+            color: var(--text-main); 
+            line-height: 1.5; 
+            word-wrap: break-word; 
+            text-align: center; 
+            width: 100%; 
+            margin-top: auto; 
+            margin-bottom: 25px; 
+        }
+        .review-meaning { 
+            font-size: 26px; 
+            color: var(--success-color); 
+            font-weight: 900; 
+            line-height: 1.5; 
+            word-wrap: break-word; 
+            text-align: center; 
+            width: 100%; 
+            margin-top: auto;
+            margin-bottom: 15px; 
+        }
+        .review-example { 
+            font-size: 16px; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            line-height: 1.6; 
+            padding: 16px; 
+            border-radius: 16px; 
+            background: var(--bg-color); 
+            width: 100%; 
+            text-align: center; 
+            margin-bottom: auto; 
+        }
+
+        /* دکمه تلفظ بسیار زیباتر */
+        .btn-audio { 
+            width: 56px; 
+            height: 56px; 
+            border-radius: 50%; 
+            border: none; 
+            background: var(--primary-gradient); 
+            color: white; 
+            cursor: pointer; 
+            font-size: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0 10px 25px rgba(99,102,241,0.35); 
+            transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            flex-shrink: 0; 
+            margin-bottom: auto; 
+        }
+        .btn-audio:active { transform: scale(0.85); }
         /* ------------------------------------------------------------------------ */
 
-        .review-actions { max-width: 420px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
+        .review-actions { max-width: 440px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
         
-        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.2s; }
-        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.2s; }
+        .btn-know { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); transition: 0.2s; }
+        .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 18px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.2s; }
         .btn-know:active, .btn-dont-know:active { transform: scale(0.95); }
 
-        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 16px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 420px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
+        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 17px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 440px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
+        .btn-reveal-main:active { transform: scale(0.98); }
 
         /* مدیریت کارت‌ها */
         .csv-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -226,7 +321,6 @@
 
     <div class="container">
         
-        <!-- هدر دارای ID است که در زمان مرور مخفی شود -->
         <header id="mainHeader">
             <div class="header-left">
                 <h1 id="appTitle">Leitner</h1>
@@ -290,19 +384,28 @@
             </section>
         </section>
 
-        <!-- مرور متمرکز -->
+        <!-- مرور متمرکز با طراحی جدید و بزرگتر -->
         <section id="view-review" class="view-section">
             <div class="review-wrapper">
-                <div class="flip-card" id="flipCardInner" onclick="toggleFlipCard()">
+                <div class="flip-card" id="flipCardMain" onclick="toggleFlipCard()">
                     <div class="flip-card-inner">
                         <div class="flip-front">
-                            <div class="review-box-label" id="reviewBoxLabel">Box 1</div>
-                            <div class="review-word" id="reviewWordDisplay">Apple</div>
-                            <button class="btn-audio" onclick="speakCurrentWord(event)">🔊</button>
+                            <div class="card-header-bar">
+                                <div class="review-box-label" id="reviewBoxLabel">Box 1</div>
+                            </div>
+                            <div class="card-content-scroll">
+                                <div class="review-word" id="reviewWordDisplay">Apple</div>
+                                <button class="btn-audio" onclick="speakCurrentWord(event)">🔊</button>
+                            </div>
                         </div>
                         <div class="flip-back">
-                            <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
-                            <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
+                            <div class="card-header-bar">
+                                <div class="review-box-label" style="opacity: 0.6;">پاسخ</div>
+                            </div>
+                            <div class="card-content-scroll">
+                                <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
+                                <div class="review-example" id="reviewExampleDisplay">💡 I eat an apple.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -316,7 +419,7 @@
             </div>
             
             <div style="text-align: center;">
-                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: var(--surface-solid); box-shadow: var(--shadow-sm); width: auto; padding: 14px 30px; margin-top: 35px;">خروج موقت</button>
+                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: var(--surface-solid); box-shadow: var(--shadow-sm); width: auto; padding: 12px 30px; margin-top: 25px;">خروج موقت</button>
             </div>
         </section>
 
@@ -493,6 +596,8 @@
 
         auth.onAuthStateChanged(user => {
             if (user) {
+                if (!user.emailVerified) { auth.signOut(); return; }
+                
                 currentUser = user;
                 document.getElementById('currentUserEmail').innerText = user.email;
                 let displayName = user.displayName || user.email.split('@')[0];
@@ -722,7 +827,7 @@
             setTxt('lblMonth', isFa ? 'این ماه' : 'Learned This Month');
             setTxt('lblBoxesTitle', isFa ? '📦 وضعیت جعبه‌ها (۱ تا ۶)' : '📦 Boxes Status (1 to 6)');
             
-            const cardInner = document.getElementById('flipCardInner');
+            const cardInner = document.getElementById('flipCardMain');
             if (cardInner && cardInner.classList.contains('flipped')) {
                 setTxt('btnReveal', isFa ? 'بازگشت به سوال (Flip Back)' : 'Show Question (Flip Back)');
             } else {
@@ -796,7 +901,7 @@
             }
             else if(viewName === 'review') { 
                 document.querySelectorAll('.nav-item')[1].classList.add('active'); 
-                mainHeader.style.display = 'none'; // مخفی کردن هدر در زمان مرور
+                mainHeader.style.display = 'none'; 
                 startFocusReview(); 
             }
             else if(viewName === 'cards') { 
@@ -868,7 +973,7 @@
             }
             
             isCardRevealedThisTurn = false;
-            document.getElementById('flipCardInner').classList.remove('flipped');
+            document.getElementById('flipCardMain').classList.remove('flipped');
             
             const btnReveal = document.getElementById('btnReveal');
             btnReveal.style.display = 'block';
@@ -887,8 +992,8 @@
         }
 
         function toggleFlipCard() {
-            const cardInner = document.getElementById('flipCardInner');
-            const isFlipped = cardInner.classList.toggle('flipped');
+            const cardMain = document.getElementById('flipCardMain');
+            const isFlipped = cardMain.classList.toggle('flipped');
             const btnReveal = document.getElementById('btnReveal');
             
             if (isFlipped) {
