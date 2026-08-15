@@ -119,38 +119,39 @@
         .box-card .box-name { font-size: 13px; margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; opacity: 0.95; }
         .box-card .box-count { font-size: 30px; font-weight: 900; }
 
-        /* ------------------ حل مشکل کارت‌های مرور ------------------ */
-        .review-wrapper { perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; height: 50vh; min-height: 350px; max-height: 480px; }
+        /* ------------------ فلش‌کارت (بزرگ‌تر، وسط‌چین و ضد کراپ) ------------------ */
+        .review-wrapper { 
+            perspective: 1500px; width: 100%; max-width: 420px; margin: 0 auto; 
+            height: 60vh; /* ارتفاع بسیار بیشتر (۶۰ درصد صفحه) */
+            min-height: 440px; /* حداقل ارتفاع تضمین شده */
+            max-height: 650px; 
+        }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         
+        /* کادر سفید اصلی */
         .flip-front, .flip-back { 
             position: absolute; width: 100%; height: 100%; backface-visibility: hidden; 
-            background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); 
-            border: 1px solid var(--border-color); 
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: flex-start; /* تغییر کلیدی برای جلوگیری از بریدگی بالا */
-            padding: 60px 20px 25px 20px; /* حاشیه امن ۶۰ پیکسلی برای لیبل بالای کارت */
+            background: var(--surface-solid); border-radius: 28px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color); 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            padding: 60px 20px 30px 20px; /* پدینگ بالا برای جلوگیری از تداخل با لیبل Box */
             overflow-y: auto; 
         }
-        
-        /* استایل اسکرول‌بار داخل کارت‌ها */
-        .flip-front::-webkit-scrollbar, .flip-back::-webkit-scrollbar { width: 4px; }
-        .flip-front::-webkit-scrollbar-thumb, .flip-back::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
-        
+        /* مخفی کردن نوار اسکرول و دادن قابلیت لمس */
+        .flip-front::-webkit-scrollbar, .flip-back::-webkit-scrollbar { display: none; }
         .flip-back { transform: rotateY(180deg); background: var(--surface-solid); }
         .flip-front > *, .flip-back > * { pointer-events: auto; }
         
         .review-box-label { position: absolute; top: 15px; right: 15px; font-size: 13px; font-weight: 800; color: var(--primary-color); background: rgba(99,102,241,0.1); padding: 5px 12px; border-radius: 10px; z-index: 10; }
         
-        /* ترفند margin: auto برای وسط‌چین کردن هوشمند بدون بریدگی */
-        .review-word { font-size: 22px; font-weight: 900; margin-top: auto; margin-bottom: 20px; color: var(--text-main); line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; }
-        .review-meaning { font-size: 20px; color: var(--success-color); font-weight: 900; margin-top: auto; margin-bottom: 15px; line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; }
-        .review-example { font-size: 15px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 15px; border-radius: 12px; background: var(--bg-color); width: 100%; text-align: left; margin-bottom: auto; }
+        /* متون با سایز و فاصله مناسب برای جملات طولانی */
+        .review-word { font-size: 26px; font-weight: 900; color: var(--text-main); line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; margin: 0 0 20px 0; }
+        .review-meaning { font-size: 24px; color: var(--success-color); font-weight: 900; line-height: 1.6; word-wrap: break-word; text-align: center; width: 100%; margin: 0 0 15px 0; }
+        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 15px; border-radius: 12px; background: var(--bg-color); width: 100%; text-align: center; margin: 0; }
 
-        .btn-audio { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 22px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.2s; margin-bottom: auto; flex-shrink: 0; }
+        .btn-audio { width: 54px; height: 54px; border-radius: 50%; border: none; background: var(--primary-gradient); color: white; cursor: pointer; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-glow); transition: 0.2s; flex-shrink: 0; margin: 0; }
         .btn-audio:active { transform: scale(0.9); }
-        /* ------------------------------------------------------------- */
+        /* ------------------------------------------------------------------------ */
 
         .review-actions { max-width: 420px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
@@ -159,7 +160,7 @@
         .btn-dont-know { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 16px 10px; border-radius: 20px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); transition: 0.2s; }
         .btn-know:active, .btn-dont-know:active { transform: scale(0.95); }
 
-        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 16px 30px; font-size: 16px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 420px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
+        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 16px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 420px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
 
         /* مدیریت کارت‌ها */
         .csv-actions { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -225,6 +226,7 @@
 
     <div class="container">
         
+        <!-- هدر دارای ID است که در زمان مرور مخفی شود -->
         <header id="mainHeader">
             <div class="header-left">
                 <h1 id="appTitle">Leitner</h1>
@@ -314,7 +316,7 @@
             </div>
             
             <div style="text-align: center;">
-                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: var(--surface-solid); box-shadow: var(--shadow-sm); width: auto; padding: 12px 30px; margin-top: 30px;">خروج موقت</button>
+                <button class="btn-close" onclick="switchView('dashboard')" id="btnExitReview" style="background-color: var(--surface-solid); box-shadow: var(--shadow-sm); width: auto; padding: 14px 30px; margin-top: 35px;">خروج موقت</button>
             </div>
         </section>
 
