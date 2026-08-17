@@ -139,11 +139,12 @@
         .box-5 { background: var(--success-light); color: var(--success); }
         .box-6 { background: #f1f5f9; color: #475569; }
         [data-theme="dark"] .box-6 { background: rgba(255,255,255,0.05); color: #cbd5e1; }
+
         .box-card .box-name { font-size: 12px; font-weight: 800; opacity: 0.8; margin-bottom: 4px; text-transform: uppercase;}
         .box-card .box-count { font-size: 28px; font-weight: 900; }
 
-        /* ------------------ فلش‌کارت ------------------ */
-        .review-wrapper { perspective: 2000px; width: 100%; max-width: 400px; margin: 0 auto; height: 60vh; min-height: 400px; max-height: 550px; }
+        /* ------------------ فلش‌کارت فوق‌مدرن (تغییرات جدید و بزرگ‌تر) ------------------ */
+        .review-wrapper { perspective: 2000px; width: 100%; max-width: 440px; margin: 0 auto; height: 65vh; min-height: 450px; max-height: 600px; }
         .flip-card { width: 100%; height: 100%; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; cursor: pointer; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -158,17 +159,25 @@
         .card-header-bar { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
         .review-box-label { font-size: 12px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 6px 14px; border-radius: 100px; }
 
-        .card-content-scroll { flex: 1; width: 100%; overflow-y: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px; }
+        /* ترفند جادویی اسکرول در مرکز */
+        .card-content-scroll { 
+            flex: 1; width: 100%; overflow-y: auto; display: flex; flex-direction: column; 
+            align-items: center; padding: 10px 0; 
+        }
         .card-content-scroll::-webkit-scrollbar { display: none; }
+        .card-content-scroll::before, .card-content-scroll::after { content: ''; margin: auto; } /* ترفند وسط‌چین بدون کراپ شدن */
         
-        .review-word { font-size: 32px; font-weight: 900; color: var(--text-main); line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-top: auto; margin-bottom: 25px; letter-spacing: -0.5px;}
-        .review-meaning { font-size: 28px; color: var(--success); font-weight: 900; line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-top: auto; margin-bottom: 20px; }
-        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 20px; border-radius: 20px; background: var(--bg-color); width: 100%; text-align: center; margin-bottom: auto; border: 1px solid var(--border-color);}
+        .card-text-primary { font-size: 32px; font-weight: 900; color: var(--text-main); line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-bottom: 20px;}
+        .card-text-secondary { font-size: 28px; color: var(--success); font-weight: 900; line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-bottom: 20px;}
+        
+        .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 20px; border-radius: 20px; background: var(--bg-color); width: 100%; text-align: center; border: 1px solid var(--border-color); margin-top: 10px;}
 
-        .btn-audio { width: 60px; height: 60px; border-radius: 50%; border: none; background: var(--primary-light); color: var(--primary); cursor: pointer; font-size: 26px; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; margin-bottom: auto; }
-        .btn-audio:active { transform: scale(0.85); background: var(--primary); color: white;}
+        /* دکمه صوتی جدید و لوکس */
+        .btn-audio { width: 64px; height: 64px; border-radius: 50%; border: none; background: var(--primary-light); color: var(--primary); cursor: pointer; font-size: 28px; display: flex; align-items: center; justify-content: center; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; margin: 15px auto;}
+        .btn-audio:hover { transform: scale(1.05); background: var(--primary); color: white; box-shadow: 0 10px 25px var(--primary-glow);}
+        .btn-audio:active { transform: scale(0.95); }
 
-        .review-actions { max-width: 400px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
+        .review-actions { max-width: 440px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
         
         .btn-know, .btn-dont-know { border: none; padding: 18px 10px; border-radius: 24px; cursor: pointer; font-weight: 900; font-size: 16px; flex: 1; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;}
@@ -176,6 +185,7 @@
         .btn-dont-know { background: var(--danger-light); color: var(--danger); }
         .btn-know:active, .btn-dont-know:active { transform: scale(0.95); filter: brightness(0.95);}
 
+        /* لیست کارت‌ها */
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
         .search-input { flex: 1; padding: 16px 20px; border-radius: 100px; border: 1px solid var(--border-color); background: var(--surface-solid); color: var(--text-main); font-size: 15px; outline: none; font-weight: 600; transition: 0.2s; }
         .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
@@ -195,13 +205,15 @@
         .icon-btn:active { transform: scale(0.9); }
         .btn-del:active { background: var(--danger-light); color: var(--danger); }
 
+        /* تنظیمات */
         .settings-card { background: var(--surface-solid); padding: 20px 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-card); }
         
-        /* Bottom Sheets */
+        /* پنل‌های کشویی (iOS Bottom Sheet) */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 100; opacity: 0; transition: opacity 0.3s; align-items: flex-end; justify-content: center;}
         .modal.show { opacity: 1; }
         .modal-content { background-color: var(--surface-solid); padding: 35px 25px 40px; border-radius: 32px 32px 0 0; width: 100%; max-width: 600px; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 90vh; overflow-y: auto;}
         .modal.show .modal-content { transform: translateY(0); }
+        
         .modal-drag-indicator { width: 40px; height: 5px; background: var(--border-color); border-radius: 10px; margin: 0 auto 25px; }
 
         .form-group { margin-bottom: 16px; text-align: right; }
@@ -210,6 +222,7 @@
         .form-control { width: 100%; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 15px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; transition: 0.2s;}
         .form-control:focus { border-color: var(--primary); background: var(--surface-solid);}
         
+        /* ناوبری کپسولی معلق */
         .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 400px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 8px; box-shadow: var(--shadow-float); border: 1px solid var(--border-color); border-radius: 100px; z-index: 99; display: none; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
         .bottom-nav.logged-in { display: flex; }
         .nav-item { color: var(--text-muted); text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 800; padding: 10px 16px; border-radius: 100px; transition: 0.2s; }
@@ -262,7 +275,6 @@
             
             <div class="profile-area" id="headerProfileArea" style="display: none;" onclick="switchView('settings')">
                 <div class="streak-badge" title="زنجیره روزانه"><i class="ph-fill ph-fire"></i> <span id="headerStreakVal">0</span></div>
-                <span id="headerUserName" style="font-weight: 800; font-size: 14px; margin-left: 8px;">کاربر</span>
                 <div class="profile-avatar" id="headerAvatar">MR</div>
             </div>
         </header>
@@ -274,9 +286,8 @@
             <p id="lblLoginDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">یادگیری هوشمند زبان را ادامه دهید.</p>
             <div class="form-group"><input type="email" id="loginEmail" class="form-control en-text" placeholder="Email" dir="ltr"></div>
             <div class="form-group"><input type="password" id="loginPassword" class="form-control en-text" placeholder="Password" dir="ltr"></div>
-            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit">ورود <i class="ph-bold ph-arrow-right"></i></button>
+            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit" style="max-width: 100%;">ورود <i class="ph-bold ph-arrow-right"></i></button>
             <button class="btn-secondary" onclick="showSignup()" id="btnGoSignup" style="width: 100%;">ثبت‌نام حساب جدید</button>
-            <!-- دکمه ورود مهمان -->
             <button class="btn-ghost" onclick="handleGuestLogin()" id="btnGuestLogin1">ورود بدون ثبت‌نام (مهمان) <i class="ph-bold ph-user"></i></button>
         </section>
 
@@ -288,9 +299,8 @@
             <div class="form-group"><input type="text" id="signupName" class="form-control" placeholder="نام شما"></div>
             <div class="form-group"><input type="email" id="signupEmail" class="form-control en-text" placeholder="Email" dir="ltr"></div>
             <div class="form-group"><input type="password" id="signupPassword" class="form-control en-text" placeholder="Password (Min 6)" dir="ltr"></div>
-            <button class="btn-primary" onclick="handleSignup()" id="btnSignupSubmit">ایجاد حساب <i class="ph-bold ph-check"></i></button>
+            <button class="btn-primary" onclick="handleSignup()" id="btnSignupSubmit" style="max-width: 100%;">ایجاد حساب <i class="ph-bold ph-check"></i></button>
             <button class="btn-secondary" onclick="showLogin()" id="btnGoLogin" style="width: 100%;">بازگشت به ورود</button>
-            <!-- دکمه ورود مهمان -->
             <button class="btn-ghost" onclick="handleGuestLogin()" id="btnGuestLogin2">ورود بدون ثبت‌نام (مهمان) <i class="ph-bold ph-user"></i></button>
         </section>
 
@@ -299,7 +309,7 @@
             <section class="hero-card">
                 <h2 id="lblReadyReview">کارت‌های آماده مرور امروز</h2>
                 <div class="review-count en-text" id="totalReviewCount">0</div>
-                <button class="btn-primary" onclick="startFocusReview()" id="btnStartReview" style="background: white; color: var(--text-main); max-width:200px; margin:0 auto;">شروع مرور <i class="ph-fill ph-play-circle" style="color:var(--primary); font-size:22px;"></i></button>
+                <button class="btn-primary" onclick="startFocusReview()" id="btnStartReview" style="background: white; color: var(--primary);">شروع مرور <i class="ph-bold ph-play"></i></button>
             </section>
 
             <h3 class="section-title" id="lblStatsTitle"><i class="ph-fill ph-chart-bar"></i> آمار یادگیری</h3>
@@ -328,21 +338,24 @@
             <div class="review-wrapper">
                 <div class="flip-card" id="flipCardMain" onclick="toggleFlipCard()">
                     <div class="flip-card-inner">
+                        <!-- روی کارت -->
                         <div class="flip-front">
                             <div class="card-header-bar">
-                                <div class="review-box-label en-text" id="reviewBoxLabel">Box 1</div>
+                                <div class="review-box-label en-text" id="reviewBoxLabelFront">Box 1</div>
                             </div>
                             <div class="card-content-scroll">
-                                <div class="review-word en-text" id="reviewWordDisplay">Apple</div>
-                                <button class="btn-audio" onclick="speakCurrentWord(event)"><i class="ph-fill ph-speaker-high"></i></button>
+                                <div class="card-text-primary" id="reviewTextFront">Apple</div>
+                                <button class="btn-audio" id="btnAudioFront" onclick="speakCurrentWord(event)"><i class="ph-fill ph-speaker-high"></i></button>
                             </div>
                         </div>
+                        <!-- پشت کارت -->
                         <div class="flip-back">
                             <div class="card-header-bar">
-                                <div class="review-box-label" style="background: var(--bg-color); color: var(--text-muted);">پاسخ</div>
+                                <div class="review-box-label" id="lblBackHeader" style="background: var(--bg-color); color: var(--text-muted);">پاسخ</div>
                             </div>
                             <div class="card-content-scroll">
-                                <div class="review-meaning" id="reviewMeaningDisplay">سیب</div>
+                                <div class="card-text-secondary" id="reviewTextBack">سیب</div>
+                                <button class="btn-audio" id="btnAudioBack" onclick="speakCurrentWord(event)" style="display:none;"><i class="ph-fill ph-speaker-high"></i></button>
                                 <div class="review-example en-text" id="reviewExampleDisplay">I eat an apple.</div>
                             </div>
                         </div>
@@ -367,7 +380,7 @@
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h3 class="section-title" id="lblCardsTitle" style="margin-bottom: 0;"><i class="ph-fill ph-cards"></i> بانک لغات</h3>
-                <button class="btn-primary" onclick="openAddModal()" id="btnAddCardList" style="width: auto; padding: 10px 16px; margin:0; border-radius: 100px; font-size: 13px;"><i class="ph-bold ph-plus"></i> افزودن</button>
+                <button class="btn-primary" onclick="openAddModal()" id="btnAddCardList" style="width: auto; padding: 10px 16px; margin:0; border-radius: 16px; font-size: 14px;"><i class="ph-bold ph-plus"></i> افزودن</button>
             </div>
             
             <div class="search-container">
@@ -454,7 +467,7 @@
             <h3 class="section-title" style="margin-top: 30px; font-size: 16px;"><i class="ph-fill ph-user-circle"></i> حساب کاربری</h3>
             <div class="settings-card">
                 <div><p style="color: var(--text-main); font-size: 14px; font-weight: 800;" class="en-text" id="currentUserEmail">---</p></div>
-                <button onclick="handleLogout()" style="padding: 10px 16px; border-radius: 100px; border:none; background: var(--danger-light); color:var(--danger); font-weight:800; cursor:pointer; font-size: 13px; display: flex; align-items: center; gap: 6px;"><i class="ph-bold ph-sign-out"></i> خروج</button>
+                <button onclick="handleLogout()" style="padding: 10px 16px; border-radius: 100px; border:none; background: var(--bg-color); color:var(--danger); font-weight:800; cursor:pointer; font-size: 13px; display: flex; align-items: center; gap: 6px;"><i class="ph-bold ph-sign-out"></i> خروج</button>
             </div>
         </section>
 
@@ -520,7 +533,7 @@
         });
 
         let currentUser = null;
-        let isGuestMode = localStorage.getItem('leitner_is_guest') === 'true'; // آیا یوزر مهمان است؟
+        let isGuestMode = localStorage.getItem('leitner_is_guest') === 'true'; 
         
         let sampleCards = [];
         let reviewsLog = [];
@@ -583,7 +596,6 @@
             return false;
         }
 
-        // --- جادوی ورود محلی (مهمان) ---
         function handleGuestLogin() {
             isGuestMode = true;
             localStorage.setItem('leitner_is_guest', 'true');
@@ -594,15 +606,12 @@
         function setupGuestEnvironment() {
             currentUser = { uid: 'guest', email: 'guest@local' };
             document.getElementById('currentUserEmail').innerText = userProfile.lang === 'fa' ? 'حساب آفلاین (مهمان)' : 'Offline Account (Guest)';
-            document.getElementById('headerUserName').innerText = userProfile.lang === 'fa' ? 'مهمان' : 'Guest';
-            document.getElementById('headerAvatar').innerText = 'GU';
             
             document.getElementById('headerProfileArea').style.display = 'flex';
             document.getElementById('bottomNav').classList.add('logged-in'); 
 
             const hasLocalData = loadLocalData();
             if (!hasLocalData) {
-                // دیتای تستی اولیه برای مهمان که فقط روی گوشی خودش ذخیره می‌شود
                 sampleCards = [ { id: 1, box: 1, front: "Welcome", back: "خوش آمدید", example: "Welcome to Leitner Premium.", category: "Daily English", nextReviewDate: getTodayString(), deck: 'General' } ];
                 reviewsLog = [];
                 saveDataToCloud(); 
@@ -610,14 +619,8 @@
             switchView('dashboard');
         }
 
-        // ---------------------------------
-
         window.addEventListener('load', () => {
-            // اگر شخص قبلاً مهمان بوده، خودش خودکار وارد شود
-            if(isGuestMode) {
-                setupGuestEnvironment();
-                return;
-            }
+            if(isGuestMode) { setupGuestEnvironment(); return; }
 
             if (!navigator.onLine) {
                 document.getElementById('offline-indicator').style.display = 'inline-block';
@@ -632,7 +635,6 @@
         });
 
         auth.onAuthStateChanged(user => {
-            // اگر مهمان هستیم، سیستم فایربیس را کلا نادیده بگیر
             if (isGuestMode) return; 
 
             if (user) {
@@ -641,8 +643,6 @@
                 currentUser = user;
                 document.getElementById('currentUserEmail').innerText = user.email;
                 let displayName = user.displayName || user.email.split('@')[0];
-                document.getElementById('headerUserName').innerText = displayName;
-                document.getElementById('headerAvatar').innerText = displayName.substring(0, 2).toUpperCase();
                 
                 document.getElementById('headerProfileArea').style.display = 'flex';
                 document.getElementById('bottomNav').classList.add('logged-in'); 
@@ -725,7 +725,7 @@
         }
 
         async function loadDataFromCloud() {
-            if (isGuestMode || !currentUser || !navigator.onLine) return; // مهمان هرگز به کلود وصل نمی‌شود
+            if (isGuestMode || !currentUser || !navigator.onLine) return; 
             try {
                 const userRef = db.collection('users').doc(currentUser.uid);
                 const doc = await userRef.get();
@@ -762,7 +762,7 @@
             localStorage.setItem('leitner_offline_logs', JSON.stringify(reviewsLog));
             localStorage.setItem('leitner_offline_profile', JSON.stringify(userProfile));
 
-            if (isGuestMode || !currentUser || !navigator.onLine) return; // مهمان فقط روی گوشی ذخیره می‌کند
+            if (isGuestMode || !currentUser || !navigator.onLine) return; 
             
             db.collection('users').doc(currentUser.uid).set({
                 cards: sampleCards, reviewsLog: reviewsLog, profile: userProfile
@@ -823,9 +823,21 @@
             saveDataToCloud();
         }
 
-        function toggleDarkMode() { userProfile.darkMode = document.getElementById('darkModeToggle').checked; applyTheme(); saveDataToCloud(); }
+        function toggleDarkMode() { 
+            userProfile.darkMode = document.getElementById('darkModeToggle').checked; 
+            applyTheme(); 
+            saveDataToCloud(); 
+        }
+        
         function toggleReverseMode() { userProfile.reverseReview = document.getElementById('reverseToggle').checked; saveDataToCloud(); }
-        function applyTheme() { document.documentElement.toggleAttribute('data-theme', userProfile.darkMode ? 'dark' : null); }
+        
+        function applyTheme() { 
+            if (userProfile.darkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+            }
+        }
 
         function changeLanguage(lang) { userProfile.lang = lang; applyLanguage(); renderDeckSelector(); saveDataToCloud(); }
         
@@ -921,9 +933,14 @@
             setTxt('navCards', isFa ? 'لغات' : 'Words');
             setTxt('navSettings', isFa ? 'تنظیمات' : 'Settings');
 
-            if (currentUser && isGuestMode) {
-                setTxt('currentUserEmail', isFa ? 'حساب آفلاین (مهمان)' : 'Offline Account (Guest)');
-                setTxt('headerUserName', isFa ? 'مهمان' : 'Guest');
+            if (currentUser) {
+                let displayName = currentUser.displayName || (currentUser.email ? currentUser.email.split('@')[0] : 'User');
+                if (isGuestMode) {
+                    setTxt('currentUserEmail', isFa ? 'حساب آفلاین (مهمان)' : 'Offline Account (Guest)');
+                    setTxt('headerUserName', isFa ? 'مهمان' : 'Guest');
+                } else {
+                    setTxt('headerUserName', displayName);
+                }
             }
             
             updateBulkSelection(); 
@@ -938,7 +955,7 @@
             if(viewName === 'dashboard') { 
                 document.getElementById('view-dashboard').classList.add('active'); 
                 document.querySelectorAll('.nav-item')[0].classList.add('active'); 
-                if (currentUser) mainHeader.style.display = 'flex'; 
+                if (currentUser || localStorage.getItem('leitner_offline_cards')) mainHeader.style.display = 'flex'; 
                 updateDashboard(); 
             }
             else if(viewName === 'review') { 
@@ -949,13 +966,13 @@
             else if(viewName === 'cards') { 
                 document.getElementById('view-cards').classList.add('active'); 
                 document.querySelectorAll('.nav-item')[2].classList.add('active'); 
-                if (currentUser) mainHeader.style.display = 'flex'; 
+                if (currentUser || localStorage.getItem('leitner_offline_cards')) mainHeader.style.display = 'flex'; 
                 renderCardsManager(); 
             }
             else if(viewName === 'settings') { 
                 document.getElementById('view-settings').classList.add('active'); 
                 document.querySelectorAll('.nav-item')[3].classList.add('active'); 
-                if (currentUser) mainHeader.style.display = 'flex'; 
+                if (currentUser || localStorage.getItem('leitner_offline_cards')) mainHeader.style.display = 'flex'; 
             }
         }
 
@@ -994,6 +1011,9 @@
             document.getElementById('statMonthLearned').innerText = activeLogs.filter(r => new Date(r.date) >= oneMonthAgo && r.isCorrect).length;
         }
 
+        // ==========================================
+        //  رفع باگ بلندگو در آموزش معکوس
+        // ==========================================
         function startFocusReview() {
             const today = getTodayString();
             currentReviewQueue = getActiveCards().filter(c => c.nextReviewDate <= today);
@@ -1026,11 +1046,48 @@
             const card = currentReviewQueue[currentReviewIndex];
             const isRev = userProfile.reverseReview;
             
-            document.getElementById('reviewBoxLabel').innerText = `Box ${card.box} (${currentReviewIndex + 1} / ${currentReviewQueue.length})`;
+            document.getElementById('reviewBoxLabelFront').innerText = `Box ${card.box} (${currentReviewIndex + 1} / ${currentReviewQueue.length})`;
             
-            document.getElementById('reviewWordDisplay').innerText = isRev ? card.back : card.front;
-            document.getElementById('reviewMeaningDisplay').innerText = isRev ? card.front : card.back;
-            document.getElementById('reviewExampleDisplay').innerText = card.example ? `💡 ${card.example}` : '';
+            const frontTextEl = document.getElementById('reviewTextFront');
+            const backTextEl = document.getElementById('reviewTextBack');
+            const btnAudioFront = document.getElementById('btnAudioFront');
+            const btnAudioBack = document.getElementById('btnAudioBack');
+            const lblBackHeader = document.getElementById('lblBackHeader');
+
+            // منطق هوشمند جایگذاری دکمه صدا و تغییر کلاس‌ها
+            if (!isRev) {
+                // حالت عادی: انگلیسی جلو، فارسی پشت
+                frontTextEl.innerText = card.front;
+                frontTextEl.className = 'card-text-primary en-text';
+                
+                backTextEl.innerText = card.back;
+                backTextEl.className = 'card-text-secondary';
+                
+                btnAudioFront.style.display = 'flex'; // صدا جلو
+                btnAudioBack.style.display = 'none';
+                
+                lblBackHeader.innerText = userProfile.lang === 'fa' ? 'پاسخ' : 'Answer';
+            } else {
+                // حالت معکوس: فارسی جلو، انگلیسی پشت
+                frontTextEl.innerText = card.back;
+                frontTextEl.className = 'card-text-primary';
+                
+                backTextEl.innerText = card.front;
+                backTextEl.className = 'card-text-secondary en-text';
+                
+                btnAudioFront.style.display = 'none'; 
+                btnAudioBack.style.display = 'flex'; // صدا رفت پشت!
+                
+                lblBackHeader.innerText = userProfile.lang === 'fa' ? 'کلمه اصلی' : 'Original Word';
+            }
+
+            const exampleEl = document.getElementById('reviewExampleDisplay');
+            if(card.example) {
+                exampleEl.innerText = `💡 ${card.example}`;
+                exampleEl.style.display = 'block';
+            } else {
+                exampleEl.style.display = 'none';
+            }
         }
 
         function toggleFlipCard() {
@@ -1044,7 +1101,13 @@
                 if (!isCardRevealedThisTurn) {
                     document.getElementById('reviewActions').classList.add('show');
                     isCardRevealedThisTurn = true;
-                    speakCurrentWord();
+                    // اگر در حالت معکوس هستیم، با چرخیدن کارت انگلیسی ظاهر میشود، پس صدا را پخش کن
+                    if (userProfile.reverseReview) {
+                        speakCurrentWord();
+                    } else {
+                        // در حالت عادی اگر میخواهید کلمه دوباره خوانده شود
+                        speakCurrentWord();
+                    }
                 }
             } else {
                 btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer';
@@ -1052,7 +1115,7 @@
         }
 
         function speakCurrentWord(e) {
-            if (e) e.stopPropagation(); 
+            if (e) e.stopPropagation(); // جلوگیری از چرخیدن کارت موقع لمس دکمه صدا
             if (currentReviewIndex < currentReviewQueue.length) {
                 const utterance = new SpeechSynthesisUtterance(currentReviewQueue[currentReviewIndex].front);
                 utterance.lang = 'en-US';
@@ -1205,7 +1268,7 @@
         function closeAddModal() { 
             const modal = document.getElementById('addModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 400);
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
         async function autoTranslateWord() {
