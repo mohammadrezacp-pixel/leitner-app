@@ -24,7 +24,6 @@
 
     <style>
         :root {
-            /* پالت رنگی فوق‌مدرن و سافت */
             --bg-color: #f8fafc;
             --surface-color: rgba(255, 255, 255, 0.85);
             --surface-solid: #ffffff;
@@ -139,11 +138,10 @@
         .box-5 { background: var(--success-light); color: var(--success); }
         .box-6 { background: #f1f5f9; color: #475569; }
         [data-theme="dark"] .box-6 { background: rgba(255,255,255,0.05); color: #cbd5e1; }
-
         .box-card .box-name { font-size: 12px; font-weight: 800; opacity: 0.8; margin-bottom: 4px; text-transform: uppercase;}
         .box-card .box-count { font-size: 28px; font-weight: 900; }
 
-        /* ------------------ فلش‌کارت فوق‌مدرن (تغییرات جدید و بزرگ‌تر) ------------------ */
+        /* ------------------ فلش‌کارت فوق‌مدرن (استفاده مشترک برای مطالعه و کوییز) ------------------ */
         .review-wrapper { perspective: 2000px; width: 100%; max-width: 440px; margin: 0 auto; height: 65vh; min-height: 450px; max-height: 600px; }
         .flip-card { width: 100%; height: 100%; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; cursor: pointer; }
@@ -159,24 +157,23 @@
         .card-header-bar { width: 100%; display: flex; justify-content: flex-end; margin-bottom: 10px; }
         .review-box-label { font-size: 12px; font-weight: 900; color: var(--primary); background: var(--primary-light); padding: 6px 14px; border-radius: 100px; }
 
-        /* ترفند جادویی اسکرول در مرکز */
         .card-content-scroll { 
             flex: 1; width: 100%; overflow-y: auto; display: flex; flex-direction: column; 
             align-items: center; padding: 10px 0; 
         }
         .card-content-scroll::-webkit-scrollbar { display: none; }
-        .card-content-scroll::before, .card-content-scroll::after { content: ''; margin: auto; } /* ترفند وسط‌چین بدون کراپ شدن */
+        .card-content-scroll::before, .card-content-scroll::after { content: ''; margin: auto; } 
         
         .card-text-primary { font-size: 32px; font-weight: 900; color: var(--text-main); line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-bottom: 20px;}
         .card-text-secondary { font-size: 28px; color: var(--success); font-weight: 900; line-height: 1.4; word-wrap: break-word; text-align: center; width: 100%; margin-bottom: 20px;}
         
         .review-example { font-size: 16px; color: var(--text-muted); font-weight: 600; line-height: 1.6; padding: 20px; border-radius: 20px; background: var(--bg-color); width: 100%; text-align: center; border: 1px solid var(--border-color); margin-top: 10px;}
 
-        /* دکمه صوتی جدید و لوکس */
         .btn-audio { width: 64px; height: 64px; border-radius: 50%; border: none; background: var(--primary-light); color: var(--primary); cursor: pointer; font-size: 28px; display: flex; align-items: center; justify-content: center; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; margin: 15px auto;}
         .btn-audio:hover { transform: scale(1.05); background: var(--primary); color: white; box-shadow: 0 10px 25px var(--primary-glow);}
         .btn-audio:active { transform: scale(0.95); }
 
+        /* دکمه‌های اکشن برای کوییز */
         .review-actions { max-width: 440px; margin: 25px auto 0; display: flex; gap: 15px; opacity: 0; pointer-events: none; transition: 0.4s; transform: translateY(20px); }
         .review-actions.show { opacity: 1; pointer-events: all; transform: translateY(0); }
         
@@ -184,6 +181,9 @@
         .btn-know { background: var(--success-light); color: var(--success); }
         .btn-dont-know { background: var(--danger-light); color: var(--danger); }
         .btn-know:active, .btn-dont-know:active { transform: scale(0.95); filter: brightness(0.95);}
+
+        .btn-reveal-main { background: var(--text-main); color: var(--bg-color); border: none; padding: 18px 30px; font-size: 17px; font-weight: 900; border-radius: 20px; cursor: pointer; width: 100%; max-width: 440px; display: block; margin: 25px auto 0; box-shadow: var(--shadow-md); transition: 0.2s; }
+        .btn-reveal-main:active { transform: scale(0.98); }
 
         /* لیست کارت‌ها */
         .search-container { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -197,7 +197,7 @@
         .card-list-item { background: var(--surface-solid); padding: 20px; border-radius: 24px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-card); }
         .card-info-wrap { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
         .card-texts { display: flex; flex-direction: column; gap: 4px; overflow: hidden;}
-        .card-texts strong { font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+        .card-texts strong { font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main);}
         .card-texts span { color: var(--success); font-weight: 800; font-size: 14px;}
         .card-texts small { font-size: 11px; color: var(--text-muted); font-weight: 600; background: var(--bg-color); padding: 2px 8px; border-radius: 6px; display: inline-block; width: fit-content;}
         
@@ -205,15 +205,13 @@
         .icon-btn:active { transform: scale(0.9); }
         .btn-del:active { background: var(--danger-light); color: var(--danger); }
 
-        /* تنظیمات */
         .settings-card { background: var(--surface-solid); padding: 20px 25px; border-radius: 24px; border: 1px solid var(--border-color); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-card); }
         
-        /* پنل‌های کشویی (iOS Bottom Sheet) */
+        /* Bottom Sheets */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 100; opacity: 0; transition: opacity 0.3s; align-items: flex-end; justify-content: center;}
         .modal.show { opacity: 1; }
         .modal-content { background-color: var(--surface-solid); padding: 35px 25px 40px; border-radius: 32px 32px 0 0; width: 100%; max-width: 600px; box-shadow: 0 -10px 40px rgba(0,0,0,0.1); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); max-height: 90vh; overflow-y: auto;}
         .modal.show .modal-content { transform: translateY(0); }
-        
         .modal-drag-indicator { width: 40px; height: 5px; background: var(--border-color); border-radius: 10px; margin: 0 auto 25px; }
 
         .form-group { margin-bottom: 16px; text-align: right; }
@@ -222,10 +220,10 @@
         .form-control { width: 100%; padding: 16px 20px; border: 1px solid var(--border-color); border-radius: 20px; font-size: 15px; background: var(--bg-color); color: var(--text-main); outline: none; font-weight: 600; transition: 0.2s;}
         .form-control:focus { border-color: var(--primary); background: var(--surface-solid);}
         
-        /* ناوبری کپسولی معلق */
-        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 400px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 8px; box-shadow: var(--shadow-float); border: 1px solid var(--border-color); border-radius: 100px; z-index: 99; display: none; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
+        /* ناوبری کپسولی معلق با ۵ آیتم */
+        .bottom-nav { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: calc(100% - 20px); max-width: 500px; background: var(--surface-color); display: flex; justify-content: space-around; padding: 6px; box-shadow: var(--shadow-float); border: 1px solid var(--border-color); border-radius: 100px; z-index: 99; display: none; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
         .bottom-nav.logged-in { display: flex; }
-        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 800; padding: 10px 16px; border-radius: 100px; transition: 0.2s; }
+        .nav-item { color: var(--text-muted); text-decoration: none; font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 800; padding: 8px 12px; border-radius: 100px; transition: 0.2s; }
         .nav-item i { font-size: 24px; transition: 0.2s; }
         .nav-item.active { color: var(--primary); background: var(--primary-light); }
         .nav-item.active i { font-family: 'Phosphor-Fill', sans-serif; font-weight: 900;}
@@ -286,7 +284,7 @@
             <p id="lblLoginDesc" style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">یادگیری هوشمند زبان را ادامه دهید.</p>
             <div class="form-group"><input type="email" id="loginEmail" class="form-control en-text" placeholder="Email" dir="ltr"></div>
             <div class="form-group"><input type="password" id="loginPassword" class="form-control en-text" placeholder="Password" dir="ltr"></div>
-            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit" style="max-width: 100%;">ورود <i class="ph-bold ph-arrow-right"></i></button>
+            <button class="btn-primary" onclick="handleLogin()" id="btnLoginSubmit">ورود <i class="ph-bold ph-arrow-right"></i></button>
             <button class="btn-secondary" onclick="showSignup()" id="btnGoSignup" style="width: 100%;">ثبت‌نام حساب جدید</button>
             <button class="btn-ghost" onclick="handleGuestLogin()" id="btnGuestLogin1">ورود بدون ثبت‌نام (مهمان) <i class="ph-bold ph-user"></i></button>
         </section>
@@ -307,9 +305,12 @@
         <!-- داشبورد -->
         <section id="view-dashboard" class="view-section">
             <section class="hero-card">
-                <h2 id="lblReadyReview">کارت‌های آماده مرور امروز</h2>
+                <h2 id="lblReadyReview">کارت‌های آماده آزمون امروز</h2>
                 <div class="review-count en-text" id="totalReviewCount">0</div>
-                <button class="btn-primary" onclick="startFocusReview()" id="btnStartReview" style="background: white; color: var(--primary);">شروع مرور <i class="ph-bold ph-play"></i></button>
+                <div style="display: flex; gap: 10px; justify-content: center; width: 100%; max-width: 320px;">
+                    <button class="btn-secondary" onclick="switchView('study')" id="lblHeroStudyBtn" style="flex: 1; margin: 0; color: var(--primary); border-color: var(--primary-light);"><i class="ph-bold ph-book-open-text"></i> یادگیری آزاد</button>
+                    <button class="btn-primary" onclick="startFocusQuiz()" id="lblHeroQuizBtn" style="flex: 1; margin: 0; background: white; color: var(--text-main);"><i class="ph-bold ph-exam"></i> آزمون لایتنر</button>
+                </div>
             </section>
 
             <h3 class="section-title" id="lblStatsTitle"><i class="ph-fill ph-chart-bar"></i> آمار یادگیری</h3>
@@ -333,45 +334,84 @@
             </section>
         </section>
 
-        <!-- مرور متمرکز -->
-        <section id="view-review" class="view-section">
+        <!-- 1️⃣ بخش جدید: یادگیری آزاد (بدون آزمون) -->
+        <section id="view-study" class="view-section">
             <div class="review-wrapper">
-                <div class="flip-card" id="flipCardMain" onclick="toggleFlipCard()">
+                <div class="flip-card" id="flipCardStudy" onclick="toggleFlipStudyCard()">
                     <div class="flip-card-inner">
-                        <!-- روی کارت -->
                         <div class="flip-front">
                             <div class="card-header-bar">
-                                <div class="review-box-label en-text" id="reviewBoxLabelFront">Box 1</div>
+                                <div class="review-box-label en-text" id="studyProgressLabelFront" style="background:var(--bg-color); color:var(--text-muted);">1 / 10</div>
                             </div>
                             <div class="card-content-scroll">
-                                <div class="card-text-primary" id="reviewTextFront">Apple</div>
-                                <button class="btn-audio" id="btnAudioFront" onclick="speakCurrentWord(event)"><i class="ph-fill ph-speaker-high"></i></button>
+                                <div class="card-text-primary" id="studyWordDisplay">Apple</div>
+                                <button class="btn-audio" id="btnAudioStudyFront" onclick="speakStudyWord(event)"><i class="ph-fill ph-speaker-high"></i></button>
                             </div>
                         </div>
-                        <!-- پشت کارت -->
                         <div class="flip-back">
                             <div class="card-header-bar">
-                                <div class="review-box-label" id="lblBackHeader" style="background: var(--bg-color); color: var(--text-muted);">پاسخ</div>
+                                <div class="review-box-label" id="lblStudyBackHeader" style="background: var(--bg-color); color: var(--text-muted);">پاسخ</div>
                             </div>
                             <div class="card-content-scroll">
-                                <div class="card-text-secondary" id="reviewTextBack">سیب</div>
-                                <button class="btn-audio" id="btnAudioBack" onclick="speakCurrentWord(event)" style="display:none;"><i class="ph-fill ph-speaker-high"></i></button>
-                                <div class="review-example en-text" id="reviewExampleDisplay">I eat an apple.</div>
+                                <div class="card-text-secondary" id="studyMeaningDisplay">سیب</div>
+                                <button class="btn-audio" id="btnAudioStudyBack" onclick="speakStudyWord(event)" style="display:none;"><i class="ph-fill ph-speaker-high"></i></button>
+                                <div class="review-example en-text" id="studyExampleDisplay">I eat an apple.</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <button class="btn-primary" onclick="toggleFlipCard()" id="btnReveal" style="margin: 30px auto 0; background: var(--text-main); color: var(--bg-color); box-shadow: var(--shadow-card); max-width: 400px;"><i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ</button>
+            <button class="btn-reveal-main" onclick="toggleFlipStudyCard()" id="btnRevealStudy" style="margin: 20px auto 0; background: var(--text-main); color: var(--bg-color); box-shadow: var(--shadow-card); max-width: 440px;"><i class="ph-bold ph-arrows-left-right"></i> مشاهده پشت کارت</button>
             
-            <div class="review-actions" id="reviewActions">
-                <button class="btn-dont-know" onclick="submitReviewAnswer(1)" id="btnNo"><i class="ph-bold ph-x"></i> فراموش کردم</button>
-                <button class="btn-know" onclick="submitReviewAnswer('next')" id="btnYes"><i class="ph-bold ph-check"></i> به یاد داشتم</button>
+            <!-- دکمه‌های ناوبری یادگیری -->
+            <div style="display: flex; gap: 15px; max-width: 440px; margin: 15px auto 0;">
+                <button class="btn-secondary" onclick="prevStudyCard()" id="btnPrevStudy" style="flex: 1;"><i class="ph-bold ph-caret-right"></i> قبلی</button>
+                <button class="btn-secondary" onclick="nextStudyCard()" id="btnNextStudy" style="flex: 1;">بعدی <i class="ph-bold ph-caret-left"></i></button>
             </div>
             
             <div style="text-align: center;">
-                <button class="btn-secondary" onclick="switchView('dashboard')" id="btnExitReview" style="margin: 30px auto 0; max-width: 400px;">خروج موقت</button>
+                <button class="btn-ghost" onclick="switchView('dashboard')" id="btnExitStudy" style="margin: 20px auto 0; max-width: 440px;">خروج به داشبورد</button>
+            </div>
+        </section>
+
+        <!-- 2️⃣ بخش: آزمون لایتنر (با دکمه یادم بود/نبود) -->
+        <section id="view-quiz" class="view-section">
+            <div class="review-wrapper">
+                <div class="flip-card" id="flipCardQuiz" onclick="toggleFlipQuizCard()">
+                    <div class="flip-card-inner">
+                        <div class="flip-front">
+                            <div class="card-header-bar">
+                                <div class="review-box-label en-text" id="quizBoxLabelFront">Box 1</div>
+                            </div>
+                            <div class="card-content-scroll">
+                                <div class="card-text-primary" id="quizWordDisplay">Apple</div>
+                                <button class="btn-audio" id="btnAudioQuizFront" onclick="speakQuizWord(event)"><i class="ph-fill ph-speaker-high"></i></button>
+                            </div>
+                        </div>
+                        <div class="flip-back">
+                            <div class="card-header-bar">
+                                <div class="review-box-label" id="lblQuizBackHeader" style="background: var(--bg-color); color: var(--text-muted);">پاسخ</div>
+                            </div>
+                            <div class="card-content-scroll">
+                                <div class="card-text-secondary" id="quizMeaningDisplay">سیب</div>
+                                <button class="btn-audio" id="btnAudioQuizBack" onclick="speakQuizWord(event)" style="display:none;"><i class="ph-fill ph-speaker-high"></i></button>
+                                <div class="review-example en-text" id="quizExampleDisplay">I eat an apple.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-reveal-main" onclick="toggleFlipQuizCard()" id="btnRevealQuiz" style="margin: 30px auto 0; background: var(--text-main); color: var(--bg-color); box-shadow: var(--shadow-card); max-width: 440px;"><i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ</button>
+            
+            <div class="review-actions" id="reviewActions">
+                <button class="btn-dont-know" onclick="submitQuizAnswer(1)" id="btnNo"><i class="ph-bold ph-x"></i> فراموش کردم</button>
+                <button class="btn-know" onclick="submitQuizAnswer('next')" id="btnYes"><i class="ph-bold ph-check"></i> به یاد داشتم</button>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn-ghost" onclick="switchView('dashboard')" id="btnExitQuiz" style="margin: 20px auto 0; max-width: 440px;">خروج موقت</button>
             </div>
         </section>
 
@@ -380,7 +420,7 @@
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h3 class="section-title" id="lblCardsTitle" style="margin-bottom: 0;"><i class="ph-fill ph-cards"></i> بانک لغات</h3>
-                <button class="btn-primary" onclick="openAddModal()" id="btnAddCardList" style="width: auto; padding: 10px 16px; margin:0; border-radius: 16px; font-size: 14px;"><i class="ph-bold ph-plus"></i> افزودن</button>
+                <button class="btn-primary" onclick="openAddModal()" id="btnAddCardList" style="width: auto; padding: 10px 16px; margin:0; border-radius: 100px; font-size: 13px;"><i class="ph-bold ph-plus"></i> افزودن</button>
             </div>
             
             <div class="search-container">
@@ -506,11 +546,12 @@
         </div>
     </div>
 
-    <!-- ناوبری کپسولی شناور -->
+    <!-- ناوبری ۵ گزینه‌ای جدید -->
     <nav class="bottom-nav" id="bottomNav">
         <div class="nav-item active" onclick="switchView('dashboard')"><i class="ph ph-squares-four"></i><span id="navDash">داشبورد</span></div>
-        <div class="nav-item" onclick="switchView('review')"><i class="ph ph-cards"></i><span id="navReview">مرور</span></div>
-        <div class="nav-item" onclick="switchView('cards')"><i class="ph ph-folder-open"></i><span id="navCards">لغات</span></div>
+        <div class="nav-item" onclick="switchView('study')"><i class="ph ph-book-open-text"></i><span id="navStudy">یادگیری</span></div>
+        <div class="nav-item" onclick="switchView('quiz')"><i class="ph ph-exam"></i><span id="navQuiz">آزمون</span></div>
+        <div class="nav-item" onclick="switchView('cards')"><i class="ph ph-cards"></i><span id="navCards">لغات</span></div>
         <div class="nav-item" onclick="switchView('settings')"><i class="ph ph-gear-six"></i><span id="navSettings">تنظیمات</span></div>
     </nav>
 
@@ -539,7 +580,14 @@
         let reviewsLog = [];
         let userProfile = { darkMode: false, lang: 'fa', reverseReview: false, streak: 0, lastReviewDate: '', decks: ['General'], activeDeck: 'General' };
         let isAllSelected = false; 
-        let isCardRevealedThisTurn = false; 
+        
+        // متغیرهای بخش‌های مطالعه و آزمون
+        let isQuizCardRevealed = false; 
+        let isStudyCardRevealed = false;
+        let studyQueue = [];
+        let currentStudyIndex = 0;
+        let quizQueue = [];
+        let currentQuizIndex = 0;
 
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
@@ -868,8 +916,9 @@
             setTxt('btnGoLogin', isFa ? 'بازگشت به ورود' : 'Back to Login');
             setTxt('btnGuestLogin2', isFa ? 'ورود بدون ثبت‌نام (مهمان) <i class="ph-bold ph-user"></i>' : 'Continue as Guest <i class="ph-bold ph-user"></i>');
 
-            setTxt('lblReadyReview', isFa ? 'کارت‌های آماده مرور امروز' : 'Ready to Review Today');
-            setTxt('btnStartReview', isFa ? 'شروع مرور <i class="ph-bold ph-play"></i>' : 'Start Review <i class="ph-bold ph-play"></i>');
+            setTxt('lblReadyReview', isFa ? 'کارت‌های آماده آزمون امروز' : 'Cards Ready for Quiz Today');
+            setTxt('lblHeroStudyBtn', isFa ? '<i class="ph-bold ph-book-open-text"></i> یادگیری آزاد' : '<i class="ph-bold ph-book-open-text"></i> Free Study');
+            setTxt('lblHeroQuizBtn', isFa ? '<i class="ph-bold ph-exam"></i> آزمون لایتنر' : '<i class="ph-bold ph-exam"></i> Leitner Quiz');
             setTxt('btnAddCardList', isFa ? '<i class="ph-bold ph-plus"></i> افزودن' : '<i class="ph-bold ph-plus"></i> Add');
             
             setTxt('lblStatsTitle', isFa ? '<i class="ph-fill ph-chart-bar"></i> آمار یادگیری' : '<i class="ph-fill ph-chart-bar"></i> Learning Stats');
@@ -881,16 +930,27 @@
             setTxt('lblMonth', isFa ? 'این ماه' : 'This Month');
             setTxt('lblBoxesTitle', isFa ? '<i class="ph-fill ph-package"></i> وضعیت جعبه‌ها' : '<i class="ph-fill ph-package"></i> Boxes Status');
             
-            const cardInner = document.getElementById('flipCardMain');
-            if (cardInner && cardInner.classList.contains('flipped')) {
-                setTxt('btnReveal', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت' : '<i class="ph-bold ph-arrows-left-right"></i> Back');
+            // متون دکمه‌های مطالعه
+            const cardStudy = document.getElementById('flipCardStudy');
+            if (cardStudy && cardStudy.classList.contains('flipped')) {
+                setTxt('btnRevealStudy', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت' : '<i class="ph-bold ph-arrows-left-right"></i> Back');
             } else {
-                setTxt('btnReveal', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer');
+                setTxt('btnRevealStudy', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پشت کارت' : '<i class="ph-bold ph-arrows-left-right"></i> Flip Card');
             }
+            setTxt('btnPrevStudy', isFa ? '<i class="ph-bold ph-caret-right"></i> قبلی' : '<i class="ph-bold ph-caret-left"></i> Prev');
+            setTxt('btnNextStudy', isFa ? 'بعدی <i class="ph-bold ph-caret-left"></i>' : 'Next <i class="ph-bold ph-caret-right"></i>');
+            setTxt('btnExitStudy', isFa ? 'خروج به داشبورد' : 'Exit to Dashboard');
 
+            // متون دکمه‌های آزمون
+            const cardQuiz = document.getElementById('flipCardQuiz');
+            if (cardQuiz && cardQuiz.classList.contains('flipped')) {
+                setTxt('btnRevealQuiz', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت' : '<i class="ph-bold ph-arrows-left-right"></i> Back');
+            } else {
+                setTxt('btnRevealQuiz', isFa ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer');
+            }
             setTxt('btnNo', isFa ? '<i class="ph-bold ph-x"></i> فراموش کردم' : '<i class="ph-bold ph-x"></i> Forgot');
             setTxt('btnYes', isFa ? '<i class="ph-bold ph-check"></i> به یاد داشتم' : '<i class="ph-bold ph-check"></i> Remembered');
-            setTxt('btnExitReview', isFa ? 'خروج موقت' : 'Exit to Dashboard');
+            setTxt('btnExitQuiz', isFa ? 'خروج موقت' : 'Exit to Dashboard');
             
             setTxt('lblCardsTitle', isFa ? '<i class="ph-fill ph-cards"></i> بانک لغات' : '<i class="ph-fill ph-cards"></i> Word Bank');
             setTxt('btnImportCSV', isFa ? '📥 آپلود اکسل' : '📥 Import CSV');
@@ -929,7 +989,8 @@
             setTxt('btnCloseBox', isFa ? 'بستن صفحه' : 'Close');
 
             setTxt('navDash', isFa ? 'داشبورد' : 'Dashboard');
-            setTxt('navReview', isFa ? 'مرور' : 'Review');
+            setTxt('navStudy', isFa ? 'یادگیری' : 'Study');
+            setTxt('navQuiz', isFa ? 'آزمون' : 'Quiz');
             setTxt('navCards', isFa ? 'لغات' : 'Words');
             setTxt('navSettings', isFa ? 'تنظیمات' : 'Settings');
 
@@ -958,20 +1019,25 @@
                 if (currentUser || localStorage.getItem('leitner_offline_cards')) mainHeader.style.display = 'flex'; 
                 updateDashboard(); 
             }
-            else if(viewName === 'review') { 
+            else if(viewName === 'study') { 
                 document.querySelectorAll('.nav-item')[1].classList.add('active'); 
                 mainHeader.style.display = 'none'; 
-                startFocusReview(); 
+                startFreeStudy(); 
+            }
+            else if(viewName === 'quiz') { 
+                document.querySelectorAll('.nav-item')[2].classList.add('active'); 
+                mainHeader.style.display = 'none'; 
+                startFocusQuiz(); 
             }
             else if(viewName === 'cards') { 
                 document.getElementById('view-cards').classList.add('active'); 
-                document.querySelectorAll('.nav-item')[2].classList.add('active'); 
+                document.querySelectorAll('.nav-item')[3].classList.add('active'); 
                 if (currentUser || localStorage.getItem('leitner_offline_cards')) mainHeader.style.display = 'flex'; 
                 renderCardsManager(); 
             }
             else if(viewName === 'settings') { 
                 document.getElementById('view-settings').classList.add('active'); 
-                document.querySelectorAll('.nav-item')[3].classList.add('active'); 
+                document.querySelectorAll('.nav-item')[4].classList.add('active'); 
                 if (currentUser || localStorage.getItem('leitner_offline_cards')) mainHeader.style.display = 'flex'; 
             }
         }
@@ -1012,127 +1078,187 @@
         }
 
         // ==========================================
-        //  رفع باگ بلندگو در آموزش معکوس
+        //  1️⃣ منطق بخش یادگیری آزاد (Study Mode)
         // ==========================================
-        function startFocusReview() {
-            const today = getTodayString();
-            currentReviewQueue = getActiveCards().filter(c => c.nextReviewDate <= today);
-            currentReviewIndex = 0;
-            if (currentReviewQueue.length === 0) { 
-                showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز در این پوشه وجود ندارد!' : 'No cards to review today in this folder!', 'info'); 
+        function startFreeStudy() {
+            studyQueue = getActiveCards();
+            currentStudyIndex = 0;
+            if (studyQueue.length === 0) { 
+                showToast(userProfile.lang === 'fa' ? 'هیچ کارتی در این پوشه نیست!' : 'No cards in this folder!', 'info'); 
                 switchView('dashboard'); 
                 return; 
             }
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('view-review').classList.add('active');
-            renderCurrentFocusCard();
+            document.getElementById('view-study').classList.add('active');
+            renderStudyCard();
         }
 
-        function renderCurrentFocusCard() {
-            if (currentReviewIndex >= currentReviewQueue.length) {
-                showToast(userProfile.lang === 'fa' ? 'تبریک! مرور این پوشه به اتمام رسید 🎉' : 'Review completed! 🎉', 'success');
+        function renderStudyCard() {
+            isStudyCardRevealed = false;
+            document.getElementById('flipCardStudy').classList.remove('flipped');
+            
+            const btnReveal = document.getElementById('btnRevealStudy');
+            btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پشت کارت' : '<i class="ph-bold ph-arrows-left-right"></i> Flip Card';
+            
+            const card = studyQueue[currentStudyIndex];
+            const isRev = userProfile.reverseReview;
+            
+            document.getElementById('studyProgressLabelFront').innerText = `${currentStudyIndex + 1} / ${studyQueue.length}`;
+            
+            const frontTextEl = document.getElementById('studyWordDisplay');
+            const backTextEl = document.getElementById('studyMeaningDisplay');
+            const btnAudioFront = document.getElementById('btnAudioStudyFront');
+            const btnAudioBack = document.getElementById('btnAudioStudyBack');
+            const lblBackHeader = document.getElementById('lblStudyBackHeader');
+
+            if (!isRev) {
+                frontTextEl.innerText = card.front; frontTextEl.className = 'card-text-primary en-text';
+                backTextEl.innerText = card.back; backTextEl.className = 'card-text-secondary';
+                btnAudioFront.style.display = 'flex'; btnAudioBack.style.display = 'none';
+                lblBackHeader.innerText = userProfile.lang === 'fa' ? 'پاسخ' : 'Answer';
+            } else {
+                frontTextEl.innerText = card.back; frontTextEl.className = 'card-text-primary';
+                backTextEl.innerText = card.front; backTextEl.className = 'card-text-secondary en-text';
+                btnAudioFront.style.display = 'none'; btnAudioBack.style.display = 'flex';
+                lblBackHeader.innerText = userProfile.lang === 'fa' ? 'کلمه اصلی' : 'Original Word';
+            }
+
+            const exampleEl = document.getElementById('studyExampleDisplay');
+            if(card.example) {
+                exampleEl.innerText = `💡 ${card.example}`; exampleEl.style.display = 'block';
+            } else { exampleEl.style.display = 'none'; }
+        }
+
+        function toggleFlipStudyCard() {
+            const cardStudy = document.getElementById('flipCardStudy');
+            const isFlipped = cardStudy.classList.toggle('flipped');
+            const btnReveal = document.getElementById('btnRevealStudy');
+            
+            if (isFlipped) {
+                btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت' : '<i class="ph-bold ph-arrows-left-right"></i> Back';
+                if (!isStudyCardRevealed) {
+                    isStudyCardRevealed = true;
+                    if (userProfile.reverseReview) speakStudyWord();
+                }
+            } else {
+                btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پشت کارت' : '<i class="ph-bold ph-arrows-left-right"></i> Flip Card';
+            }
+        }
+
+        function nextStudyCard() {
+            if (currentStudyIndex < studyQueue.length - 1) {
+                currentStudyIndex++; renderStudyCard();
+            } else { showToast(userProfile.lang === 'fa' ? 'به انتهای لیست رسیدید!' : 'End of the list reached!', 'info'); }
+        }
+
+        function prevStudyCard() {
+            if (currentStudyIndex > 0) { currentStudyIndex--; renderStudyCard(); }
+        }
+
+        function speakStudyWord(e) {
+            if (e) e.stopPropagation(); 
+            if (currentStudyIndex < studyQueue.length) {
+                const utterance = new SpeechSynthesisUtterance(studyQueue[currentStudyIndex].front);
+                utterance.lang = 'en-US'; window.speechSynthesis.speak(utterance);
+            }
+        }
+
+
+        // ==========================================
+        //  2️⃣ منطق بخش آزمون لایتنر (Quiz Mode)
+        // ==========================================
+        function startFocusQuiz() {
+            const today = getTodayString();
+            quizQueue = getActiveCards().filter(c => c.nextReviewDate <= today);
+            currentQuizIndex = 0;
+            if (quizQueue.length === 0) { 
+                showToast(userProfile.lang === 'fa' ? 'هیچ کارتی برای مرور امروز ندارید! عالی بودید 🎉' : 'No cards due today! Great job 🎉', 'success'); 
+                switchView('dashboard'); 
+                return; 
+            }
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-quiz').classList.add('active');
+            renderCurrentQuizCard();
+        }
+
+        function renderCurrentQuizCard() {
+            if (currentQuizIndex >= quizQueue.length) {
+                showToast(userProfile.lang === 'fa' ? 'تبریک! آزمون امروز به اتمام رسید 🎉' : 'Quiz completed! 🎉', 'success');
                 switchView('dashboard'); return;
             }
             
-            isCardRevealedThisTurn = false;
-            document.getElementById('flipCardMain').classList.remove('flipped');
+            isQuizCardRevealed = false;
+            document.getElementById('flipCardQuiz').classList.remove('flipped');
             
-            const btnReveal = document.getElementById('btnReveal');
+            const btnReveal = document.getElementById('btnRevealQuiz');
             btnReveal.style.display = 'block';
             btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer';
             
             document.getElementById('reviewActions').classList.remove('show');
             
-            const card = currentReviewQueue[currentReviewIndex];
+            const card = quizQueue[currentQuizIndex];
             const isRev = userProfile.reverseReview;
             
-            document.getElementById('reviewBoxLabelFront').innerText = `Box ${card.box} (${currentReviewIndex + 1} / ${currentReviewQueue.length})`;
+            document.getElementById('quizBoxLabelFront').innerText = `Box ${card.box} (${currentQuizIndex + 1} / ${quizQueue.length})`;
             
-            const frontTextEl = document.getElementById('reviewTextFront');
-            const backTextEl = document.getElementById('reviewTextBack');
-            const btnAudioFront = document.getElementById('btnAudioFront');
-            const btnAudioBack = document.getElementById('btnAudioBack');
-            const lblBackHeader = document.getElementById('lblBackHeader');
+            const frontTextEl = document.getElementById('quizWordDisplay');
+            const backTextEl = document.getElementById('quizMeaningDisplay');
+            const btnAudioFront = document.getElementById('btnAudioQuizFront');
+            const btnAudioBack = document.getElementById('btnAudioQuizBack');
+            const lblBackHeader = document.getElementById('lblQuizBackHeader');
 
-            // منطق هوشمند جایگذاری دکمه صدا و تغییر کلاس‌ها
             if (!isRev) {
-                // حالت عادی: انگلیسی جلو، فارسی پشت
-                frontTextEl.innerText = card.front;
-                frontTextEl.className = 'card-text-primary en-text';
-                
-                backTextEl.innerText = card.back;
-                backTextEl.className = 'card-text-secondary';
-                
-                btnAudioFront.style.display = 'flex'; // صدا جلو
-                btnAudioBack.style.display = 'none';
-                
+                frontTextEl.innerText = card.front; frontTextEl.className = 'card-text-primary en-text';
+                backTextEl.innerText = card.back; backTextEl.className = 'card-text-secondary';
+                btnAudioFront.style.display = 'flex'; btnAudioBack.style.display = 'none';
                 lblBackHeader.innerText = userProfile.lang === 'fa' ? 'پاسخ' : 'Answer';
             } else {
-                // حالت معکوس: فارسی جلو، انگلیسی پشت
-                frontTextEl.innerText = card.back;
-                frontTextEl.className = 'card-text-primary';
-                
-                backTextEl.innerText = card.front;
-                backTextEl.className = 'card-text-secondary en-text';
-                
-                btnAudioFront.style.display = 'none'; 
-                btnAudioBack.style.display = 'flex'; // صدا رفت پشت!
-                
+                frontTextEl.innerText = card.back; frontTextEl.className = 'card-text-primary';
+                backTextEl.innerText = card.front; backTextEl.className = 'card-text-secondary en-text';
+                btnAudioFront.style.display = 'none'; btnAudioBack.style.display = 'flex'; 
                 lblBackHeader.innerText = userProfile.lang === 'fa' ? 'کلمه اصلی' : 'Original Word';
             }
 
-            const exampleEl = document.getElementById('reviewExampleDisplay');
+            const exampleEl = document.getElementById('quizExampleDisplay');
             if(card.example) {
-                exampleEl.innerText = `💡 ${card.example}`;
-                exampleEl.style.display = 'block';
-            } else {
-                exampleEl.style.display = 'none';
-            }
+                exampleEl.innerText = `💡 ${card.example}`; exampleEl.style.display = 'block';
+            } else { exampleEl.style.display = 'none'; }
         }
 
-        function toggleFlipCard() {
-            const cardMain = document.getElementById('flipCardMain');
-            const isFlipped = cardMain.classList.toggle('flipped');
-            const btnReveal = document.getElementById('btnReveal');
+        function toggleFlipQuizCard() {
+            const cardQuiz = document.getElementById('flipCardQuiz');
+            const isFlipped = cardQuiz.classList.toggle('flipped');
+            const btnReveal = document.getElementById('btnRevealQuiz');
             
             if (isFlipped) {
-                btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت به سوال' : '<i class="ph-bold ph-arrows-left-right"></i> Back to Question';
-                
-                if (!isCardRevealedThisTurn) {
+                btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> بازگشت' : '<i class="ph-bold ph-arrows-left-right"></i> Back';
+                if (!isQuizCardRevealed) {
                     document.getElementById('reviewActions').classList.add('show');
-                    isCardRevealedThisTurn = true;
-                    // اگر در حالت معکوس هستیم، با چرخیدن کارت انگلیسی ظاهر میشود، پس صدا را پخش کن
-                    if (userProfile.reverseReview) {
-                        speakCurrentWord();
-                    } else {
-                        // در حالت عادی اگر میخواهید کلمه دوباره خوانده شود
-                        speakCurrentWord();
-                    }
+                    isQuizCardRevealed = true;
+                    if (userProfile.reverseReview) speakQuizWord();
                 }
             } else {
                 btnReveal.innerHTML = userProfile.lang === 'fa' ? '<i class="ph-bold ph-arrows-left-right"></i> مشاهده پاسخ' : '<i class="ph-bold ph-arrows-left-right"></i> Show Answer';
             }
         }
 
-        function speakCurrentWord(e) {
-            if (e) e.stopPropagation(); // جلوگیری از چرخیدن کارت موقع لمس دکمه صدا
-            if (currentReviewIndex < currentReviewQueue.length) {
-                const utterance = new SpeechSynthesisUtterance(currentReviewQueue[currentReviewIndex].front);
-                utterance.lang = 'en-US';
-                window.speechSynthesis.speak(utterance);
+        function speakQuizWord(e) {
+            if (e) e.stopPropagation(); 
+            if (currentQuizIndex < quizQueue.length) {
+                const utterance = new SpeechSynthesisUtterance(quizQueue[currentQuizIndex].front);
+                utterance.lang = 'en-US'; window.speechSynthesis.speak(utterance);
             }
         }
 
-        function submitReviewAnswer(target) {
+        function submitQuizAnswer(target) {
             checkAndUpdateStreak(); 
-            const card = currentReviewQueue[currentReviewIndex];
+            const card = quizQueue[currentQuizIndex];
             const today = getTodayString();
             let isCorrect = (target === 'next');
 
             if (target === 1) { 
                 card.box = 1; card.nextReviewDate = today; 
-            }
-            else if (target === 'next') {
+            } else if (target === 'next') {
                 if (card.box === 1) { card.box = 2; card.nextReviewDate = addDays(today, 2); }
                 else if (card.box === 2) { card.box = 3; card.nextReviewDate = addDays(today, 4); }
                 else if (card.box === 3) { card.box = 4; card.nextReviewDate = addDays(today, 7); }
@@ -1142,11 +1268,13 @@
 
             reviewsLog.push({ date: today, isCorrect: isCorrect, cardId: card.id });
             saveDataToCloud();
-            currentReviewIndex++;
-            
-            setTimeout(() => renderCurrentFocusCard(), 150);
+            currentQuizIndex++;
+            setTimeout(() => renderCurrentQuizCard(), 150);
         }
 
+        // ==========================================
+        //  سایر توابع (مدیریت کارت‌ها و تنظیمات)
+        // ==========================================
         function updateBulkSelection() {
             const checkboxes = document.querySelectorAll('.card-checkbox:checked');
             const bulkBar = document.getElementById('bulkActionsBar');
@@ -1155,16 +1283,13 @@
             if (checkboxes.length > 0) {
                 bulkBar.style.display = 'flex';
                 countText.innerText = userProfile.lang === 'fa' ? `${checkboxes.length} مورد انتخاب شده` : `${checkboxes.length} items selected`;
-            } else {
-                bulkBar.style.display = 'none';
-            }
+            } else { bulkBar.style.display = 'none'; }
         }
 
         function toggleSelectAll() {
             isAllSelected = !document.getElementById('selectAllCb').checked;
             document.getElementById('selectAllCb').checked = !isAllSelected;
             isAllSelected = !isAllSelected; 
-            
             const checkboxes = document.querySelectorAll('.card-checkbox');
             checkboxes.forEach(cb => cb.checked = isAllSelected);
             updateBulkSelection();
@@ -1173,18 +1298,12 @@
         function deleteSelectedCards() {
             const checkboxes = document.querySelectorAll('.card-checkbox:checked');
             if (checkboxes.length === 0) return;
-            
-            const msg = userProfile.lang === 'fa' ? `آیا از حذف ${checkboxes.length} کارت مطمئنید؟` : `Delete ${checkboxes.length} cards?`;
-            
-            if (confirm(msg)) {
+            if (confirm(userProfile.lang === 'fa' ? `آیا از حذف ${checkboxes.length} کارت مطمئنید؟` : `Delete ${checkboxes.length} cards?`)) {
                 const idsToDelete = Array.from(checkboxes).map(cb => parseInt(cb.value));
                 sampleCards = sampleCards.filter(c => !idsToDelete.includes(c.id));
-                saveDataToCloud();
-                renderCardsManager();
-                updateDashboard();
+                saveDataToCloud(); renderCardsManager(); updateDashboard();
                 showToast(userProfile.lang === 'fa' ? 'کارت‌ها با موفقیت حذف شدند.' : 'Cards deleted successfully.', 'success');
-                document.getElementById('selectAllCb').checked = false;
-                isAllSelected = false;
+                document.getElementById('selectAllCb').checked = false; isAllSelected = false;
             }
         }
 
@@ -1268,7 +1387,7 @@
         function closeAddModal() { 
             const modal = document.getElementById('addModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
+            setTimeout(() => modal.style.display = 'none', 400);
         }
 
         async function autoTranslateWord() {
@@ -1303,13 +1422,9 @@
                         }
                     }
                     document.getElementById('inputExample').value = realExample || ''; 
-                } catch (dictErr) {
-                    document.getElementById('inputExample').value = '';
-                }
+                } catch (dictErr) { document.getElementById('inputExample').value = ''; }
 
-            } catch (e) {
-                showToast(userProfile.lang === 'fa' ? "خطا در ارتباط با سرور." : "Server error.", "error");
-            }
+            } catch (e) { showToast(userProfile.lang === 'fa' ? "خطا در ارتباط با سرور." : "Server error.", "error"); }
             btn.innerHTML = '<i class="ph-fill ph-magic-wand"></i>';
         }
 
